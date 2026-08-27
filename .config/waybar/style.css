@@ -27,16 +27,36 @@ window#waybar {
 #custom-arrow-network,
 #custom-arrow-tray,
 #custom-arrow-power {
-    font-family: "MesloLGS Nerd Font", monospace;
+    font-family: "MesloLGS Nerd Font", "JetBrainsMono Nerd Font", monospace;
     font-size: 18px;
     margin: 0;
     padding: 0;
 }
 
-#workspaces { background-color: #14161c; margin: 0; padding: 0; }
-#workspaces button { padding: 0 7px; color: #6c7280; background-color: transparent; border-radius: 0px; border: none; margin: 0; }
-#workspaces button.focused { color: #0f1013; background-color: #e05561; font-weight: 900; }
+#workspaces {
+    background-color: #14161c;
+    margin: 0;
+    padding-left: 2px;
+    padding-right: 4px;
+}
+
+#workspaces button {
+    padding: 0 7px;
+    color: #6c7280;
+    background-color: transparent;
+    border-radius: 0px;
+    border: none;
+    margin: 0;
+}
+
+#workspaces button.focused {
+    color: #0f1013;
+    background-color: #e05561;
+    font-weight: 900;
+}
+
 #workspaces button.urgent { color: #0f1013; background-color: #ff4757; }
+#workspaces button:hover { background-color: #242732; color: #f38d41; }
 #custom-left-arrow-workspaces { background-color: #1e2029; color: #14161c; }
 #mode { background-color: #1e2029; color: #e05561; padding: 0 6px; }
 #window { background-color: #1e2029; color: #e4e5e8; padding: 0 8px; }
