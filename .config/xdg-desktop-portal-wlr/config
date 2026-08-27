@@ -1,0 +1,8 @@
+# ==============================================================================
+# XDG Desktop Portal WLR Configuration - Defqon.1 Industrial TUI
+# ==============================================================================
+
+[screencast]
+chooser_type = dmenu
+chooser_cmd = fuzzel --dmenu --prompt="󰍹 Compartir Pantalla: " --placeholder="Selecciona pantalla para transmitir..."
+max_fps = 60
