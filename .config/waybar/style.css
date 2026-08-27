@@ -1,12 +1,12 @@
 /* ==============================================================================
- * Waybar Style - Defqon.1 Powerline Edition (Sharp, Flush & Metallic)
+ * Waybar Style - Pixel-Perfect Seamless Powerline (Defqon.1 Industrial)
  * ============================================================================== */
 
 * {
     border: none;
     border-radius: 0px;
-    font-family: "MesloLGS Nerd Font", "JetBrainsMono Nerd Font", monospace;
-    font-size: 12px;
+    font-family: "MesloLGS Nerd Font", monospace;
+    font-size: 11px;
     font-weight: bold;
     min-height: 0;
     margin: 0;
@@ -15,12 +15,11 @@
 
 window#waybar {
     background-color: #0f1013;
-    border-bottom: 1px solid #1a1c24;
     color: #e4e5e8;
 }
 
 /* ==============================================================================
- * Powerline Arrows (Seamless Sharp Segment Transitions)
+ * Powerline Arrows - Pixel-Matched Height
  * ============================================================================== */
 
 #custom-left-arrow-workspaces,
@@ -41,39 +40,37 @@ window#waybar {
 }
 
 /* ==============================================================================
- * Left Modules (Workspaces, Mode & Window)
+ * Left Modules
  * ============================================================================== */
 
 #workspaces {
-    background: linear-gradient(to bottom, #1d2028, #14161c);
+    background-color: #14161c;
     margin: 0;
     padding: 0;
 }
 
 #workspaces button {
-    padding: 0 8px;
+    padding: 0 7px;
     color: #6c7280;
     background-color: transparent;
     border-radius: 0px;
     border: none;
     margin: 0;
-    transition: all 0.15s ease;
 }
 
 #workspaces button.focused {
     color: #0f1013;
-    background: linear-gradient(to bottom, #eb445a, #c43b47);
-    border-bottom: 2px solid #ff4757;
+    background-color: #e05561;
     font-weight: 900;
 }
 
 #workspaces button.urgent {
     color: #0f1013;
-    background: #ff4757;
+    background-color: #ff4757;
 }
 
 #workspaces button:hover {
-    background: #242732;
+    background-color: #242732;
     color: #f38d41;
 }
 
@@ -85,14 +82,13 @@ window#waybar {
 #mode {
     background-color: #1e2029;
     color: #e05561;
-    padding: 0 8px;
+    padding: 0 6px;
 }
 
 #window {
-    background: linear-gradient(to bottom, #282b36, #1e2029);
+    background-color: #1e2029;
     color: #e4e5e8;
-    padding: 0 10px;
-    border-bottom: 2px solid #2d313d;
+    padding: 0 8px;
 }
 
 #custom-left-arrow-window {
@@ -110,10 +106,9 @@ window#waybar {
 }
 
 #clock {
-    background: linear-gradient(to bottom, #282b36, #1e2029);
+    background-color: #1e2029;
     color: #e05561;
-    padding: 0 12px;
-    border-bottom: 2px solid #e05561;
+    padding: 0 10px;
 }
 
 #clock:hover {
@@ -129,100 +124,91 @@ window#waybar {
  * Right Modules (Updates, CPU, RAM, Disk, Audio, Net, Tray, Power)
  * ============================================================================== */
 
-/* Updates (Block 1 - Dark) */
+/* Updates (Block 1 - Dark #16181f) */
 #custom-arrow-updates {
     background-color: #0f1013;
     color: #16181f;
 }
 
 #custom-updates {
-    background: linear-gradient(to bottom, #21242e, #16181f);
+    background-color: #16181f;
     color: #e5c07b;
-    padding: 0 8px;
-    border-bottom: 2px solid #e5c07b;
+    padding: 0 6px;
 }
 
 #custom-updates.pending {
     color: #f38d41;
-    border-bottom: 2px solid #f38d41;
 }
 
-/* CPU (Block 2 - Medium) */
+/* CPU (Block 2 - Medium #222530) */
 #custom-arrow-cpu {
     background-color: #16181f;
     color: #222530;
 }
 
 #cpu {
-    background: linear-gradient(to bottom, #2c303c, #222530);
+    background-color: #222530;
     color: #f38d41;
-    padding: 0 8px;
-    border-bottom: 2px solid #f38d41;
+    padding: 0 6px;
 }
 
-/* Memory (Block 3 - Dark) */
+/* Memory (Block 3 - Dark #16181f) */
 #custom-arrow-memory {
     background-color: #222530;
     color: #16181f;
 }
 
 #memory {
-    background: linear-gradient(to bottom, #21242e, #16181f);
+    background-color: #16181f;
     color: #e5c07b;
-    padding: 0 8px;
-    border-bottom: 2px solid #e5c07b;
+    padding: 0 6px;
 }
 
-/* Disk (Block 4 - Medium) */
+/* Disk (Block 4 - Medium #222530) */
 #custom-arrow-disk {
     background-color: #16181f;
     color: #222530;
 }
 
 #disk {
-    background: linear-gradient(to bottom, #2c303c, #222530);
+    background-color: #222530;
     color: #e05561;
-    padding: 0 8px;
-    border-bottom: 2px solid #e05561;
+    padding: 0 6px;
 }
 
-/* Pulseaudio (Block 5 - Dark) */
+/* Pulseaudio (Block 5 - Dark #16181f) */
 #custom-arrow-pulseaudio {
     background-color: #222530;
     color: #16181f;
 }
 
 #pulseaudio {
-    background: linear-gradient(to bottom, #21242e, #16181f);
+    background-color: #16181f;
     color: #f38d41;
-    padding: 0 8px;
-    border-bottom: 2px solid #f38d41;
+    padding: 0 6px;
 }
 
 #pulseaudio.muted {
     color: #6c7280;
-    border-bottom: 2px solid #5c6370;
 }
 
-/* Network (Block 6 - Medium) */
+/* Network (Block 6 - Medium #222530) */
 #custom-arrow-network {
     background-color: #16181f;
     color: #222530;
 }
 
 #network {
-    background: linear-gradient(to bottom, #2c303c, #222530);
+    background-color: #222530;
     color: #56b6c2;
-    padding: 0 8px;
-    border-bottom: 2px solid #56b6c2;
+    padding: 0 6px;
 }
 
 #network.disconnected {
     color: #ff4757;
-    border-bottom: 2px solid #ff4757;
 }
 
-/* System Tray (Block 7 - Dark) */
+/* System Tray (Block 7 - Dark #14161c) */
 #custom-arrow-tray {
     background-color: #222530;
     color: #14161c;
@@ -231,7 +217,6 @@ window#waybar {
 #tray {
     background-color: #14161c;
     padding: 0 6px;
-    border-bottom: 2px solid #282b35;
 }
 
 #tray > .passive {
@@ -243,21 +228,20 @@ window#waybar {
     background-color: #e05561;
 }
 
-/* Power Button (Block 8 - Red Accent) */
+/* Power Button (Block 8 - Red Accent #e05561) */
 #custom-arrow-power {
     background-color: #14161c;
     color: #e05561;
 }
 
 #custom-power {
-    background: linear-gradient(to bottom, #eb445a, #c43b47);
+    background-color: #e05561;
     color: #0f1013;
-    padding: 0 10px;
+    padding: 0 8px;
     font-weight: 900;
-    border-bottom: 2px solid #ff4757;
 }
 
 #custom-power:hover {
-    background: #ff4757;
+    background-color: #ff4757;
     color: #0f1013;
 }
