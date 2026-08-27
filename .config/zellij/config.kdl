@@ -1,8 +1,8 @@
 // ==============================================================================
-// Zellij Configuration - Catppuccin Mocha TUI Multiplexer
+// Zellij Configuration - Defqon.1 Weekend Warrior (Industrial Dark)
 // ==============================================================================
 
-theme "catppuccin-mocha"
+theme "defqon1"
 default_layout "default"
 mouse_mode true
 copy_on_select true
@@ -11,17 +11,17 @@ simplified_ui false
 default_shell "fish"
 
 themes {
-    catppuccin-mocha {
-        bg "#585b70"
-        fg "#cdd6f4"
-        red "#f38ba8"
-        green "#a6e3a1"
-        blue "#89b4fa"
-        yellow "#f9e2af"
-        magenta "#cba6f7"
-        orange "#fab387"
-        cyan "#89dceb"
-        black "#181825"
-        white "#cdd6f4"
+    defqon1 {
+        bg "#242731"
+        fg "#e4e5e8"
+        red "#e05561"
+        green "#8ebd6b"
+        blue "#61afef"
+        yellow "#e5c07b"
+        magenta "#e05561"
+        orange "#f38d41"
+        cyan "#56b6c2"
+        black "#121317"
+        white "#e4e5e8"
     }
 }

@@ -1,5 +1,5 @@
 /* ==============================================================================
- * Waybar Style - Seamless TUI Theme (Zero Gaps, Tinted Backgrounds, No Borders)
+ * Waybar Style - Defqon.1 Weekend Warrior (Industrial Dark Seamless Bar)
  * ============================================================================== */
 
 * {
@@ -14,12 +14,12 @@
 }
 
 window#waybar {
-    background-color: #11111b;
+    background-color: #0f1013;
     border: none;
-    color: #cdd6f4;
+    color: #e4e5e8;
 }
 
-/* Base Modules - Flush against edges with subtle tinted background */
+/* Base Modules - Flush against edges with subtle tinted backgrounds */
 #mode,
 #window,
 #clock,
@@ -40,7 +40,7 @@ window#waybar {
 
 /* Workspaces */
 #workspaces {
-    background-color: #181825;
+    background-color: #16181d;
     margin: 0;
     padding: 0;
     border: none;
@@ -48,7 +48,7 @@ window#waybar {
 
 #workspaces button {
     padding: 0 9px;
-    color: #6c7086;
+    color: #6c7280;
     background-color: transparent;
     border-radius: 0px;
     border: none;
@@ -57,113 +57,113 @@ window#waybar {
 }
 
 #workspaces button.focused {
-    color: #11111b;
-    background-color: #cba6f7;
+    color: #0f1013;
+    background-color: #e05561;
     border: none;
 }
 
 #workspaces button.urgent {
-    color: #11111b;
-    background-color: #f38ba8;
+    color: #0f1013;
+    background-color: #ff4757;
 }
 
 #workspaces button:hover {
-    background-color: #313244;
-    color: #cdd6f4;
+    background-color: #242731;
+    color: #f38d41;
 }
 
 /* Mode */
 #mode {
-    background-color: rgba(243, 139, 168, 0.2);
-    color: #f38ba8;
+    background-color: rgba(224, 85, 97, 0.25);
+    color: #e05561;
 }
 
 /* Window Title */
 #window {
-    background-color: rgba(69, 71, 90, 0.25);
-    color: #cdd6f4;
+    background-color: rgba(36, 39, 49, 0.35);
+    color: #e4e5e8;
     padding: 0 12px;
 }
 
-/* Clock (Center Module) */
+/* Clock (Center Module - Hazard Gold / Warrior Accent) */
 #clock {
-    background-color: rgba(203, 166, 247, 0.15);
-    color: #cba6f7;
+    background-color: rgba(224, 85, 97, 0.15);
+    color: #e05561;
     padding: 0 14px;
 }
 
 /* System Updates */
 #custom-updates {
-    background-color: rgba(203, 166, 247, 0.15);
-    color: #cba6f7;
+    background-color: rgba(229, 192, 123, 0.15);
+    color: #e5c07b;
     padding: 0 10px;
 }
 
 #custom-updates.pending {
-    background-color: rgba(250, 179, 135, 0.25);
-    color: #fab387;
+    background-color: rgba(243, 141, 65, 0.25);
+    color: #f38d41;
     font-weight: bold;
 }
 
 /* CPU */
 #cpu {
-    background-color: rgba(137, 180, 250, 0.15);
-    color: #89b4fa;
+    background-color: rgba(243, 141, 65, 0.15);
+    color: #f38d41;
 }
 
 /* Memory */
 #memory {
-    background-color: rgba(166, 227, 161, 0.15);
-    color: #a6e3a1;
+    background-color: rgba(229, 192, 123, 0.15);
+    color: #e5c07b;
 }
 
 /* Disk */
 #disk {
-    background-color: rgba(250, 179, 135, 0.15);
-    color: #fab387;
+    background-color: rgba(224, 85, 97, 0.15);
+    color: #e05561;
 }
 
 /* Pulseaudio */
 #pulseaudio {
-    background-color: rgba(249, 226, 175, 0.15);
-    color: #f9e2af;
+    background-color: rgba(243, 141, 65, 0.15);
+    color: #f38d41;
 }
 
 #pulseaudio.muted {
-    background-color: rgba(108, 112, 134, 0.15);
-    color: #6c7086;
+    background-color: rgba(108, 114, 128, 0.15);
+    color: #6c7280;
 }
 
-/* Network */
+/* Network (Stage Cyan Laser) */
 #network {
-    background-color: rgba(148, 226, 213, 0.15);
-    color: #94e2d5;
+    background-color: rgba(86, 182, 194, 0.15);
+    color: #56b6c2;
 }
 
 #network.disconnected {
-    background-color: rgba(243, 139, 168, 0.15);
-    color: #f38ba8;
+    background-color: rgba(255, 71, 87, 0.15);
+    color: #ff4757;
 }
 
-/* Battery */
+/* Battery (Laser Green) */
 #battery {
-    background-color: rgba(166, 227, 161, 0.15);
-    color: #a6e3a1;
+    background-color: rgba(142, 189, 107, 0.15);
+    color: #8ebd6b;
 }
 
 #battery.warning {
-    background-color: rgba(250, 179, 135, 0.25);
-    color: #fab387;
+    background-color: rgba(243, 141, 65, 0.25);
+    color: #f38d41;
 }
 
 #battery.critical:not(.charging) {
-    background-color: #f38ba8;
-    color: #11111b;
+    background-color: #ff4757;
+    color: #0f1013;
 }
 
 /* System Tray */
 #tray {
-    background-color: rgba(69, 71, 90, 0.25);
+    background-color: rgba(36, 39, 49, 0.35);
     padding: 0 10px;
     margin: 0;
 }
@@ -174,17 +174,17 @@ window#waybar {
 
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
-    background-color: #f38ba8;
+    background-color: #e05561;
 }
 
 /* Power Button */
 #custom-power {
-    background-color: rgba(243, 139, 168, 0.2);
-    color: #f38ba8;
+    background-color: rgba(224, 85, 97, 0.2);
+    color: #e05561;
     padding: 0 10px;
 }
 
 #custom-power:hover {
-    background-color: #f38ba8;
-    color: #11111b;
+    background-color: #e05561;
+    color: #0f1013;
 }

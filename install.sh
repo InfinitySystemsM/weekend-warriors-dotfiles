@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # Dotfiles Installation & Symlink Script
-# Sway Catppuccin Mocha TUI Desktop Environment
+# Sway Defqon.1 Weekend Warrior - Industrial Dark TUI
 # ==============================================================================
 
 set -e
@@ -11,7 +11,7 @@ BACKUP_DIR="$HOME/.dotfiles_backup/$(date +%Y%m%d_%H%M%S)"
 
 # Colors for output
 C_RESET="\033[0m"
-C_MAUVE="\033[1;35m"
+C_RED="\033[1;31m"
 C_BLUE="\033[1;34m"
 C_CYAN="\033[1;36m"
 C_GREEN="\033[1;32m"
@@ -19,9 +19,9 @@ C_YELLOW="\033[1;33m"
 C_RED="\033[1;31m"
 
 banner() {
-    echo -e "${C_MAUVE}"
+    echo -e "${C_RED}"
     echo "  ╔════════════════════════════════════════════════════════════════╗"
-    echo "  ║        Sway Catppuccin Mocha TUI - Dotfiles Installer          ║"
+    echo "  ║        Sway Defqon.1 Industrial TUI - Dotfiles Installer          ║"
     echo "  ╚════════════════════════════════════════════════════════════════╝"
     echo -e "${C_RESET}"
 }

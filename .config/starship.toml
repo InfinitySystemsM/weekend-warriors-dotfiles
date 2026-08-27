@@ -1,5 +1,5 @@
 # ==============================================================================
-# Starship Prompt - Catppuccin Mocha TUI Edition
+# Starship Prompt - Defqon.1 Weekend Warrior (Industrial Dark)
 # ==============================================================================
 
 format = """
@@ -16,87 +16,72 @@ $cmd_duration\
 $line_break\
 $character"""
 
-palette = "catppuccin_mocha"
+palette = "defqon1"
 
 [character]
-success_symbol = "[❯](bold #cba6f7)"
-error_symbol = "[❯](bold #f38ba8)"
-vicmd_symbol = "[❮](bold #a6e3a1)"
+success_symbol = "[❯](bold #e05561)"
+error_symbol = "[❯](bold #ff4757)"
+vicmd_symbol = "[❮](bold #8ebd6b)"
 
 [directory]
-style = "bold #89b4fa"
+style = "bold #56b6c2"
 format = "[$path]($style) "
 truncation_length = 3
 truncation_symbol = "…/"
 
 [git_branch]
 symbol = "󰘬 "
-style = "bold #cba6f7"
+style = "bold #f38d41"
 format = "[$symbol$branch]($style) "
 
 [git_status]
-style = "bold #f38ba8"
+style = "bold #e05561"
 format = "([$all_status$ahead_behind]($style) )"
 
 [cmd_duration]
 min_time = 2_000
-style = "bold #f9e2af"
+style = "bold #e5c07b"
 format = "[ $duration]($style) "
 
 [package]
 symbol = "󰏗 "
-style = "bold #fab387"
+style = "bold #f38d41"
 format = "[$symbol$version]($style) "
 
 [rust]
 symbol = " "
-style = "bold #f38ba8"
+style = "bold #e05561"
 format = "[$symbol($version )]($style)"
 
 [golang]
 symbol = " "
-style = "bold #89b4fa"
+style = "bold #56b6c2"
 format = "[$symbol($version )]($style)"
 
 [nodejs]
 symbol = " "
-style = "bold #a6e3a1"
+style = "bold #8ebd6b"
 format = "[$symbol($version )]($style)"
 
 [python]
 symbol = " "
-style = "bold #f9e2af"
+style = "bold #e5c07b"
 format = "[$symbol($version )]($style)"
 
 [docker_context]
 symbol = " "
-style = "bold #89dceb"
+style = "bold #61afef"
 format = "[$symbol$context]($style) "
 
-[palettes.catppuccin_mocha]
-rosewater = "#f5e0dc"
-flamingo = "#f2cdcd"
-pink = "#f5c2e7"
-mauve = "#cba6f7"
-red = "#f38ba8"
-maroon = "#eba0ac"
-peach = "#fab387"
-yellow = "#f9e2af"
-green = "#a6e3a1"
-teal = "#94e2d5"
-sky = "#89dceb"
-sapphire = "#74c7ec"
-blue = "#89b4fa"
-lavender = "#b4befe"
-text = "#cdd6f4"
-subtext1 = "#bac2de"
-subtext0 = "#a6adc8"
-overlay2 = "#9399b2"
-overlay1 = "#7f849c"
-overlay0 = "#6c7086"
-surface2 = "#585b70"
-surface1 = "#45475a"
-surface0 = "#313244"
-base = "#1e1e2e"
-mantle = "#181825"
-crust = "#11111b"
+[palettes.defqon1]
+base = "#121317"
+surface = "#181a20"
+border = "#2d313d"
+text = "#e4e5e8"
+subtext = "#7d8597"
+red = "#e05561"
+orange = "#f38d41"
+yellow = "#e5c07b"
+green = "#8ebd6b"
+cyan = "#56b6c2"
+blue = "#61afef"

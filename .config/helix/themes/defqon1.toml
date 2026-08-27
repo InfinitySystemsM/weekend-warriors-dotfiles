@@ -1,0 +1,108 @@
+# ==============================================================================
+# Helix Theme - Defqon.1 Weekend Warrior (Industrial Dark)
+# ==============================================================================
+
+"attribute" = "#e05561"
+"type" = "#e5c07b"
+"type.builtin" = "#e5c07b"
+"constructor" = "#e5c07b"
+"constant" = "#f38d41"
+"constant.builtin" = "#f38d41"
+"constant.character" = "#8ebd6b"
+"constant.character.escape" = "#56b6c2"
+"constant.numeric" = "#f38d41"
+"string" = "#8ebd6b"
+"string.regexp" = "#56b6c2"
+"string.special" = "#56b6c2"
+"comment" = { fg = "#5c6370", modifiers = ["italic"] }
+"variable" = "#e4e5e8"
+"variable.builtin" = "#e05561"
+"variable.parameter" = "#abb2bf"
+"variable.other.member" = "#e4e5e8"
+"label" = "#56b6c2"
+"punctuation" = "#7d8597"
+"punctuation.delimiter" = "#7d8597"
+"punctuation.bracket" = "#abb2bf"
+"keyword" = { fg = "#e05561", modifiers = ["bold"] }
+"keyword.control" = "#e05561"
+"keyword.control.conditional" = "#e05561"
+"keyword.control.repeat" = "#e05561"
+"keyword.control.import" = "#e05561"
+"keyword.control.return" = "#e05561"
+"keyword.operator" = "#f38d41"
+"keyword.directive" = "#e05561"
+"keyword.function" = "#e05561"
+"operator" = "#f38d41"
+"function" = "#61afef"
+"function.builtin" = "#56b6c2"
+"function.macro" = "#e05561"
+"tag" = "#e05561"
+"namespace" = "#e5c07b"
+"special" = "#56b6c2"
+
+"markup.heading" = { fg = "#e05561", modifiers = ["bold"] }
+"markup.list" = "#e05561"
+"markup.bold" = { modifiers = ["bold"] }
+"markup.italic" = { modifiers = ["italic"] }
+"markup.strikethrough" = { modifiers = ["crossed_out"] }
+"markup.link.url" = { fg = "#56b6c2", modifiers = ["underlined"] }
+"markup.link.text" = "#61afef"
+"markup.raw" = "#8ebd6b"
+
+"diff.plus" = "#8ebd6b"
+"diff.delta" = "#f38d41"
+"diff.minus" = "#ff4757"
+
+"diagnostic.error" = { fg = "#ff4757" }
+"diagnostic.warning" = { fg = "#f38d41" }
+"diagnostic.info" = { fg = "#56b6c2" }
+"diagnostic.hint" = { fg = "#8ebd6b" }
+"diagnostic.unnecessary" = { modifiers = ["dim"] }
+"diagnostic.deprecated" = { modifiers = ["crossed_out"] }
+
+"ui.background" = { bg = "#121317" }
+"ui.background.separator" = { fg = "#2d313d" }
+"ui.cursor" = { fg = "#121317", bg = "#e05561" }
+"ui.cursor.normal" = { fg = "#121317", bg = "#e05561" }
+"ui.cursor.insert" = { fg = "#121317", bg = "#8ebd6b" }
+"ui.cursor.select" = { fg = "#121317", bg = "#56b6c2" }
+"ui.cursor.match" = { fg = "#121317", bg = "#f38d41" }
+"ui.cursorline.primary" = { bg = "#181a20" }
+"ui.cursorline.secondary" = { bg = "#16181d" }
+"ui.cursorcolumn.primary" = { bg = "#181a20" }
+"ui.cursorcolumn.secondary" = { bg = "#16181d" }
+
+"ui.linenr" = { fg = "#3e4451" }
+"ui.linenr.selected" = { fg = "#e05561", modifiers = ["bold"] }
+
+"ui.statusline" = { fg = "#e4e5e8", bg = "#181a20" }
+"ui.statusline.inactive" = { fg = "#5c6370", bg = "#121317" }
+"ui.statusline.normal" = { fg = "#0f1013", bg = "#e05561", modifiers = ["bold"] }
+"ui.statusline.insert" = { fg = "#0f1013", bg = "#8ebd6b", modifiers = ["bold"] }
+"ui.statusline.select" = { fg = "#0f1013", bg = "#56b6c2", modifiers = ["bold"] }
+
+"ui.bufferline" = { fg = "#5c6370", bg = "#121317" }
+"ui.bufferline.active" = { fg = "#e4e5e8", bg = "#181a20", modifiers = ["bold"] }
+"ui.bufferline.background" = { bg = "#121317" }
+
+"ui.popup" = { fg = "#e4e5e8", bg = "#181a20" }
+"ui.popup.info" = { fg = "#e4e5e8", bg = "#181a20" }
+"ui.window" = { fg = "#2d313d" }
+"ui.help" = { fg = "#e4e5e8", bg = "#181a20" }
+"ui.text" = "#e4e5e8"
+"ui.text.focus" = { fg = "#e4e5e8", modifiers = ["bold"] }
+"ui.text.inactive" = "#5c6370"
+"ui.text.info" = "#56b6c2"
+
+"ui.selection" = { bg = "#242731" }
+"ui.selection.primary" = { bg = "#2d313d" }
+"ui.highlight" = { bg = "#2d313d" }
+
+"ui.menu" = { fg = "#e4e5e8", bg = "#181a20" }
+"ui.menu.selected" = { fg = "#f38d41", bg = "#242731", modifiers = ["bold"] }
+"ui.menu.scroll" = { fg = "#e05561", bg = "#181a20" }
+
+"ui.picker.header" = { fg = "#e05561", modifiers = ["bold"] }
+"ui.virtual.indent-guide" = { fg = "#282b35" }
+"ui.virtual.ruler" = { bg = "#181a20" }
+"ui.virtual.inlay-hint" = { fg = "#5c6370" }

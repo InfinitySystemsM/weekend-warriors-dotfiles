@@ -16,7 +16,7 @@ case "$mode" in
         ;;
     area)
         # Interactive area selection with slurp (styled in Catppuccin Mauve)
-        GEOM=$(slurp -d -b "#1e1e2e88" -c "#cba6f7ff" -s "#cba6f733" -w 2 2>/dev/null)
+        GEOM=$(slurp -d -b "#12131788" -c "#e05561ff" -s "#e0556133" -w 2 2>/dev/null)
         if [ -n "$GEOM" ]; then
             grim -g "$GEOM" "$TMP_IMG"
             if [ -f "$TMP_IMG" ]; then

@@ -1,18 +1,18 @@
-# 🌌 Sway WM - Catppuccin Mocha TUI Edition
+# 🛡️ Sway WM - Defqon.1 Weekend Warrior (Industrial Dark TUI)
 
-> Configuración modular, ligera y estética de **Sway** (Wayland) orientada a herramientas TUI (*Terminal User Interface*), con bordes nítidos de 1px, paleta **Catppuccin Mocha** y flujo de trabajo altamente productivo.
+> Configuración modular, ligera y de alto rendimiento para **Sway** (Wayland) con estética industrial inspirada en **Defqon.1 / Hardstyle**, bordes afilados de 1px, acentos en **Warrior Red** (`#e05561`) y **Amber Flame** (`#f38d41`), y herramientas optimizadas para la terminal (TUI).
 
 ---
 
 ## 🎨 Características Principales
 
-- **Arquitectura Modular de Sway:** Configuración dividida limpiamente en `config.d/*.conf` (variables, salidas, entradas, atajos, reglas, scratchpads, autostart, tema y barra).
-- **Estética Catppuccin Mocha:** Colores coherentes en Sway, Waybar, Fuzzel, Foot, Mako, Swaylock, Starship, Helix, Zellij, Btop, Cava, GTK y Qt.
-- **Bordes Nítidos de 1px & Gaps:** Sin bordes redondeados innecesarios, bordes de 1px con acento Mauve (`#cba6f7`) e inner gaps de 6px.
-- **Waybar TUI Seamless:** Barra superior sin bordes ni gaps flotantes, integrada con módulos de estado en tiempo real (reloj, CPU, RAM, disco, audio, red, batería y clima/calendario).
-- **Scratchpads & Popups TUI Flotantes:** Ventanas emergentes centradas para control de volumen (`pulsemixer`), monitor del sistema (`btop`), selector de redes (`nmtui`), Git (`lazygit`), Bluetooth (`bluetui`), gestor de paquetes (`tui-packages`) y calendario interactivo con clima (`tui-calendar`).
-- **Lanzadores Dinámicos con Fuzzel:** Menú de aplicaciones, selector de portapapeles (`cliphist`), menú de apagado/bloqueo (`fuzzel-powermenu`) y selector interactivo de Wi-Fi (`fuzzel-wifi`).
-- **Capturas Rápidas con Notificaciones:** Herramienta integrada con `grim`, `slurp` y `wl-copy` que copia directo al portapapeles y notifica al usuario.
+- **Estética Defqon.1 Industrial:** Fondos de asfalto y carbón profundo (`#121317` / `#181a20`) con acentos en rojo guerrero, naranja fuego y destellos de escenario en verde/cian láser. Diseñado cuidadosamente para evitar saturación excesiva o fatiga ocular.
+- **Arquitectura Modular de Sway:** Configuración estructurada en `config.d/*.conf` (variables, salidas, entradas, atajos, reglas, scratchpads, autostart, tema y barra).
+- **Bordes Afilados de 1px:** Bordes limpios en rojo carmesí para ventanas enfocadas y gris acero para inactivas, con inner gaps de 6px.
+- **Waybar Industrial Seamless:** Barra de estado sin bordes ni gaps flotantes con métricas en tiempo real (CPU, RAM, disco, audio, red, batería y reloj integrado).
+- **Scratchpads & Popups TUI:** Ventanas flotantes centradas para volumen (`pulsemixer`), monitor (`btop`), selector de redes (`nmtui`), Git (`lazygit`), Bluetooth (`bluetui`), gestor de paquetes (`tui-packages`) y reloj/clima (`tui-calendar`).
+- **Lanzadores Dinámicos con Fuzzel:** Menú de apps, selector de portapapeles (`cliphist`), menú de energía (`fuzzel-powermenu`) y selector de Wi-Fi (`fuzzel-wifi`).
+- **Terminal Foot & Helix Modal:** Paleta ANSI balanceada de 16 colores industriales y tema dedicado `defqon1.toml` para el editor Helix.
 
 ---
 
@@ -21,43 +21,42 @@
 ```text
 dotfiles/
 ├── .config/
-│   ├── btop/              # Monitor del sistema TUI
-│   ├── cava/              # Visualizador de espectro de audio (shaders & themes)
-│   ├── environment.d/     # Variables de entorno para Wayland y temas oscuros
-│   ├── fastfetch/         # Resumen del sistema con logos Sixel / Defqon
+│   ├── btop/              # Monitor TUI con tema defqon1.theme
+│   ├── cava/              # Visualizador de audio con gradiente de fuego
+│   ├── environment.d/     # Variables de entorno Wayland
+│   ├── fastfetch/         # Resumen del sistema con logos Defqon / Sixel
 │   ├── fish/              # Configuración de Fish Shell
-│   ├── foot/              # Emulador de terminal nativo de Wayland
-│   ├── fuzzel/            # Lanzador de aplicaciones y menús dmenu
-│   ├── gtk-3.0/           # Configuración de temas GTK3 (adw-gtk3-dark)
-│   ├── gtk-4.0/           # Configuración de temas GTK4
-│   ├── helix/             # Editor modal moderno con tema Catppuccin
+│   ├── foot/              # Terminal Wayland con paleta Industrial Dark
+│   ├── fuzzel/            # Lanzador de apps y menús dmenu
+│   ├── gtk-3.0/ & gtk-4.0/# Configuración de temas GTK oscuros
+│   ├── helix/             # Editor modal y tema defqon1.toml
 │   ├── ly/                # Configuración estética de Ly Display Manager
-│   ├── mako/              # Demonio de notificaciones ligeras
-│   ├── micro/             # Editor de texto de terminal y atajos
+│   ├── mako/              # Notificaciones con acentos Defqon
+│   ├── micro/             # Editor Micro
 │   ├── qt5ct/ & qt6ct/    # Integración visual de aplicaciones Qt
 │   ├── spotify-player/    # Reproductor TUI de Spotify
-│   ├── starship.toml      # Prompt minimalista y rápido para la terminal
+│   ├── starship.toml      # Prompt minimalista con paleta defqon1
 │   ├── sway/              # Configuración principal modular de Sway
 │   │   ├── config
 │   │   └── config.d/      # [01_variables, 02_outputs, 03_inputs, 04_keybindings...]
-│   ├── swaylock/          # Pantalla de bloqueo con efectos de desenfoque y reloj Ly
-│   ├── waybar/            # Barra de estado superior y hoja de estilos CSS
-│   ├── xsettingsd/        # Sincronización de temas y fuentes X11/XWayland
-│   ├── zellij/            # Multiplexor de terminales con pestañas y paneles
-│   └── mimeapps.list      # Asociaciones de archivos por defecto
+│   ├── swaylock/          # Pantalla de bloqueo con anillo rojo y efectos
+│   ├── waybar/            # Barra superior y hoja de estilos
+│   ├── xsettingsd/        # Sincronización XWayland
+│   ├── zellij/            # Multiplexor con tema defqon1
+│   └── mimeapps.list      # Asociaciones por defecto
 ├── .local/
 │   └── bin/               # Scripts y utilidades personalizadas
 │       ├── check-updates     # Verificador JSON de actualizaciones para Waybar
 │       ├── fuzzel-cliphist   # Historial del portapapeles interactivo
 │       ├── fuzzel-powermenu  # Menú de apagado, reinicio, bloqueo y suspensión
 │       ├── fuzzel-wifi       # Selector interactivo de redes Wi-Fi con NetworkManager
-│       ├── screenshot-tool   # Utilidad de capturas (pantalla completa, área, ventana)
+│       ├── screenshot-tool   # Utilidad de capturas con selección en rojo carmesí
 │       ├── tui-calendar      # Reloj digital gigante, calendario y clima TUI
-│       └── tui-packages      # Gestor interactivo de paquetes con FZF (Pacman + Yay)
+│       └── tui-packages      # Gestor de paquetes interactivo con FZF (Pacman + Yay)
 ├── home/
 │   ├── .bashrc            # Configuración interactiva de Bash
 │   ├── .zshrc             # Configuración interactiva de Zsh
-│   └── .gtkrc-2.0         # Compatibilidad de tema para aplicaciones GTK2
+│   └── .gtkrc-2.0         # Compatibilidad de tema GTK2
 ├── install.sh             # Script automatizado de instalación y symlinks
 ├── .gitignore
 ├── LICENSE
@@ -136,7 +135,7 @@ dotfiles/
 
 ## 📦 Paquetes y Dependencias
 
-Para instalar todas las dependencias en **Arch Linux** o **CachyOS**, puedes ejecutar:
+Para instalar todas las dependencias en **Arch Linux** o **CachyOS**:
 
 ```bash
 sudo pacman -S --needed \
@@ -147,7 +146,7 @@ sudo pacman -S --needed \
     ttf-meslo-nerd networkmanager pulsemixer
 ```
 
-Y para utilidades TUI adicionales vía **AUR / Yay**:
+Y vía **AUR / Yay**:
 
 ```bash
 yay -S --needed swaylock-effects bluetui lazygit spotify-player
@@ -167,36 +166,9 @@ yay -S --needed swaylock-effects bluetui lazygit spotify-player
    ```bash
    ./install.sh
    ```
-   > El script creará enlaces simbólicos (`symlinks`) automáticos hacia `~/.config`, `~/.local/bin` y `~`, haciendo una copia de seguridad previa de cualquier configuración existente en `~/.dotfiles_backup/`.
 
-3. **Opciones adicionales del instalador:**
-   ```bash
-   ./install.sh --copy         # Copia los archivos en vez de crear enlaces simbólicos
-   ./install.sh --check-deps   # Revisa si faltan paquetes y permite instalarlos
-   ./install.sh --no-backup    # Omite el respaldo de archivos existentes
-   ```
-
-4. **Recargar Sway:**
+3. **Recargar Sway:**
    Presiona `$mod + Shift + c` para aplicar todos los cambios inmediatamente.
-
----
-
-## 📤 Instrucciones para Subir a GitHub
-
-Si deseas subir este repositorio a tu cuenta de GitHub:
-
-1. Crea un nuevo repositorio vacío en GitHub (por ejemplo, con el nombre `dotfiles` o `sway-dotfiles`).
-2. En tu terminal, ejecuta los siguientes comandos dentro de la carpeta:
-
-```bash
-cd ~/dotfiles
-git remote add origin git@github.com:TU_USUARIO/dotfiles.git
-# o mediante HTTPS:
-# git remote add origin https://github.com/TU_USUARIO/dotfiles.git
-
-git branch -M main
-git push -u origin main
-```
 
 ---
 

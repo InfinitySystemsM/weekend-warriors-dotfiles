@@ -1,5 +1,5 @@
 # ==============================================================================
-# Swaylock-Effects Configuration - Catppuccin Mocha & Ly-DM Consistency
+# Swaylock-Effects Configuration - Defqon.1 Weekend Warrior (Industrial Dark)
 # ==============================================================================
 
 # Daemon & Authentication
@@ -10,7 +10,7 @@ show-failed-attempts
 # Typography & Font
 font=MesloLGS Nerd Font
 
-# Digital Clock Display (Ly-DM Consistency)
+# Digital Clock Display
 clock
 timestr=%H:%M
 datestr=
@@ -25,26 +25,26 @@ indicator
 indicator-radius=115
 indicator-thickness=9
 
-# Colors: Catppuccin Mocha (Ly-DM Consistent Palette)
+# Colors: Defqon.1 Industrial Palette
 # Inner Circle Background
-inside-color=1e1e2eff
-inside-clear-color=1e1e2eff
-inside-caps-lock-color=1e1e2eff
-inside-ver-color=1e1e2eff
-inside-wrong-color=1e1e2eff
+inside-color=181a20ff
+inside-clear-color=181a20ff
+inside-caps-lock-color=181a20ff
+inside-ver-color=181a20ff
+inside-wrong-color=181a20ff
 
-# Ring Border (Mauve #cba6f7 - matching Ly-DM box borders)
-ring-color=cba6f7ff
-ring-clear-color=fab387ff
-ring-caps-lock-color=f9e2afff
-ring-ver-color=89b4faff
-ring-wrong-color=f38ba8ff
+# Ring Border (Warrior Red #e05561)
+ring-color=e05561ff
+ring-clear-color=f38d41ff
+ring-caps-lock-color=e5c07bff
+ring-ver-color=8ebd6bff
+ring-wrong-color=ff4757ff
 
-# Keypress Highlights (Green #a6e3a1 - matching Ly-DM Matrix green)
-key-hl-color=a6e3a1ff
-bs-hl-color=f38ba8ff
-caps-lock-key-hl-color=f9e2afff
-caps-lock-bs-hl-color=f38ba8ff
+# Keypress Highlights (Flame Amber #f38d41)
+key-hl-color=f38d41ff
+bs-hl-color=ff4757ff
+caps-lock-key-hl-color=e5c07bff
+caps-lock-bs-hl-color=ff4757ff
 
 # Separators & Dividing Lines
 line-color=00000000
@@ -54,9 +54,9 @@ line-ver-color=00000000
 line-wrong-color=00000000
 separator-color=00000000
 
-# Text Labels (Catppuccin Text #cdd6f4)
-text-color=cdd6f4ff
-text-clear-color=fab387ff
-text-caps-lock-color=f9e2afff
-text-ver-color=89b4faff
-text-wrong-color=f38ba8ff
+# Text Labels
+text-color=e4e5e8ff
+text-clear-color=f38d41ff
+text-caps-lock-color=e5c07bff
+text-ver-color=8ebd6bff
+text-wrong-color=ff4757ff

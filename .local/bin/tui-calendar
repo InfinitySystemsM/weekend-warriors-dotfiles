@@ -122,11 +122,11 @@ def main(stdscr):
     # Catppuccin Mocha Colors Initialization
     if curses.has_colors():
         try:
-            curses.init_pair(1, curses.COLOR_MAGENTA, -1)  # Mauve (Clock / Title)
+            curses.init_pair(1, curses.COLOR_RED, -1)  # Mauve (Clock / Title)
             curses.init_pair(2, curses.COLOR_CYAN, -1)     # Blue / Teal (Weather)
             curses.init_pair(3, curses.COLOR_YELLOW, -1)   # Yellow / Days
             curses.init_pair(4, curses.COLOR_GREEN, -1)    # Green (Today / Current Day)
-            curses.init_pair(5, curses.COLOR_BLACK, curses.COLOR_MAGENTA) # Selected day inverted
+            curses.init_pair(5, curses.COLOR_BLACK, curses.COLOR_RED) # Selected day inverted
             curses.init_pair(6, curses.COLOR_WHITE, -1)    # Subtext / Border
         except Exception:
             pass

@@ -1,11 +1,11 @@
 # ==============================================================================
-# Mako Notification Daemon Configuration (Catppuccin Mocha TUI)
+# Mako Notification Daemon Configuration - Defqon.1 Weekend Warrior
 # ==============================================================================
 
 font=MesloLGS Nerd Font 10
-background-color=#1e1e2eff
-text-color=#cdd6f4ff
-border-color=#cba6f7ff
+background-color=#181a20ff
+text-color=#e4e5e8ff
+border-color=#e05561ff
 border-size=1
 border-radius=0
 padding=12
@@ -20,14 +20,14 @@ layer=overlay
 anchor=top-right
 
 [urgency=low]
-border-color=#89b4faff
+border-color=#56b6c2ff
 default-timeout=3000
 
 [urgency=normal]
-border-color=#cba6f7ff
+border-color=#e05561ff
 default-timeout=5000
 
 [urgency=high]
-border-color=#f38ba8ff
-text-color=#f38ba8ff
+border-color=#ff4757ff
+text-color=#ff4757ff
 default-timeout=0

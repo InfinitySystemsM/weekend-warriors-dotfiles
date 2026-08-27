@@ -256,15 +256,15 @@
 # Gradient mode, only hex defined colors are supported,
 # background must also be defined in hex or remain commented out. 1 = on, 0 = off.
 # You can define as many as 8 different colors. They range from bottom to top of screen
-; gradient = 0
-; gradient_color_1 = '#59cc33'
-; gradient_color_2 = '#80cc33'
-; gradient_color_3 = '#a6cc33'
-; gradient_color_4 = '#cccc33'
-; gradient_color_5 = '#cca633'
-; gradient_color_6 = '#cc8033'
-; gradient_color_7 = '#cc5933'
-; gradient_color_8 = '#cc3333'
+gradient = 1
+gradient_color_1 = '#f38d41'
+gradient_color_2 = '#eb774a'
+gradient_color_3 = '#e56455'
+gradient_color_4 = '#e05561'
+gradient_color_5 = '#eb445a'
+gradient_color_6 = '#f53b57'
+gradient_color_7 = '#ff4757'
+gradient_color_8 = '#ff3344'
 
 
 # Horizontal is only supported on noncurses output.

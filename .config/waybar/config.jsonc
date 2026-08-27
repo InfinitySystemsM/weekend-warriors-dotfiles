@@ -65,11 +65,11 @@
             "weeks-pos": "right",
             "on-scroll": 1,
             "format": {
-                "months": "<span color='#cba6f7'><b>{}</b></span>",
-                "days": "<span color='#cdd6f4'><b>{}</b></span>",
-                "weeks": "<span color='#74c7ec'><b>W{}</b></span>",
-                "weekdays": "<span color='#fab387'><b>{}</b></span>",
-                "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
+                "months": "<span color='#e05561'><b>{}</b></span>",
+                "days": "<span color='#e4e5e8'><b>{}</b></span>",
+                "weeks": "<span color='#56b6c2'><b>W{}</b></span>",
+                "weekdays": "<span color='#f38d41'><b>{}</b></span>",
+                "today": "<span color='#ff4757'><b><u>{}</u></b></span>"
             }
         },
         "on-click": "foot --app-id=tui-calendar -e tui-calendar"

@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # TUI Package Manager (Pacman + AUR via Yay)
-# Inspired by Omarchy Linux TUI App Center
+# Defqon.1 Weekend Warrior (Industrial Dark)
 # ==============================================================================
 
 HELPER="yay"
 
-# Catppuccin Mocha FZF Theme
+# Defqon.1 Industrial FZF Theme
 export FZF_DEFAULT_OPTS=" \
---color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
---color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#b4befe \
---color=marker:#a6e3a1,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
---color=border:#cba6f7,preview-border:#89b4fa \
+--color=bg+:#242731,bg:#121317,spinner:#f38d41,hl:#e05561 \
+--color=fg:#e4e5e8,header:#e05561,info:#f38d41,pointer:#f38d41 \
+--color=marker:#8ebd6b,fg+:#e4e5e8,prompt:#e05561,hl+:#ff4757 \
+--color=border:#e05561,preview-border:#56b6c2 \
 --prompt='󰏖 Buscar paquete ❯ ' \
 --pointer='❯' \
 --marker='✓' \
@@ -19,14 +19,14 @@ export FZF_DEFAULT_OPTS=" \
 
 menu() {
     clear
-    echo -e "\033[1;35m╔═════════════════════════════════════════════════════════╗\033[0m"
-    echo -e "\033[1;35m║\033[0m   \033[1;36m󰏖  GESTOR DE PAQUETES TUI (CachyOS + AUR / Yay)\033[0m       \033[1;35m║\033[0m"
-    echo -e "\033[1;35m╚═════════════════════════════════════════════════════════╝\033[0m"
+    echo -e "\033[1;31m╔═════════════════════════════════════════════════════════╗\033[0m"
+    echo -e "\033[1;31m║\033[0m   \033[1;33m󰏖  GESTOR DE PAQUETES TUI (CachyOS + AUR / Yay)\033[0m       \033[1;31m║\033[0m"
+    echo -e "\033[1;31m╚═════════════════════════════════════════════════════════╝\033[0m"
     echo ""
-    echo -e " \033[1;34m[1]\033[0m 󰏖  Buscar e Instalar Software (Repos Oficiales + AUR)"
-    echo -e " \033[1;34m[2]\033[0m 󰚰  Actualizar Todo el Sistema (yay -Syu)"
-    echo -e " \033[1;34m[3]\033[0m 󰆴  Gestionar / Desinstalar Paquetes Instalados"
-    echo -e " \033[1;34m[4]\033[0m 󰃢  Limpiar Paquetes Huérfanos y Caché"
+    echo -e " \033[1;31m[1]\033[0m 󰏖  Buscar e Instalar Software (Repos Oficiales + AUR)"
+    echo -e " \033[1;33m[2]\033[0m 󰚰  Actualizar Todo el Sistema (yay -Syu)"
+    echo -e " \033[1;36m[3]\033[0m 󰆴  Gestionar / Desinstalar Paquetes Instalados"
+    echo -e " \033[1;32m[4]\033[0m 󰃢  Limpiar Paquetes Huérfanos y Caché"
     echo -e " \033[1;31m[q]\033[0m 󰍃  Salir"
     echo ""
     read -rp " Selecciona una opción [1-4, q]: " opt
@@ -48,45 +48,18 @@ install_packages() {
     # Generate list from pacman repos and allow live query for AUR
     selected=$(pacman -Slq | sort -u | fzf --multi \
         --border=sharp \
-        --header="[TAB] Marcar varios | [ENTER] Instalar | [ESC] Menú" \
-        --preview "yay -Si {} 2>/dev/null || yay -Sia {} 2>/dev/null" \
-        --preview-window=right:55%:wrap)
+        --header="[TAB/Espacio]: Seleccionar múltiples | [Enter]: Instalar | [ESC]: Volver" \
+        --preview='pacman -Si {} 2>/dev/null || yay -Si {} 2>/dev/null' \
+        --preview-window='right:55%:wrap')
 
     if [ -n "$selected" ]; then
         clear
-        echo -e "\033[1;32mPaquetes seleccionados para instalar:\033[0m"
+        echo -e "\033[1;32mPaquetes seleccionados para instalación:\033[0m"
         echo "$selected"
         echo ""
-        read -rp "¿Deseas instalar estos paquetes con yay? [S/n]: " confirm
+        read -rp "¿Proceder con la instalación vía $HELPER? [S/n]: " confirm
         if [[ "$confirm" =~ ^[sSyY]?$ ]]; then
-            yay -S $(echo "$selected" | tr '\n' ' ')
-            echo ""
-            echo -e "\033[1;32m¡Instalación finalizada con éxito!\033[0m"
-            read -rp "Presiona Enter para continuar..."
-        fi
-    fi
-    menu
-}
-
-remove_packages() {
-    clear
-    selected=$(pacman -Qqe | fzf --multi \
-        --border=sharp \
-        --header="[TAB] Marcar varios | [ENTER] Desinstalar | [ESC] Menú" \
-        --preview "pacman -Qi {}" \
-        --preview-window=right:55%:wrap)
-
-    if [ -n "$selected" ]; then
-        clear
-        echo -e "\033[1;31mPaquetes seleccionados para desinstalar:\033[0m"
-        echo "$selected"
-        echo ""
-        read -rp "¿Estás seguro de desinstalar estos paquetes? [S/n]: " confirm
-        if [[ "$confirm" =~ ^[sSyY]?$ ]]; then
-            sudo pacman -Rns $(echo "$selected" | tr '\n' ' ')
-            echo ""
-            echo -e "\033[1;32m¡Paquetes desinstalados!\033[0m"
-            read -rp "Presiona Enter para continuar..."
+            $HELPER -S $selected
         fi
     fi
     menu
@@ -94,29 +67,61 @@ remove_packages() {
 
 update_system() {
     clear
-    echo -e "\033[1;36mIniciando actualización completa del sistema (Oficiales + AUR)...\033[0m"
-    yay -Syu
+    echo -e "\033[1;33m==> Actualizando base de datos y paquetes del sistema...\033[0m"
     echo ""
-    read -rp "Presiona Enter para continuar..."
+    $HELPER -Syu
+    echo ""
+    read -rp "Presiona Enter para volver al menú..."
+    menu
+}
+
+remove_packages() {
+    clear
+    echo -e "\033[1;36mCargando paquetes instalados explícitamente...\033[0m"
+    selected=$(pacman -Qeq | fzf --multi \
+        --border=sharp \
+        --header="[TAB/Espacio]: Seleccionar múltiples | [Enter]: Desinstalar (-Rns) | [ESC]: Volver" \
+        --preview='pacman -Qi {} 2>/dev/null' \
+        --preview-window='right:55%:wrap')
+
+    if [ -n "$selected" ]; then
+        clear
+        echo -e "\033[1;31mPaquetes seleccionados para DESINSTALAR:\033[0m"
+        echo "$selected"
+        echo ""
+        read -rp "¿Estás seguro de desinstalar estos paquetes y sus dependencias no usadas? [s/N]: " confirm
+        if [[ "$confirm" =~ ^[sSyY]$ ]]; then
+            sudo pacman -Rns $selected
+        fi
+    fi
     menu
 }
 
 clean_cache() {
     clear
-    echo -e "\033[1;33mLimpiando dependencias y paquetes huérfanos con yay...\033[0m"
-    yay -Yc --noconfirm 2>/dev/null || true
+    echo -e "\033[1;33m==> Limpiando paquetes huérfanos y caché...\033[0m"
     echo ""
-    echo -e "\033[1;33mLimpiando cache de paquetes...\033[0m"
-    yay -Sc --noconfirm
+    orphans=$(pacman -Qdtq)
+    if [ -n "$orphans" ]; then
+        echo -e "\033[1;31mEliminando huérfanos:\033[0m $orphans"
+        sudo pacman -Rns $orphans
+    else
+        echo -e "\033[1;32m✓ No hay paquetes huérfanos en el sistema.\033[0m"
+    fi
     echo ""
-    echo -e "\033[1;32m¡Limpieza completada!\033[0m"
-    read -rp "Presiona Enter para continuar..."
+    if command -v paccache &>/dev/null; then
+        echo -e "\033[1;36mLimpiando caché de pacman (manteniendo últimas 2 versiones)...\033[0m"
+        paccache -r -k 2
+    fi
+    if [ -d "$HOME/.cache/yay" ]; then
+        echo -e "\033[1;36mLimpiando caché de compilación de Yay...\033[0m"
+        rm -rf "$HOME/.cache/yay"/* 2>/dev/null
+    fi
+    echo ""
+    echo -e "\033[1;32m✓ Limpieza finalizada.\033[0m"
+    echo ""
+    read -rp "Presiona Enter para volver al menú..."
     menu
 }
 
-# Run menu or direct install mode if arguments provided
-if [ $# -eq 0 ]; then
-    menu
-else
-    install_packages
-fi
+menu
