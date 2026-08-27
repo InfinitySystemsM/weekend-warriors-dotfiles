@@ -8,7 +8,7 @@ ignore-empty-password
 show-failed-attempts
 
 # Typography & Font
-font=MesloLGS Nerd Font
+font=Terminess Nerd Font
 
 # Digital Clock Display
 clock

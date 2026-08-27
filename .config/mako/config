@@ -2,7 +2,7 @@
 # Mako Notification Daemon Configuration - Defqon.1 Weekend Warrior
 # ==============================================================================
 
-font=MesloLGS Nerd Font 10
+font=Terminess Nerd Font 10
 background-color=#181a20ff
 text-color=#e4e5e8ff
 border-color=#e05561ff

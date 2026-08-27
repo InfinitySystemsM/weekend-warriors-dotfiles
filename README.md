@@ -183,7 +183,7 @@ sudo pacman -S --needed \
     cliphist playerctl brightnessctl libnotify polkit-gnome starship \
     btop helix micro zellij cava fastfetch fish yazi thunar \
     adw-gtk-theme papirus-icon-theme qt5ct qt6ct xsettingsd \
-    ttf-meslo-nerd networkmanager pulsemixer imagemagick chafa
+    ttf-terminus-nerd ttf-meslo-nerd networkmanager pulsemixer imagemagick chafa
 ```
 
 Y vía **AUR / Yay**:
