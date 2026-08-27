@@ -1,5 +1,5 @@
 # ==============================================================================
-# Fish Shell Configuration - CachyOS Sway TUI Edition
+# Fish Shell Configuration - Defqon.1 Industrial TUI Edition
 # ==============================================================================
 
 # Source CachyOS base fish config (includes all CachyOS aliases and functions)
@@ -23,13 +23,19 @@ set -gx ADW_DEBUG_COLOR_SCHEME "prefer-dark"
 set -gx QT_STYLE_OVERRIDE "Oxygen"
 set -gx QT_QPA_PLATFORMTHEME "qt6ct"
 
-# Aliases
-alias ls='ls -lh'
-
+# Modern Colored LS / Eza Aliases
 if command -v eza >/dev/null 2>&1
-    alias ll='eza -la --icons --group-directories-first'
+    alias ls='eza --icons --group-directories-first'
+    alias l='eza -l --icons --group-directories-first'
+    alias ll='eza -lh --icons --group-directories-first'
     alias la='eza -a --icons --group-directories-first'
+    alias lla='eza -lha --icons --group-directories-first'
+    alias lt='eza --tree --icons --level=2'
     alias tree='eza --tree --icons'
+else
+    alias ls='ls --color=auto -h'
+    alias ll='ls --color=auto -lh'
+    alias la='ls --color=auto -la'
 end
 
 if command -v bat >/dev/null 2>&1
