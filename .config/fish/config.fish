@@ -23,19 +23,21 @@ set -gx ADW_DEBUG_COLOR_SCHEME "prefer-dark"
 set -gx QT_STYLE_OVERRIDE "Oxygen"
 set -gx QT_QPA_PLATFORMTHEME "qt6ct"
 
-# Modern Colored LS / Eza Aliases
+# Modern Colored Line-by-Line LS / Eza Aliases
 if command -v eza >/dev/null 2>&1
-    alias ls='eza --icons --group-directories-first'
-    alias l='eza -l --icons --group-directories-first'
-    alias ll='eza -lh --icons --group-directories-first'
+    alias ls='eza -lh --icons --group-directories-first'
+    alias l='eza -lh --icons --group-directories-first'
+    alias ll='eza -lha --icons --group-directories-first'
     alias la='eza -a --icons --group-directories-first'
     alias lla='eza -lha --icons --group-directories-first'
     alias lt='eza --tree --icons --level=2'
     alias tree='eza --tree --icons'
 else
-    alias ls='ls --color=auto -h'
-    alias ll='ls --color=auto -lh'
+    alias ls='ls --color=auto -lh'
+    alias l='ls --color=auto -lh'
+    alias ll='ls --color=auto -lha'
     alias la='ls --color=auto -la'
+    alias lla='ls --color=auto -lha'
 end
 
 if command -v bat >/dev/null 2>&1
