@@ -1,7 +1,7 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 28,
+    "height": 26,
     "margin-top": 0,
     "margin-bottom": 0,
     "margin-left": 0,
@@ -10,21 +10,32 @@
 
     "modules-left": [
         "sway/workspaces",
+        "custom/left-arrow-workspaces",
         "sway/mode",
-        "sway/window"
+        "sway/window",
+        "custom/left-arrow-window"
     ],
     "modules-center": [
-        "clock"
+        "custom/clock-arrow-left",
+        "clock",
+        "custom/clock-arrow-right"
     ],
     "modules-right": [
+        "custom/arrow-updates",
         "custom/updates",
+        "custom/arrow-cpu",
         "cpu",
+        "custom/arrow-memory",
         "memory",
+        "custom/arrow-disk",
         "disk",
+        "custom/arrow-pulseaudio",
         "pulseaudio",
+        "custom/arrow-network",
         "network",
-        "battery",
+        "custom/arrow-tray",
         "tray",
+        "custom/arrow-power",
         "custom/power"
     ],
 
@@ -41,18 +52,33 @@
         }
     },
 
+    "custom/left-arrow-workspaces": {
+        "format": "",
+        "tooltip": false
+    },
+
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
 
     "sway/window": {
         "format": "{title}",
-        "max-length": 45,
+        "max-length": 40,
         "rewrite": {
             "(.*) - foot": "  $1",
             "(.*) — Mozilla Firefox": "󰈹  $1",
             "^$": "  Terminal"
         }
+    },
+
+    "custom/left-arrow-window": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "custom/clock-arrow-left": {
+        "format": "",
+        "tooltip": false
     },
 
     "clock": {
@@ -75,6 +101,16 @@
         "on-click": "foot --app-id=tui-calendar -e tui-calendar"
     },
 
+    "custom/clock-arrow-right": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "custom/arrow-updates": {
+        "format": "",
+        "tooltip": false
+    },
+
     "custom/updates": {
         "format": "{}",
         "interval": 1800,
@@ -84,10 +120,20 @@
         "signal": 8
     },
 
+    "custom/arrow-cpu": {
+        "format": "",
+        "tooltip": false
+    },
+
     "cpu": {
         "interval": 2,
         "format": "  {usage}%",
         "on-click": "foot --app-id=tui-btop -e btop"
+    },
+
+    "custom/arrow-memory": {
+        "format": "",
+        "tooltip": false
     },
 
     "memory": {
@@ -97,10 +143,20 @@
         "on-click": "foot --app-id=tui-btop -e btop"
     },
 
+    "custom/arrow-disk": {
+        "format": "",
+        "tooltip": false
+    },
+
     "disk": {
         "interval": 30,
         "format": "󰋊  {percentage_used}%",
         "path": "/"
+    },
+
+    "custom/arrow-pulseaudio": {
+        "format": "",
+        "tooltip": false
     },
 
     "pulseaudio": {
@@ -113,6 +169,11 @@
         "on-click": "foot --app-id=tui-pulsemixer -e pulsemixer"
     },
 
+    "custom/arrow-network": {
+        "format": "",
+        "tooltip": false
+    },
+
     "network": {
         "interval": 5,
         "format-wifi": "󰤨  {essid}",
@@ -122,25 +183,24 @@
         "on-click": "fuzzel-wifi"
     },
 
-    "battery": {
-        "states": {
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "{icon}  {capacity}%",
-        "format-charging": "󰂄  {capacity}%",
-        "format-plugged": "󰂄  {capacity}%",
-        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    "custom/arrow-tray": {
+        "format": "",
+        "tooltip": false
     },
 
     "tray": {
-        "icon-size": 16,
-        "spacing": 8,
+        "icon-size": 15,
+        "spacing": 6,
         "show-passive-items": true
     },
 
+    "custom/arrow-power": {
+        "format": "",
+        "tooltip": false
+    },
+
     "custom/power": {
-        "format": "   ",
+        "format": " ",
         "tooltip": false,
         "on-click": "fuzzel-powermenu"
     }

@@ -1,9 +1,10 @@
 /* ==============================================================================
- * Waybar Style - Defqon.1 Industrial Metallic (Oblique Edges & Brushed Sheen)
+ * Waybar Style - Defqon.1 Powerline Edition (Sharp, Flush & Metallic)
  * ============================================================================== */
 
 * {
     border: none;
+    border-radius: 0px;
     font-family: "MesloLGS Nerd Font", "JetBrainsMono Nerd Font", monospace;
     font-size: 12px;
     font-weight: bold;
@@ -14,198 +15,223 @@
 
 window#waybar {
     background-color: #0f1013;
-    border-bottom: 1px solid #1c1e26;
+    border-bottom: 1px solid #1a1c24;
     color: #e4e5e8;
 }
 
 /* ==============================================================================
- * Industrial Oblique Plate Styling (Brushed Metallic Sheen & Beveled Highlights)
+ * Powerline Arrows (Seamless Sharp Segment Transitions)
  * ============================================================================== */
 
-#mode,
-#window,
-#clock,
-#custom-updates,
-#cpu,
-#memory,
-#disk,
-#pulseaudio,
-#network,
-#battery,
-#tray,
-#custom-power {
-    margin: 2px 3px;
-    padding: 0 11px;
-    border-radius: 0px 8px 0px 8px; /* Oblique angular chamfer cut */
-    border-top: 1px solid rgba(255, 255, 255, 0.12); /* Subtle metallic top bevel highlight */
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(36, 39, 49, 0.7) 40%, rgba(18, 20, 25, 0.95) 80%);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    transition: all 0.2s ease;
+#custom-left-arrow-workspaces,
+#custom-left-arrow-window,
+#custom-clock-arrow-left,
+#custom-clock-arrow-right,
+#custom-arrow-updates,
+#custom-arrow-cpu,
+#custom-arrow-memory,
+#custom-arrow-disk,
+#custom-arrow-pulseaudio,
+#custom-arrow-network,
+#custom-arrow-tray,
+#custom-arrow-power {
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
 }
 
-/* Metallic hover reflection on interactive modules */
-#cpu:hover,
-#memory:hover,
-#disk:hover,
-#pulseaudio:hover,
-#network:hover,
-#battery:hover,
-#custom-updates:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(48, 52, 66, 0.85) 40%, rgba(24, 26, 33, 0.98) 100%);
-    border-top: 1px solid rgba(255, 255, 255, 0.25);
-}
+/* ==============================================================================
+ * Left Modules (Workspaces, Mode & Window)
+ * ============================================================================== */
 
-/* Workspaces Bar */
 #workspaces {
-    background-color: #14161c;
-    margin: 2px 4px 2px 2px;
-    padding: 0 2px;
-    border-radius: 0px 8px 0px 8px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    background: linear-gradient(to bottom, #1d2028, #14161c);
+    margin: 0;
+    padding: 0;
 }
 
 #workspaces button {
     padding: 0 8px;
-    margin: 2px 2px;
     color: #6c7280;
     background-color: transparent;
-    border-radius: 0px 6px 0px 6px;
+    border-radius: 0px;
     border: none;
+    margin: 0;
     transition: all 0.15s ease;
 }
 
 #workspaces button.focused {
     color: #0f1013;
-    background: linear-gradient(135deg, #eb445a 0%, #e05561 50%, #c43b47 100%);
-    border-top: 1px solid rgba(255, 255, 255, 0.35);
+    background: linear-gradient(to bottom, #eb445a, #c43b47);
     border-bottom: 2px solid #ff4757;
     font-weight: 900;
 }
 
 #workspaces button.urgent {
     color: #0f1013;
-    background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
-    border-bottom: 2px solid #ff3344;
+    background: #ff4757;
 }
 
 #workspaces button:hover {
-    background: linear-gradient(135deg, rgba(243, 141, 65, 0.25) 0%, rgba(36, 39, 49, 0.9) 100%);
+    background: #242732;
     color: #f38d41;
 }
 
-/* Sway Mode */
+#custom-left-arrow-workspaces {
+    background-color: #1e2029;
+    color: #14161c;
+}
+
 #mode {
-    background: linear-gradient(135deg, rgba(224, 85, 97, 0.35) 0%, rgba(24, 26, 33, 0.95) 100%);
-    border-bottom: 2px solid #e05561;
+    background-color: #1e2029;
     color: #e05561;
+    padding: 0 8px;
 }
 
-/* Window Title */
 #window {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(28, 31, 40, 0.7) 40%, rgba(16, 18, 22, 0.95) 100%);
-    border-bottom: 1px solid #282b35;
+    background: linear-gradient(to bottom, #282b36, #1e2029);
     color: #e4e5e8;
-    padding: 0 12px;
+    padding: 0 10px;
+    border-bottom: 2px solid #2d313d;
 }
 
-/* Clock (Center Module - Warrior Core) */
+#custom-left-arrow-window {
+    background-color: #0f1013;
+    color: #1e2029;
+}
+
+/* ==============================================================================
+ * Center Modules (Clock)
+ * ============================================================================== */
+
+#custom-clock-arrow-left {
+    background-color: #0f1013;
+    color: #1e2029;
+}
+
 #clock {
-    background: linear-gradient(135deg, rgba(224, 85, 97, 0.18) 0%, rgba(34, 37, 47, 0.75) 45%, rgba(18, 20, 25, 0.95) 100%);
-    border-bottom: 2px solid #e05561;
+    background: linear-gradient(to bottom, #282b36, #1e2029);
     color: #e05561;
-    padding: 0 14px;
+    padding: 0 12px;
+    border-bottom: 2px solid #e05561;
 }
 
 #clock:hover {
-    background: linear-gradient(135deg, rgba(224, 85, 97, 0.3) 0%, rgba(34, 37, 47, 0.9) 100%);
     color: #ff6b6b;
 }
 
-/* System Updates */
+#custom-clock-arrow-right {
+    background-color: #0f1013;
+    color: #1e2029;
+}
+
+/* ==============================================================================
+ * Right Modules (Updates, CPU, RAM, Disk, Audio, Net, Tray, Power)
+ * ============================================================================== */
+
+/* Updates (Block 1 - Dark) */
+#custom-arrow-updates {
+    background-color: #0f1013;
+    color: #16181f;
+}
+
 #custom-updates {
-    background: linear-gradient(135deg, rgba(229, 192, 123, 0.15) 0%, rgba(34, 37, 47, 0.7) 45%, rgba(18, 20, 25, 0.95) 100%);
-    border-bottom: 2px solid #e5c07b;
+    background: linear-gradient(to bottom, #21242e, #16181f);
     color: #e5c07b;
+    padding: 0 8px;
+    border-bottom: 2px solid #e5c07b;
 }
 
 #custom-updates.pending {
-    background: linear-gradient(135deg, rgba(243, 141, 65, 0.3) 0%, rgba(34, 37, 47, 0.8) 50%, rgba(18, 20, 25, 0.95) 100%);
-    border-bottom: 2px solid #f38d41;
     color: #f38d41;
+    border-bottom: 2px solid #f38d41;
 }
 
-/* CPU */
+/* CPU (Block 2 - Medium) */
+#custom-arrow-cpu {
+    background-color: #16181f;
+    color: #222530;
+}
+
 #cpu {
-    background: linear-gradient(135deg, rgba(243, 141, 65, 0.15) 0%, rgba(34, 37, 47, 0.7) 45%, rgba(18, 20, 25, 0.95) 100%);
-    border-bottom: 2px solid #f38d41;
+    background: linear-gradient(to bottom, #2c303c, #222530);
     color: #f38d41;
+    padding: 0 8px;
+    border-bottom: 2px solid #f38d41;
 }
 
-/* Memory */
+/* Memory (Block 3 - Dark) */
+#custom-arrow-memory {
+    background-color: #222530;
+    color: #16181f;
+}
+
 #memory {
-    background: linear-gradient(135deg, rgba(229, 192, 123, 0.15) 0%, rgba(34, 37, 47, 0.7) 45%, rgba(18, 20, 25, 0.95) 100%);
-    border-bottom: 2px solid #e5c07b;
+    background: linear-gradient(to bottom, #21242e, #16181f);
     color: #e5c07b;
+    padding: 0 8px;
+    border-bottom: 2px solid #e5c07b;
 }
 
-/* Disk */
+/* Disk (Block 4 - Medium) */
+#custom-arrow-disk {
+    background-color: #16181f;
+    color: #222530;
+}
+
 #disk {
-    background: linear-gradient(135deg, rgba(224, 85, 97, 0.15) 0%, rgba(34, 37, 47, 0.7) 45%, rgba(18, 20, 25, 0.95) 100%);
-    border-bottom: 2px solid #e05561;
+    background: linear-gradient(to bottom, #2c303c, #222530);
     color: #e05561;
+    padding: 0 8px;
+    border-bottom: 2px solid #e05561;
 }
 
-/* Pulseaudio */
+/* Pulseaudio (Block 5 - Dark) */
+#custom-arrow-pulseaudio {
+    background-color: #222530;
+    color: #16181f;
+}
+
 #pulseaudio {
-    background: linear-gradient(135deg, rgba(243, 141, 65, 0.15) 0%, rgba(34, 37, 47, 0.7) 45%, rgba(18, 20, 25, 0.95) 100%);
-    border-bottom: 2px solid #f38d41;
+    background: linear-gradient(to bottom, #21242e, #16181f);
     color: #f38d41;
+    padding: 0 8px;
+    border-bottom: 2px solid #f38d41;
 }
 
 #pulseaudio.muted {
-    background: linear-gradient(135deg, rgba(108, 114, 128, 0.12) 0%, rgba(25, 27, 33, 0.8) 100%);
-    border-bottom: 2px solid #5c6370;
     color: #6c7280;
+    border-bottom: 2px solid #5c6370;
 }
 
-/* Network (Stage Cyan Laser) */
+/* Network (Block 6 - Medium) */
+#custom-arrow-network {
+    background-color: #16181f;
+    color: #222530;
+}
+
 #network {
-    background: linear-gradient(135deg, rgba(86, 182, 194, 0.16) 0%, rgba(34, 37, 47, 0.7) 45%, rgba(18, 20, 25, 0.95) 100%);
-    border-bottom: 2px solid #56b6c2;
+    background: linear-gradient(to bottom, #2c303c, #222530);
     color: #56b6c2;
+    padding: 0 8px;
+    border-bottom: 2px solid #56b6c2;
 }
 
 #network.disconnected {
-    background: linear-gradient(135deg, rgba(255, 71, 87, 0.25) 0%, rgba(34, 37, 47, 0.8) 100%);
-    border-bottom: 2px solid #ff4757;
     color: #ff4757;
+    border-bottom: 2px solid #ff4757;
 }
 
-/* Battery (Laser Green) */
-#battery {
-    background: linear-gradient(135deg, rgba(142, 189, 107, 0.15) 0%, rgba(34, 37, 47, 0.7) 45%, rgba(18, 20, 25, 0.95) 100%);
-    border-bottom: 2px solid #8ebd6b;
-    color: #8ebd6b;
+/* System Tray (Block 7 - Dark) */
+#custom-arrow-tray {
+    background-color: #222530;
+    color: #14161c;
 }
 
-#battery.warning {
-    background: linear-gradient(135deg, rgba(243, 141, 65, 0.3) 0%, rgba(34, 37, 47, 0.8) 100%);
-    border-bottom: 2px solid #f38d41;
-    color: #f38d41;
-}
-
-#battery.critical:not(.charging) {
-    background: linear-gradient(135deg, #ff4757 0%, #eb445a 100%);
-    border-bottom: 2px solid #ff3344;
-    color: #0f1013;
-}
-
-/* System Tray */
 #tray {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(30, 33, 42, 0.7) 100%);
-    border-bottom: 1px solid #282b35;
-    padding: 0 10px;
+    background-color: #14161c;
+    padding: 0 6px;
+    border-bottom: 2px solid #282b35;
 }
 
 #tray > .passive {
@@ -217,16 +243,21 @@ window#waybar {
     background-color: #e05561;
 }
 
-/* Power Button */
-#custom-power {
-    background: linear-gradient(135deg, rgba(224, 85, 97, 0.25) 0%, rgba(34, 37, 47, 0.7) 45%, rgba(18, 20, 25, 0.95) 100%);
-    border-bottom: 2px solid #e05561;
+/* Power Button (Block 8 - Red Accent) */
+#custom-arrow-power {
+    background-color: #14161c;
     color: #e05561;
+}
+
+#custom-power {
+    background: linear-gradient(to bottom, #eb445a, #c43b47);
+    color: #0f1013;
     padding: 0 10px;
+    font-weight: 900;
+    border-bottom: 2px solid #ff4757;
 }
 
 #custom-power:hover {
-    background: linear-gradient(135deg, #eb445a 0%, #e05561 100%);
+    background: #ff4757;
     color: #0f1013;
-    border-bottom: 2px solid #ff4757;
 }
