@@ -1,12 +1,9 @@
-/* ==============================================================================
- * Waybar Style - Pixel-Perfect Seamless Powerline (Defqon.1 Industrial)
- * ============================================================================== */
 
 * {
     border: none;
     border-radius: 0px;
     font-family: "Terminess Nerd Font", monospace;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
     min-height: 0;
     margin: 0;
@@ -17,10 +14,6 @@ window#waybar {
     background-color: #0f1013;
     color: #e4e5e8;
 }
-
-/* ==============================================================================
- * Powerline Arrows - Precision Scalable Powerline Glyphs
- * ============================================================================== */
 
 #custom-left-arrow-workspaces,
 #custom-left-arrow-window,
@@ -34,216 +27,38 @@ window#waybar {
 #custom-arrow-network,
 #custom-arrow-tray,
 #custom-arrow-power {
-    font-family: "MesloLGS Nerd Font", "JetBrainsMono Nerd Font", monospace;
+    font-family: "MesloLGS Nerd Font", monospace;
     font-size: 18px;
-    margin-top: 1px;
-    margin-bottom: 0;
-    padding: 0;
-}
-
-/* ==============================================================================
- * Left Modules
- * ============================================================================== */
-
-#workspaces {
-    background-color: #14161c;
     margin: 0;
     padding: 0;
 }
 
-#workspaces button {
-    padding: 0 7px;
-    color: #6c7280;
-    background-color: transparent;
-    border-radius: 0px;
-    border: none;
-    margin: 0;
-}
+#workspaces { background-color: #14161c; margin: 0; padding: 0; }
+#workspaces button { padding: 0 7px; color: #6c7280; background-color: transparent; border-radius: 0px; border: none; margin: 0; }
+#workspaces button.focused { color: #0f1013; background-color: #e05561; font-weight: 900; }
+#workspaces button.urgent { color: #0f1013; background-color: #ff4757; }
+#custom-left-arrow-workspaces { background-color: #1e2029; color: #14161c; }
+#mode { background-color: #1e2029; color: #e05561; padding: 0 6px; }
+#window { background-color: #1e2029; color: #e4e5e8; padding: 0 8px; }
+#custom-left-arrow-window { background-color: #0f1013; color: #1e2029; }
 
-#workspaces button.focused {
-    color: #0f1013;
-    background-color: #e05561;
-    font-weight: 900;
-}
+#custom-clock-arrow-left { background-color: #0f1013; color: #1e2029; }
+#clock { background-color: #1e2029; color: #e05561; padding: 0 10px; }
+#custom-clock-arrow-right { background-color: #0f1013; color: #1e2029; }
 
-#workspaces button.urgent {
-    color: #0f1013;
-    background-color: #ff4757;
-}
-
-#workspaces button:hover {
-    background-color: #242732;
-    color: #f38d41;
-}
-
-#custom-left-arrow-workspaces {
-    background-color: #1e2029;
-    color: #14161c;
-}
-
-#mode {
-    background-color: #1e2029;
-    color: #e05561;
-    padding: 0 6px;
-}
-
-#window {
-    background-color: #1e2029;
-    color: #e4e5e8;
-    padding: 0 8px;
-}
-
-#custom-left-arrow-window {
-    background-color: #0f1013;
-    color: #1e2029;
-}
-
-/* ==============================================================================
- * Center Modules (Clock)
- * ============================================================================== */
-
-#custom-clock-arrow-left {
-    background-color: #0f1013;
-    color: #1e2029;
-}
-
-#clock {
-    background-color: #1e2029;
-    color: #e05561;
-    padding: 0 10px;
-}
-
-#clock:hover {
-    color: #ff6b6b;
-}
-
-#custom-clock-arrow-right {
-    background-color: #0f1013;
-    color: #1e2029;
-}
-
-/* ==============================================================================
- * Right Modules (Updates, CPU, RAM, Disk, Audio, Net, Tray, Power)
- * ============================================================================== */
-
-/* Updates (Block 1 - Dark #16181f) */
-#custom-arrow-updates {
-    background-color: #0f1013;
-    color: #16181f;
-}
-
-#custom-updates {
-    background-color: #16181f;
-    color: #e5c07b;
-    padding: 0 6px;
-}
-
-#custom-updates.pending {
-    color: #f38d41;
-}
-
-/* CPU (Block 2 - Medium #222530) */
-#custom-arrow-cpu {
-    background-color: #16181f;
-    color: #222530;
-}
-
-#cpu {
-    background-color: #222530;
-    color: #f38d41;
-    padding: 0 6px;
-}
-
-/* Memory (Block 3 - Dark #16181f) */
-#custom-arrow-memory {
-    background-color: #222530;
-    color: #16181f;
-}
-
-#memory {
-    background-color: #16181f;
-    color: #e5c07b;
-    padding: 0 6px;
-}
-
-/* Disk (Block 4 - Medium #222530) */
-#custom-arrow-disk {
-    background-color: #16181f;
-    color: #222530;
-}
-
-#disk {
-    background-color: #222530;
-    color: #e05561;
-    padding: 0 6px;
-}
-
-/* Pulseaudio (Block 5 - Dark #16181f) */
-#custom-arrow-pulseaudio {
-    background-color: #222530;
-    color: #16181f;
-}
-
-#pulseaudio {
-    background-color: #16181f;
-    color: #f38d41;
-    padding: 0 6px;
-}
-
-#pulseaudio.muted {
-    color: #6c7280;
-}
-
-/* Network (Block 6 - Medium #222530) */
-#custom-arrow-network {
-    background-color: #16181f;
-    color: #222530;
-}
-
-#network {
-    background-color: #222530;
-    color: #56b6c2;
-    padding: 0 6px;
-}
-
-#network.disconnected {
-    color: #ff4757;
-}
-
-/* System Tray (Block 7 - Dark #14161c) */
-#custom-arrow-tray {
-    background-color: #222530;
-    color: #14161c;
-}
-
-#tray {
-    background-color: #14161c;
-    padding: 0 6px;
-}
-
-#tray > .passive {
-    -gtk-icon-effect: dim;
-}
-
-#tray > .needs-attention {
-    -gtk-icon-effect: highlight;
-    background-color: #e05561;
-}
-
-/* Power Button (Block 8 - Red Accent #e05561) */
-#custom-arrow-power {
-    background-color: #14161c;
-    color: #e05561;
-}
-
-#custom-power {
-    background-color: #e05561;
-    color: #0f1013;
-    padding: 0 8px;
-    font-weight: 900;
-}
-
-#custom-power:hover {
-    background-color: #ff4757;
-    color: #0f1013;
-}
+#custom-arrow-updates { background-color: #0f1013; color: #16181f; }
+#custom-updates { background-color: #16181f; color: #e5c07b; padding: 0 6px; }
+#custom-arrow-cpu { background-color: #16181f; color: #222530; }
+#cpu { background-color: #222530; color: #f38d41; padding: 0 6px; }
+#custom-arrow-memory { background-color: #222530; color: #16181f; }
+#memory { background-color: #16181f; color: #e5c07b; padding: 0 6px; }
+#custom-arrow-disk { background-color: #16181f; color: #222530; }
+#disk { background-color: #222530; color: #e05561; padding: 0 6px; }
+#custom-arrow-pulseaudio { background-color: #222530; color: #16181f; }
+#pulseaudio { background-color: #16181f; color: #f38d41; padding: 0 6px; }
+#custom-arrow-network { background-color: #16181f; color: #222530; }
+#network { background-color: #222530; color: #56b6c2; padding: 0 6px; }
+#custom-arrow-tray { background-color: #222530; color: #14161c; }
+#tray { background-color: #14161c; padding: 0 6px; }
+#custom-arrow-power { background-color: #14161c; color: #e05561; }
+#custom-power { background-color: #e05561; color: #0f1013; padding: 0 8px; font-weight: 900; }
