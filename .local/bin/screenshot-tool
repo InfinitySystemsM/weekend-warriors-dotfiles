@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Screenshot Utility for Sway & Wayland (Clipboard Only + Notification)
+# ==============================================================================
+
+TMP_IMG="/tmp/screenshot_tmp.png"
+mode="${1:-full}"
+
+case "$mode" in
+    full)
+        grim "$TMP_IMG"
+        if [ -f "$TMP_IMG" ]; then
+            wl-copy --type image/png < "$TMP_IMG"
+            notify-send -i "$TMP_IMG" -a "Captura" "Captura de Pantalla Completa" "Copiada directamente al portapapeles"
+        fi
+        ;;
+    area)
+        # Interactive area selection with slurp (styled in Catppuccin Mauve)
+        GEOM=$(slurp -d -b "#1e1e2e88" -c "#cba6f7ff" -s "#cba6f733" -w 2 2>/dev/null)
+        if [ -n "$GEOM" ]; then
+            grim -g "$GEOM" "$TMP_IMG"
+            if [ -f "$TMP_IMG" ]; then
+                wl-copy --type image/png < "$TMP_IMG"
+                notify-send -i "$TMP_IMG" -a "Captura" "Captura de Área Seleccionada" "Copiada directamente al portapapeles"
+            fi
+        fi
+        ;;
+    window)
+        # Active focused window capture
+        GEOM=$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' 2>/dev/null)
+        if [ -n "$GEOM" ]; then
+            grim -g "$GEOM" "$TMP_IMG"
+            if [ -f "$TMP_IMG" ]; then
+                wl-copy --type image/png < "$TMP_IMG"
+                notify-send -i "$TMP_IMG" -a "Captura" "Captura de Ventana Activa" "Copiada directamente al portapapeles"
+            fi
+        fi
+        ;;
+    *)
+        options="󰹑  [1] Pantalla Completa\n󰆞  [2] Selección de Área\n󰍹  [3] Ventana Activa"
+        chosen=$(echo -e "$options" | fuzzel --dmenu --prompt=" Captura ❯ " --width=35 --lines=4)
+        case "$chosen" in
+            *"[1] Pantalla Completa"*) ~/.local/bin/screenshot-tool full ;;
+            *"[2] Selección de Área"*) ~/.local/bin/screenshot-tool area ;;
+            *"[3] Ventana Activa"*) ~/.local/bin/screenshot-tool window ;;
+        esac
+        ;;
+esac

@@ -1,0 +1,6 @@
+# ==============================================================================
+# Sway Master Configuration - Modular Setup (Catppuccin Mocha TUI Edition)
+# ==============================================================================
+
+# Include modular configuration files
+include ~/.config/sway/config.d/*.conf

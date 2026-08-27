@@ -1,0 +1,266 @@
+#!/usr/bin/env python3
+# ==============================================================================
+# TUI Clock, Calendar & Weather Dashboard (Catppuccin Mocha)
+# Inspired by Ly-DM Big Clock + Wayland Calendar Widget
+# ==============================================================================
+
+import curses
+import datetime
+import calendar
+import urllib.request
+import json
+import threading
+import time
+import sys
+
+# 3x5 Big ASCII Digits
+DIGITS = {
+    '0': ["█▀█", "█ █", "█▄█"],
+    '1': [" █ ", " █ ", " █ "],
+    '2': ["▀▀█", "█▀▀", "▀▀▀"],
+    '3': ["▀▀█", " ▀█", "▀▀▀"],
+    '4': ["█ █", "▀▀█", "  █"],
+    '5': ["█▀▀", "▀▀█", "▀▀▀"],
+    '6': ["█▀▀", "█▀█", "▀▀▀"],
+    '7': ["▀▀█", "  █", "  █"],
+    '8': ["█▀█", "█▀█", "▀▀▀"],
+    '9': ["█▀█", "▀▀█", "  █"],
+    ':': [" ", "▄", " "],
+    ' ': ["   ", "   ", "   "]
+}
+
+# Weather WMO Code to Text & Icon
+WMO_CODES = {
+    0: ("󰖙 Despejado", "Sol brillante"),
+    1: ("󰖕 Mayormente despejado", "Pocas nubes"),
+    2: ("󰖐 Parcialmente nublado", "Intervalos nubosos"),
+    3: ("󰖐 Nublado", "Cielo cubierto"),
+    45: ("󰖑 Niebla", "Visibilidad reducida"),
+    48: ("󰖑 Niebla con escarcha", "Niebla densa"),
+    51: ("󰖗 Llovizna ligera", "Llovizna suave"),
+    53: ("󰖗 Llovizna moderada", "Llovizna"),
+    55: ("󰖗 Llovizna densa", "Llovizna fuerte"),
+    61: ("󰖗 Lluvia ligera", "Chubascos leves"),
+    63: ("󰖖 Lluvia moderada", "Lluvia"),
+    65: ("󰖖 Lluvia fuerte", "Lluvia intensa"),
+    71: ("󰖘 Nieve ligera", "Nevada ligera"),
+    73: ("󰖘 Nieve moderada", "Nevada"),
+    75: ("󰖘 Nieve fuerte", "Nevada intensa"),
+    80: ("󰖖 Chubascos", "Chubascos aislados"),
+    95: ("󰙾 Tormenta eléctrica", "Tormentas eléctricas"),
+}
+
+weather_data = {
+    "location": "Detectando ubicación...",
+    "temp": "--",
+    "condition": "Cargando clima...",
+    "humidity": "--",
+    "wind": "--",
+    "loaded": False
+}
+
+def fetch_weather():
+    global weather_data
+    try:
+        # Step 1: Geolocation
+        req = urllib.request.Request("http://ip-api.com/json/", headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=3) as resp:
+            geo = json.loads(resp.read().decode())
+        
+        city = geo.get("city", "Ubicación")
+        country = geo.get("country", "")
+        lat = geo.get("lat")
+        lon = geo.get("lon")
+
+        if lat and lon:
+            # Step 2: Open-Meteo API
+            url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto"
+            with urllib.request.urlopen(url, timeout=3) as resp:
+                meteo = json.loads(resp.read().decode())
+            
+            curr = meteo.get("current", {})
+            temp = curr.get("temperature_2m", "--")
+            code = curr.get("weather_code", 0)
+            hum = curr.get("relative_humidity_2m", "--")
+            wind = curr.get("wind_speed_10m", "--")
+
+            cond_icon, cond_desc = WMO_CODES.get(code, ("󰖐 Variable", "Tiempo variable"))
+
+            weather_data["location"] = f" {city}, {country}"
+            weather_data["temp"] = f"{temp}°C"
+            weather_data["condition"] = f"{cond_icon} ({cond_desc})"
+            weather_data["humidity"] = f"󰖎 {hum}%"
+            weather_data["wind"] = f"󰞒 {wind} km/h"
+            weather_data["loaded"] = True
+    except Exception:
+        weather_data["location"] = "Modo Offline"
+        weather_data["condition"] = "Clima no disponible"
+        weather_data["loaded"] = False
+
+def render_big_clock(time_str):
+    lines = ["", "", ""]
+    for ch in time_str:
+        glyph = DIGITS.get(ch, ["   ", "   ", "   "])
+        for i in range(3):
+            lines[i] += glyph[i] + " "
+    return lines
+
+def main(stdscr):
+    try:
+        curses.curs_set(0)
+    except Exception:
+        pass
+
+    try:
+        curses.use_default_colors()
+    except Exception:
+        pass
+
+    stdscr.nodelay(True)
+    stdscr.timeout(500)
+
+    # Catppuccin Mocha Colors Initialization
+    if curses.has_colors():
+        try:
+            curses.init_pair(1, curses.COLOR_MAGENTA, -1)  # Mauve (Clock / Title)
+            curses.init_pair(2, curses.COLOR_CYAN, -1)     # Blue / Teal (Weather)
+            curses.init_pair(3, curses.COLOR_YELLOW, -1)   # Yellow / Days
+            curses.init_pair(4, curses.COLOR_GREEN, -1)    # Green (Today / Current Day)
+            curses.init_pair(5, curses.COLOR_BLACK, curses.COLOR_MAGENTA) # Selected day inverted
+            curses.init_pair(6, curses.COLOR_WHITE, -1)    # Subtext / Border
+        except Exception:
+            pass
+
+    # Start background weather thread
+    t = threading.Thread(target=fetch_weather, daemon=True)
+    t.start()
+
+    now = datetime.datetime.now()
+    view_year = now.year
+    view_month = now.month
+
+    MONTHS_ES = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                 "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+
+    DAYS_ES = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"]
+
+    while True:
+        stdscr.erase()
+        max_y, max_x = stdscr.getmaxyx()
+
+        now = datetime.datetime.now()
+        time_str = now.strftime("%H:%M:%S")
+        date_str = now.strftime("%A, %d de %B de %Y").capitalize()
+
+        # Render Header: Big Clock
+        clock_lines = render_big_clock(time_str)
+        clock_w = len(clock_lines[0])
+        clock_x = max(2, (max_x - clock_w) // 2)
+
+        for i, line in enumerate(clock_lines):
+            if i + 1 < max_y:
+                stdscr.addstr(i + 1, clock_x, line, curses.color_pair(1) | curses.A_BOLD)
+
+        # Date string
+        if 5 < max_y:
+            stdscr.addstr(5, max(2, (max_x - len(date_str)) // 2), date_str, curses.color_pair(3) | curses.A_BOLD)
+
+        # Separator
+        sep = "─" * min(max_x - 4, 52)
+        if 6 < max_y:
+            stdscr.addstr(6, max(2, (max_x - len(sep)) // 2), sep, curses.color_pair(6))
+
+        # Weather Box
+        if 7 < max_y:
+            loc = weather_data["location"]
+            cond = weather_data["condition"]
+            temp = weather_data["temp"]
+            hum = weather_data["humidity"]
+            wind = weather_data["wind"]
+
+            w_line1 = f"{loc}  •  {temp}  •  {cond}"
+            w_line2 = f"{hum}   {wind}" if weather_data["loaded"] else ""
+            
+            stdscr.addstr(7, max(2, (max_x - len(w_line1)) // 2), w_line1[:max_x-4], curses.color_pair(2))
+            if w_line2 and 8 < max_y:
+                stdscr.addstr(8, max(2, (max_x - len(w_line2)) // 2), w_line2[:max_x-4], curses.color_pair(2) | curses.A_DIM)
+
+        # Separator
+        if 9 < max_y:
+            stdscr.addstr(9, max(2, (max_x - len(sep)) // 2), sep, curses.color_pair(6))
+
+        # Monthly Calendar
+        cal_y = 11
+        month_header = f"◀  {MONTHS_ES[view_month]} {view_year}  ▶"
+        if cal_y < max_y:
+            stdscr.addstr(cal_y, max(2, (max_x - len(month_header)) // 2), month_header, curses.color_pair(1) | curses.A_BOLD)
+
+        # Days Header
+        cal_y += 1
+        days_header = "  ".join(DAYS_ES)
+        cal_x = max(2, (max_x - len(days_header)) // 2)
+        if cal_y < max_y:
+            stdscr.addstr(cal_y, cal_x, days_header, curses.color_pair(6) | curses.A_BOLD)
+
+        # Weeks
+        month_cal = calendar.monthcalendar(view_year, view_month)
+        for week in month_cal:
+            cal_y += 1
+            if cal_y >= max_y - 2:
+                break
+            
+            line_x = cal_x
+            for day in week:
+                if day == 0:
+                    day_str = "    "
+                    stdscr.addstr(cal_y, line_x, day_str)
+                else:
+                    day_str = f"{day:2d}  "
+                    is_today = (day == now.day and view_month == now.month and view_year == now.year)
+                    if is_today:
+                        stdscr.addstr(cal_y, line_x, day_str[:2], curses.color_pair(5) | curses.A_BOLD)
+                        stdscr.addstr(cal_y, line_x + 2, "  ")
+                    else:
+                        stdscr.addstr(cal_y, line_x, day_str, curses.color_pair(6))
+                line_x += 4
+
+        # Footer Key Hints
+        footer = "[h/l] Mes  [j/k] Año  [t] Hoy  [q] Salir"
+        if max_y - 1 > 0:
+            stdscr.addstr(max_y - 1, max(2, (max_x - len(footer)) // 2), footer, curses.color_pair(3) | curses.A_DIM)
+
+        stdscr.refresh()
+
+        # Handle Keyboard Input
+        try:
+            key = stdscr.getch()
+        except Exception:
+            key = -1
+
+        if key in (ord('q'), ord('Q'), 27): # 'q' or ESC
+            break
+        elif key in (curses.KEY_LEFT, ord('h'), ord('H')):
+            view_month -= 1
+            if view_month < 1:
+                view_month = 12
+                view_year -= 1
+        elif key in (curses.KEY_RIGHT, ord('l'), ord('L')):
+            view_month += 1
+            if view_month > 12:
+                view_month = 1
+                view_year += 1
+        elif key in (curses.KEY_UP, ord('k'), ord('K')):
+            view_year += 1
+        elif key in (curses.KEY_DOWN, ord('j'), ord('J')):
+            view_year -= 1
+        elif key in (ord('t'), ord('T')):
+            view_year = now.year
+            view_month = now.month
+
+        time.sleep(0.05)
+
+if __name__ == "__main__":
+    try:
+        curses.wrapper(main)
+    except KeyboardInterrupt:
+        pass

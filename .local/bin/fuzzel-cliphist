@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Interactive TUI Clipboard Selector via Fuzzel & Cliphist
+if command -v cliphist >/dev/null 2>&1; then
+    selection=$(cliphist list | fuzzel --dmenu --prompt="󰅌 Clipboard ❯ " --width=65 --lines=14)
+    if [ -n "$selection" ]; then
+        echo "$selection" | cliphist decode | wl-copy
+        notify-send -u low -t 2000 "Clipboard" "Elemento copiado al portapapeles"
+    fi
+else
+    notify-send -u critical "Clipboard" "cliphist no está instalado"
+fi

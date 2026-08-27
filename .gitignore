@@ -1,0 +1,24 @@
+# Logs & runtime caches
+*.log
+*.cache
+*.tmp
+__pycache__/
+*.pyc
+
+# Local backups created during installation
+.dotfiles_backup/
+
+# Editor swap files
+*~
+*.swp
+*.swo
+
+# OS & Desktop metadata
+.DS_Store
+Thumbs.db
+
+# Dynamic state files
+fish_variables
+history
+buffers/
+*.old

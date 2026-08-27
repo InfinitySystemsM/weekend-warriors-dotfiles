@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Fuzzel Wi-Fi Menu (Interactive NetworkManager Wayland Selector)
+# ==============================================================================
+
+# Check Wi-Fi radio state
+WIFI_STATE=$(nmcli -fields WIFI g | sed -n '2p' | tr -d ' ')
+
+if [ "$WIFI_STATE" = "enabled" ] || [ "$WIFI_STATE" = "activado" ]; then
+    TOGGLE_OPT="󰤮  [Desactivar Wi-Fi]"
+else
+    TOGGLE_OPT="󰤨  [Activar Wi-Fi]"
+fi
+
+# Get formatted list of Wi-Fi networks
+NETWORKS=$(nmcli -t -f IN-USE,SSID,SIGNAL,SECURITY device wifi list 2>/dev/null | awk -F: '
+BEGIN { OFS="" }
+NF >= 2 && $2 != "" {
+    in_use = $1
+    ssid = $2
+    signal = $3 + 0
+    security = $4
+
+    if (signal >= 75) icon = "󰤨 "
+    else if (signal >= 50) icon = "󰤥 "
+    else if (signal >= 25) icon = "󰤢 "
+    else icon = "󰤟 "
+
+    sec_icon = (security != "" && security != "--") ? " " : "  "
+
+    if (in_use == "*") {
+        print "✓ " icon sec_icon ssid " [" signal "%] (Conectado)"
+    } else {
+        print "  " icon sec_icon ssid " [" signal "%]"
+    }
+}' | sort -u)
+
+# Combine options
+MENU_LIST="$TOGGLE_OPT\n󰑓  [Re-escanear Redes]\n$NETWORKS"
+
+# Launch Fuzzel in dmenu mode
+CHOSEN=$(echo -e "$MENU_LIST" | fuzzel --dmenu --prompt="󰤨 Wi-Fi ❯ " --width=45 --lines=12)
+
+[ -z "$CHOSEN" ] && exit 0
+
+case "$CHOSEN" in
+    *"[Activar Wi-Fi]"*)
+        nmcli radio wifi on
+        notify-send -u low "Wi-Fi" "Wi-Fi activado"
+        ;;
+    *"[Desactivar Wi-Fi]"*)
+        nmcli radio wifi off
+        notify-send -u low "Wi-Fi" "Wi-Fi desactivado"
+        ;;
+    *"[Re-escanear Redes]"*)
+        nmcli device wifi rescan 2>/dev/null
+        sleep 1
+        exec "$0"
+        ;;
+    *"✓ "*)
+        SSID=$(echo "$CHOSEN" | sed -E 's/^[✓ ]+󰤨 |^[✓ ]+󰤥 |^[✓ ]+󰤢 |^[✓ ]+󰤟 //; s/ //; s/ \[.*$//')
+        ACTION=$(echo -e "󰌙  Desconectar\n󰆴  Olvidar Red" | fuzzel --dmenu --prompt="󰤨 $SSID ❯ " --width=30 --lines=3)
+        case "$ACTION" in
+            *"Desconectar"*)
+                nmcli connection down id "$SSID" 2>/dev/null || nmcli device disconnect wlan0 2>/dev/null
+                notify-send "Wi-Fi" "Desconectado de $SSID"
+                ;;
+            *"Olvidar Red"*)
+                nmcli connection delete id "$SSID"
+                notify-send "Wi-Fi" "Red $SSID eliminada"
+                ;;
+        esac
+        ;;
+    *)
+        # Extract pure SSID
+        SSID=$(echo "$CHOSEN" | sed -E 's/^[ ]+󰤨 |^[ ]+󰤥 |^[ ]+󰤢 |^[ ]+󰤟 //; s/ //; s/ \[.*$//; s/^[ ]+//; s/[ ]+$//')
+        
+        [ -z "$SSID" ] && exit 0
+
+        # Check if connection is already saved
+        SAVED=$(nmcli -t -f NAME connection show | grep -Fx "$SSID")
+
+        if [ -n "$SAVED" ]; then
+            notify-send "Wi-Fi" "Conectando a $SSID..."
+            if nmcli connection up id "$SSID"; then
+                notify-send -u low "Wi-Fi" "Conectado exitosamente a $SSID"
+            else
+                notify-send -u critical "Wi-Fi" "Error al conectar a $SSID"
+            fi
+        else
+            # Check if password protected
+            if [[ "$CHOSEN" == *""* ]]; then
+                PASS=$(echo "" | fuzzel --dmenu --password --prompt=" Clave ($SSID) ❯ " --width=38 --lines=1)
+                [ -z "$PASS" ] && exit 0
+                notify-send "Wi-Fi" "Conectando a $SSID..."
+                if nmcli device wifi connect "$SSID" password "$PASS"; then
+                    notify-send -u low "Wi-Fi" "Conectado a $SSID"
+                else
+                    notify-send -u critical "Wi-Fi" "Error de autenticación al conectar a $SSID"
+                fi
+            else
+                notify-send "Wi-Fi" "Conectando a red abierta $SSID..."
+                if nmcli device wifi connect "$SSID"; then
+                    notify-send -u low "Wi-Fi" "Conectado a $SSID"
+                else
+                    notify-send -u critical "Wi-Fi" "Error al conectar a $SSID"
+                fi
+            fi
+        fi
+        ;;
+esac

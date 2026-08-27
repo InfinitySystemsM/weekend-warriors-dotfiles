@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Interactive TUI Power Menu
+options="  [1] Bloquear\n󰒲  [2] Suspender\n󰍃  [3] Cerrar Sesión\n󰑓  [4] Reiniciar\n  [5] Apagar"
+
+chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="⏻ Sistema ❯ " --width=32 --lines=6)
+
+case "$chosen" in
+    *"[1] Bloquear"*)
+        swaylock -f -c 1e1e2e || swaylock
+        ;;
+    *"[2] Suspender"*)
+        systemctl suspend
+        ;;
+    *"[3] Cerrar Sesión"*)
+        swaymsg exit
+        ;;
+    *"[4] Reiniciar"*)
+        systemctl reboot
+        ;;
+    *"[5] Apagar"*)
+        systemctl poweroff
+        ;;
+esac

@@ -1,0 +1,147 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 26,
+    "margin-top": 0,
+    "margin-bottom": 0,
+    "margin-left": 0,
+    "margin-right": 0,
+    "spacing": 0,
+
+    "modules-left": [
+        "sway/workspaces",
+        "sway/mode",
+        "sway/window"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "custom/updates",
+        "cpu",
+        "memory",
+        "disk",
+        "pulseaudio",
+        "network",
+        "battery",
+        "tray",
+        "custom/power"
+    ],
+
+    "sway/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "format": "{name}",
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": []
+        }
+    },
+
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+
+    "sway/window": {
+        "format": "{title}",
+        "max-length": 45,
+        "rewrite": {
+            "(.*) - foot": "  $1",
+            "(.*) — Mozilla Firefox": "󰈹  $1",
+            "^$": "  Terminal"
+        }
+    },
+
+    "clock": {
+        "interval": 1,
+        "format": "  {:%H:%M:%S   󰃭  %a %d %b}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#cba6f7'><b>{}</b></span>",
+                "days": "<span color='#cdd6f4'><b>{}</b></span>",
+                "weeks": "<span color='#74c7ec'><b>W{}</b></span>",
+                "weekdays": "<span color='#fab387'><b>{}</b></span>",
+                "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
+            }
+        },
+        "on-click": "foot --app-id=tui-calendar -e tui-calendar"
+    },
+
+    "custom/updates": {
+        "format": "{}",
+        "interval": 1800,
+        "return-type": "json",
+        "exec": "~/.local/bin/check-updates",
+        "on-click": "foot --app-id=tui-updates -e fish -c 'update; echo -e \"\\nPresiona Enter para cerrar...\"; read'",
+        "signal": 8
+    },
+
+    "cpu": {
+        "interval": 2,
+        "format": "  {usage}%",
+        "on-click": "foot --app-id=tui-btop -e btop"
+    },
+
+    "memory": {
+        "interval": 2,
+        "format": "󰘚  {percentage}%",
+        "tooltip-format": "RAM: {used:0.1f}GiB / {total:0.1f}GiB",
+        "on-click": "foot --app-id=tui-btop -e btop"
+    },
+
+    "disk": {
+        "interval": 30,
+        "format": "󰋊  {percentage_used}%",
+        "path": "/"
+    },
+
+    "pulseaudio": {
+        "format": "{icon}  {volume}%",
+        "format-muted": "󰝟  Muted",
+        "format-icons": {
+            "default": ["", "", ""]
+        },
+        "scroll-step": 5,
+        "on-click": "foot --app-id=tui-pulsemixer -e pulsemixer"
+    },
+
+    "network": {
+        "interval": 5,
+        "format-wifi": "󰤨  {essid}",
+        "format-ethernet": "󰈀  {ifname}",
+        "format-disconnected": "󰤭  Offline",
+        "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
+        "on-click": "fuzzel-wifi"
+    },
+
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}  {capacity}%",
+        "format-charging": "󰂄  {capacity}%",
+        "format-plugged": "󰂄  {capacity}%",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+
+    "tray": {
+        "icon-size": 16,
+        "spacing": 8,
+        "show-passive-items": true
+    },
+
+    "custom/power": {
+        "format": "   ",
+        "tooltip": false,
+        "on-click": "fuzzel-powermenu"
+    }
+}

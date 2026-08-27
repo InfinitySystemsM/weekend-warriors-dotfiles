@@ -1,0 +1,33 @@
+# ==============================================================================
+# Mako Notification Daemon Configuration (Catppuccin Mocha TUI)
+# ==============================================================================
+
+font=MesloLGS Nerd Font 10
+background-color=#1e1e2eff
+text-color=#cdd6f4ff
+border-color=#cba6f7ff
+border-size=1
+border-radius=0
+padding=12
+margin=10
+width=360
+height=150
+default-timeout=5000
+group-by=category
+icons=1
+max-icon-size=48
+layer=overlay
+anchor=top-right
+
+[urgency=low]
+border-color=#89b4faff
+default-timeout=3000
+
+[urgency=normal]
+border-color=#cba6f7ff
+default-timeout=5000
+
+[urgency=high]
+border-color=#f38ba8ff
+text-color=#f38ba8ff
+default-timeout=0
