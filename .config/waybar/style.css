@@ -35,8 +35,9 @@ window#waybar {
 #custom-arrow-tray,
 #custom-arrow-power {
     font-family: "MesloLGS Nerd Font", "JetBrainsMono Nerd Font", monospace;
-    font-size: 16px;
-    margin: 0;
+    font-size: 18px;
+    margin-top: 1px;
+    margin-bottom: 0;
     padding: 0;
 }
 
