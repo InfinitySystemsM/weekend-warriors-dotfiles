@@ -220,7 +220,7 @@ yay -S --needed swaylock-effects bluetui lazygit spotify-player
 
 ```bash
 cd ~/dotfiles
-git remote add origin git@github.com:TU_USUARIO/defqon1-sway.git
+git remote add origin git@github.com:InfinitySystemsM/weekend-warriors-dotfiles.git
 git branch -M main
 git push -u origin main
 ```
