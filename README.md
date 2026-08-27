@@ -13,6 +13,10 @@
   \____/  /_/       \_\  \____/
 ```
 
+<p align="center">
+  <img src="assets/preview.png" alt="Defqon.1 Weekend Warrior Sway Desktop Preview" width="100%">
+</p>
+
 > Entorno de escritorio modular, ligero y de alto rendimiento para **Sway (Wayland)** con estética industrial inspirada en el festival de hardstyle **Defqon.1 ("Weekend Warriors")**, bordes afilados de 1px, paleta de colores balanceada (**Warrior Red** & **Amber Flame**), barra de estado continua **Powerline** y ecosistema orientado a herramientas de terminal (TUI).
 
 ---
@@ -51,6 +55,8 @@ El diseño evita rojos fluorescentes saturados para prevenir fatiga visual duran
 
 ```text
 dotfiles/
+├── assets/
+│   └── preview.png        # Captura de pantalla de presentación del escritorio
 ├── .config/
 │   ├── btop/              # Monitor del sistema TUI (tema defqon1.theme)
 │   ├── cava/              # Visualizador de audio (gradiente de fuego)
@@ -69,7 +75,8 @@ dotfiles/
 │   ├── starship.toml      # Prompt minimalista con paleta defqon1
 │   ├── sway/              # Configuración principal modular de Sway
 │   │   ├── config
-│   │   └── config.d/      # [01_variables, 02_outputs, 03_inputs, 04_keybindings...]
+│   │   ├── config.d/      # [01_variables, 02_outputs, 03_inputs, 04_keybindings...]
+│   │   └── wallpapers/    # Fondo geométrico industrial e imágenes
 │   ├── swaylock/          # Pantalla de bloqueo con anillo rojo y desenfoque
 │   ├── waybar/            # Barra superior continua Powerline (config.jsonc + style.css)
 │   ├── xsettingsd/        # Sincronización XWayland
@@ -88,6 +95,8 @@ dotfiles/
 │   ├── .bashrc            # Configuración interactiva de Bash
 │   ├── .zshrc             # Configuración interactiva de Zsh
 │   └── .gtkrc-2.0         # Compatibilidad de tema GTK2
+├── prompts/
+│   └── wallpaper_prompts.md # Prompts de IA para generación de fondos
 ├── install.sh             # Script automatizado de instalación y enlaces simbólicos
 ├── .gitignore
 ├── LICENSE
@@ -174,7 +183,7 @@ sudo pacman -S --needed \
     cliphist playerctl brightnessctl libnotify polkit-gnome starship \
     btop helix micro zellij cava fastfetch fish yazi thunar \
     adw-gtk-theme papirus-icon-theme qt5ct qt6ct xsettingsd \
-    ttf-meslo-nerd networkmanager pulsemixer imagemagick
+    ttf-meslo-nerd networkmanager pulsemixer imagemagick chafa
 ```
 
 Y vía **AUR / Yay**:
@@ -206,12 +215,12 @@ yay -S --needed swaylock-effects bluetui lazygit spotify-player
 
 ## 📤 Cómo Subir este Repositorio a GitHub
 
-1. Crea un repositorio vacío en [GitHub](https://github.com/new) con el nombre `dotfiles` o `sway-dotfiles`.
+1. Crea un repositorio vacío en [GitHub](https://github.com/new) con el nombre `defqon1-sway` (o el que prefieras).
 2. En tu terminal ejecuta:
 
 ```bash
 cd ~/dotfiles
-git remote add origin git@github.com:TU_USUARIO/NOMBRE_DEL_REPO.git
+git remote add origin git@github.com:TU_USUARIO/defqon1-sway.git
 git branch -M main
 git push -u origin main
 ```
