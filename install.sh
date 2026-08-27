@@ -16,7 +16,6 @@ C_BLUE="\033[1;34m"
 C_CYAN="\033[1;36m"
 C_GREEN="\033[1;32m"
 C_YELLOW="\033[1;33m"
-C_RED="\033[1;31m"
 
 banner() {
     echo -e "${C_RED}"
@@ -62,7 +61,8 @@ if [ "$CHECK_DEPS" = true ]; then
         sway waybar fuzzel mako swaylock foot grim slurp wl-clipboard
         cliphist playerctl brightnessctl libnotify polkit-gnome starship
         btop helix micro zellij cava fastfetch fish adw-gtk-theme
-        papirus-icon-theme qt5ct qt6ct xsettingsd
+        papirus-icon-theme qt5ct qt6ct xsettingsd networkmanager
+        pulsemixer imagemagick chafa ttf-terminus-nerd ttf-meslo-nerd
     )
 
     MISSING=()
@@ -161,5 +161,7 @@ echo -e "${C_GREEN}╚═══════════════════�
 if [ "$DO_BACKUP" = true ] && [ -d "$BACKUP_DIR" ]; then
     echo -e "${C_YELLOW}Copia de seguridad guardada en: $BACKUP_DIR${C_RESET}"
 fi
-echo -e "${C_CYAN}Para recargar Sway ahora mismo, presiona: Mod+Shift+c\n\nℹ  Para aplicar el tema de login de Ly ejecuta: sudo cp ~/.config/ly/config.ini /etc/ly/config.ini${C_RESET}"
+echo -e "${C_CYAN}Para recargar Sway ahora mismo, presiona: Mod+Shift+c${C_RESET}"
+echo ""
+echo -e "${C_CYAN}ℹ  Para aplicar el tema de login de Ly ejecuta: sudo cp ~/.config/ly/config.ini /etc/ly/config.ini${C_RESET}"
 echo ""

@@ -6,7 +6,7 @@
     border: none;
     border-radius: 0px;
     font-family: "Terminess Nerd Font", monospace;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: bold;
     min-height: 0;
     margin: 0;
@@ -19,7 +19,7 @@ window#waybar {
 }
 
 /* ==============================================================================
- * Powerline Arrows - Pixel-Matched Height
+ * Powerline Arrows - Precision Scalable Powerline Glyphs
  * ============================================================================== */
 
 #custom-left-arrow-workspaces,
@@ -34,6 +34,7 @@ window#waybar {
 #custom-arrow-network,
 #custom-arrow-tray,
 #custom-arrow-power {
+    font-family: "MesloLGS Nerd Font", "JetBrainsMono Nerd Font", monospace;
     font-size: 16px;
     margin: 0;
     padding: 0;
