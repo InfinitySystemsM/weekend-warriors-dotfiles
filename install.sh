@@ -161,5 +161,5 @@ echo -e "${C_GREEN}╚═══════════════════�
 if [ "$DO_BACKUP" = true ] && [ -d "$BACKUP_DIR" ]; then
     echo -e "${C_YELLOW}Copia de seguridad guardada en: $BACKUP_DIR${C_RESET}"
 fi
-echo -e "${C_CYAN}Para recargar Sway ahora mismo sin reiniciar, presiona: Mod+Shift+c${C_RESET}"
+echo -e "${C_CYAN}Para recargar Sway ahora mismo, presiona: Mod+Shift+c\n\nℹ  Para aplicar el tema de login de Ly ejecuta: sudo cp ~/.config/ly/config.ini /etc/ly/config.ini${C_RESET}"
 echo ""
