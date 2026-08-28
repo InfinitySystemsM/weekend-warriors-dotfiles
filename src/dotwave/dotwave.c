@@ -60,7 +60,7 @@ static int g_term_rows = 24;
 static int g_theme_idx = 0;
 static int g_mode = MODE_LINE;
 static float g_gain = DEFAULT_GAIN;
-static bool g_trigger_sync = true;
+static bool g_trigger_sync = false;
 static bool g_paused = false;
 static bool g_show_help = false;
 
