@@ -47,6 +47,7 @@ El diseño evita rojos fluorescentes saturados para prevenir fatiga visual duran
 - **Scratchpads & Popups TUI Flotantes:** Ventanas emergentes centradas para control de volumen (`pulsemixer`), monitor del sistema (`btop`), selector de redes (`nmtui`), Git (`lazygit`), Bluetooth (`bluetui`), gestor de paquetes (`tui-packages`) y reloj/clima (`tui-calendar`).
 - **Lanzadores Dinámicos con Fuzzel:** Menú de aplicaciones, selector de portapapeles (`cliphist`), menú de energía (`fuzzel-powermenu`) y selector interactivo de Wi-Fi (`fuzzel-wifi`).
 - **Editor Helix & Multiplexor Zellij:** Temas dedicados `defqon1` diseñados a medida para resaltar código de forma clara y descansada.
+- **Actualizador Seguro `system-update` (`update`):** Verifica automáticamente las noticias oficiales de Arch Linux antes de aplicar cambios, previene intervenciones manuales rotas, actualiza paquetes oficiales/AUR y revisa archivos `.pacnew`.
 - **Capturas Rápidas con Notificaciones:** Utilidad con `grim`, `slurp` y `wl-copy` que copia directamente al portapapeles con área de selección en rojo carmesí.
 
 ---

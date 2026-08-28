@@ -25,3 +25,4 @@ alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
 
 export PATH="$HOME/.local/bin:$PATH"
+alias update='system-update'

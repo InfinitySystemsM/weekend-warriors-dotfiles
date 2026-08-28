@@ -115,7 +115,7 @@
         "interval": 1800,
         "return-type": "json",
         "exec": "~/.local/bin/check-updates",
-        "on-click": "foot --app-id=tui-updates -e fish -c 'update; echo -e \"\\nPresiona Enter para cerrar...\"; read'",
+        "on-click": "foot --app-id=tui-updates -e system-update",
         "signal": 8
     },
 
