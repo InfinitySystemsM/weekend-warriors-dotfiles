@@ -21,7 +21,7 @@
 #include <pulse/error.h>
 
 #define SAMPLE_RATE 44100
-#define BUFFER_SAMPLES 2048
+#define BUFFER_SAMPLES 1024
 #define DEFAULT_GAIN 1.0f
 
 // Color Themes (RGB 24-bit TrueColor)
@@ -47,8 +47,7 @@ static const ColorTheme THEMES[] = {
 // Modes
 enum WaveMode {
     MODE_LINE = 0,      // Pure continuous oscilloscope line
-    MODE_FILLED = 1,    // Filled envelope from center
-    MODE_STEREO = 2     // Dual split stereo
+    MODE_FILLED = 1     // Filled envelope from center
 };
 
 // Global State
@@ -160,7 +159,7 @@ static void draw_line(uint8_t *grid, int v_width, int v_height, int x0, int y0, 
 // Zero-crossing trigger: find start index of ascending zero-cross
 static int find_trigger_offset(const int16_t *samples, int count) {
     int threshold = 0;
-    for (int i = 1; i < count - 200; i++) {
+    for (int i = 1; i < count - 100; i++) {
         if (samples[i - 1] <= threshold && samples[i] > threshold) {
             return i;
         }
@@ -177,7 +176,7 @@ static void handle_input(void) {
         } else if (ch == 'c' || ch == 'C') {
             g_theme_idx = (g_theme_idx + 1) % NUM_THEMES;
         } else if (ch == 'm' || ch == 'M') {
-            g_mode = (g_mode + 1) % 3;
+            g_mode = (g_mode + 1) % 2;
         } else if (ch == '+' || ch == '=' || ch == 'k' || ch == 'K') {
             g_gain *= 1.25f;
             if (g_gain > 20.0f) g_gain = 20.0f;
@@ -194,6 +193,48 @@ static void handle_input(void) {
     }
 }
 
+// Connect to PulseAudio/PipeWire Monitor Sink (Zero Mic Triggering)
+static pa_simple *connect_audio_monitor(void) {
+    pa_sample_spec ss;
+    ss.format = PA_SAMPLE_S16LE;
+    ss.rate = SAMPLE_RATE;
+    ss.channels = 2; // Stereo capture from monitor
+
+    pa_buffer_attr ba;
+    ba.maxlength = (uint32_t)-1;
+    ba.tlength = (uint32_t)-1;
+    ba.prebuf = (uint32_t)-1;
+    ba.minreq = (uint32_t)-1;
+    ba.fragsize = (uint32_t)(BUFFER_SAMPLES * sizeof(int16_t) * 2);
+
+    int error;
+    // 1. Try standard default monitor keyword
+    pa_simple *s = pa_simple_new(NULL, "dotwave", PA_STREAM_RECORD, "@DEFAULT_MONITOR@", "DotWave Audio Visualizer", &ss, NULL, &ba, &error);
+    if (s) return s;
+
+    // 2. Fallback: discover default sink and append .monitor
+    FILE *fp = popen("pactl get-default-sink 2>/dev/null", "r");
+    if (fp) {
+        char sink[256] = {0};
+        if (fgets(sink, sizeof(sink), fp)) {
+            char *nl = strchr(sink, '\n');
+            if (nl) *nl = '\0';
+            pclose(fp);
+
+            char monitor_dev[300];
+            snprintf(monitor_dev, sizeof(monitor_dev), "%s.monitor", sink);
+            s = pa_simple_new(NULL, "dotwave", PA_STREAM_RECORD, monitor_dev, "DotWave Audio Visualizer", &ss, NULL, &ba, &error);
+            if (s) return s;
+        } else {
+            pclose(fp);
+        }
+    }
+
+    // 3. Last fallback: try auto recording
+    s = pa_simple_new(NULL, "dotwave", PA_STREAM_RECORD, NULL, "DotWave Audio Visualizer", &ss, NULL, &ba, &error);
+    return s;
+}
+
 int main(int argc, char **argv) {
     (void)argc;
     (void)argv;
@@ -205,17 +246,10 @@ int main(int argc, char **argv) {
     setup_terminal();
     update_terminal_size();
 
-    // PulseAudio setup
-    pa_sample_spec ss;
-    ss.format = PA_SAMPLE_S16LE;
-    ss.rate = SAMPLE_RATE;
-    ss.channels = 2; // Stereo
-
-    int error;
-    pa_simple *pa_stream = pa_simple_new(NULL, "dotwave", PA_STREAM_RECORD, NULL, "record", &ss, NULL, NULL, &error);
+    pa_simple *pa_stream = connect_audio_monitor();
     if (!pa_stream) {
         restore_terminal();
-        fprintf(stderr, "Error conectando a PulseAudio/PipeWire: %s\n", pa_strerror(error));
+        fprintf(stderr, "Error: No se pudo conectar al monitor de audio de PipeWire/PulseAudio.\n");
         return 1;
     }
 
@@ -233,14 +267,15 @@ int main(int argc, char **argv) {
             printf("\033[2J"); // Clear on resize
         }
 
-        // Read audio if not paused
+        // Read audio from monitor sink
         if (!g_paused) {
+            int error;
             if (pa_simple_read(pa_stream, audio_buf, sizeof(audio_buf), &error) < 0) {
                 usleep(10000);
                 continue;
             }
 
-            // Downmix to mono buffer
+            // Downmix stereo to mono buffer
             for (int i = 0; i < BUFFER_SAMPLES; i++) {
                 mono_buf[i] = (int16_t)(((int32_t)audio_buf[i * 2] + (int32_t)audio_buf[i * 2 + 1]) / 2);
             }
@@ -307,7 +342,6 @@ int main(int argc, char **argv) {
         const ColorTheme *theme = &THEMES[g_theme_idx];
 
         for (int r = 0; r < cell_rows; r++) {
-            // Calculate gradient ratio based on distance from vertical center
             float dist_from_center = fabsf((float)r - (float)cell_rows / 2.0f) / ((float)cell_rows / 2.0f);
             if (dist_from_center > 1.0f) dist_from_center = 1.0f;
 
