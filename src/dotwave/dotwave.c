@@ -64,9 +64,9 @@ static bool g_trigger_sync = true;
 static bool g_paused = false;
 static bool g_show_help = false;
 
-// Cleanup terminal state on exit
+// Cleanup terminal state on exit (Restores main screen buffer and cursor)
 static void restore_terminal(void) {
-    printf("\033[?25h\033[0m\033[2J\033[H");
+    printf("\033[?25h\033[0m\033[?1049l");
     fflush(stdout);
     tcsetattr(STDIN_FILENO, TCSANOW, &g_orig_termios);
 }
@@ -89,8 +89,8 @@ static void setup_terminal(void) {
     raw.c_cc[VTIME] = 0;
     tcsetattr(STDIN_FILENO, TCSANOW, &raw);
 
-    // Hide cursor & clear
-    printf("\033[?25l\033[2J");
+    // Enter Alternate Screen Buffer, hide cursor & clear
+    printf("\033[?1049h\033[?25l\033[2J\033[H");
     fflush(stdout);
 }
 
@@ -98,15 +98,12 @@ static void update_terminal_size(void) {
     struct winsize ws;
     if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == 0) {
         g_term_cols = ws.ws_col > 10 ? ws.ws_col : 80;
-        g_term_rows = ws.ws_row > 5 ? ws.ws_row : 24;
+        g_term_rows = ws.ws_row > 4 ? ws.ws_row : 24;
     }
     g_resized = false;
 }
 
-// Braille Dot Mapping:
-// Unicode braille offset = U+2800 + bitmask
-// Bit 0: (0,0), Bit 1: (0,1), Bit 2: (0,2), Bit 6: (0,3)
-// Bit 3: (1,0), Bit 4: (1,1), Bit 5: (1,2), Bit 7: (1,3)
+// Braille Dot Mapping
 static inline uint8_t get_braille_bit(int sub_x, int sub_y) {
     if (sub_x == 0) {
         if (sub_y == 0) return 0x01;
@@ -281,12 +278,13 @@ int main(int argc, char **argv) {
             }
         }
 
-        int v_width = g_term_cols * 2;
-        int v_height = (g_show_help ? g_term_rows - 1 : g_term_rows) * 4;
-        if (v_height < 4) v_height = 4;
-
         int cell_cols = g_term_cols;
-        int cell_rows = v_height / 4;
+        int cell_rows = g_show_help ? (g_term_rows - 1) : g_term_rows;
+        if (cell_rows < 1) cell_rows = 1;
+
+        int v_width = cell_cols * 2;
+        int v_height = cell_rows * 4;
+
         size_t grid_size = cell_cols * cell_rows;
         uint8_t *grid = (uint8_t *)calloc(grid_size, sizeof(uint8_t));
         if (!grid) continue;
@@ -315,8 +313,8 @@ int main(int argc, char **argv) {
             if (norm > 1.0f) norm = 1.0f;
             if (norm < -1.0f) norm = -1.0f;
 
-            // Invert Y so positive is up
-            int vy = (int)((1.0f - norm) * 0.5f * (v_height - 1));
+            // Exactly centered on (v_height / 2)
+            int vy = (int)(((1.0f - norm) * 0.5f) * (float)(v_height - 1));
             if (vy < 0) vy = 0;
             if (vy >= v_height) vy = v_height - 1;
 
@@ -335,7 +333,7 @@ int main(int argc, char **argv) {
             prev_y = vy;
         }
 
-        // Render to stdout buffer
+        // Render to stdout buffer (Never scroll on the last line)
         size_t out_len = 0;
         out_len += snprintf(out_buf + out_len, sizeof(out_buf) - out_len, "\033[H");
 
@@ -366,13 +364,16 @@ int main(int argc, char **argv) {
                     out_buf[out_len++] = ' ';
                 } else {
                     uint32_t codepoint = 0x2800 | mask;
-                    // UTF-8 3-byte encoding for U+2800..U+28FF
                     out_buf[out_len++] = (char)(0xE0 | ((codepoint >> 12) & 0x0F));
                     out_buf[out_len++] = (char)(0x80 | ((codepoint >> 6) & 0x3F));
                     out_buf[out_len++] = (char)(0x80 | (codepoint & 0x3F));
                 }
             }
-            out_len += snprintf(out_buf + out_len, sizeof(out_buf) - out_len, "\n");
+
+            // Emit newline only if not the very last row of the terminal viewport
+            if (r < cell_rows - 1 || g_show_help) {
+                out_buf[out_len++] = '\n';
+            }
         }
 
         // Help bar footer if toggled
