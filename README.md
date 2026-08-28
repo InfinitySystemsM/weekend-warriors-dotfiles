@@ -47,6 +47,7 @@ El diseño evita rojos fluorescentes saturados para prevenir fatiga visual duran
 - **Scratchpads & Popups TUI Flotantes:** Ventanas emergentes centradas para control de volumen (`pulsemixer`), monitor del sistema (`btop`), selector de redes (`nmtui`), Git (`lazygit`), Bluetooth (`bluetui`), gestor de paquetes (`tui-packages`) y reloj/clima (`tui-calendar`).
 - **Lanzadores Dinámicos con Fuzzel:** Menú de aplicaciones, selector de portapapeles (`cliphist`), menú de energía (`fuzzel-powermenu`) y selector interactivo de Wi-Fi (`fuzzel-wifi`).
 - **Editor Helix & Multiplexor Zellij:** Temas dedicados `defqon1` diseñados a medida para resaltar código de forma clara y descansada.
+- **Osciloscopio de Audio `dotwave` (`wave`):** Visualizador de forma de onda en tiempo real en C nativo con subpíxeles Braille Unicode y paleta Defqon.1.
 - **Actualizador Seguro `system-update` (`update`):** Verifica automáticamente las noticias oficiales de Arch Linux antes de aplicar cambios, previene intervenciones manuales rotas, actualiza paquetes oficiales/AUR y revisa archivos `.pacnew`.
 - **Capturas Rápidas con Notificaciones:** Utilidad con `grim`, `slurp` y `wl-copy` que copia directamente al portapapeles con área de selección en rojo carmesí.
 
@@ -92,6 +93,8 @@ dotfiles/
 │       ├── screenshot-tool   # Utilidad de capturas con selección en rojo carmesí
 │       ├── tui-calendar      # Reloj digital gigante, calendario y clima TUI
 │       └── tui-packages      # Gestor interactivo de paquetes con FZF (Pacman + Yay)
+├── src/
+│   └── dotwave/          # Código fuente en C y Makefile de DotWave
 ├── home/
 │   ├── .bashrc            # Configuración interactiva de Bash
 │   ├── .zshrc             # Configuración interactiva de Zsh
@@ -132,6 +135,7 @@ dotfiles/
 | `$mod + Shift + t` | Gestor Bluetooth (**Bluetui**) |
 | `$mod + i` | Gestor de paquetes (**TUI Packages**) |
 | `$mod + c` | Reloj, Calendario y Clima (**TUI Calendar**) |
+| `$mod + Shift + o` | Osciloscopio de audio forma de onda (**DotWave**) |
 | `$mod + Shift + Enter` | Terminal flotante scratchpad |
 | `$mod + Shift + -` | Enviar ventana activa al scratchpad general |
 | `$mod + -` | Alternar/Mostrar scratchpad general |

@@ -63,6 +63,7 @@ if [ "$CHECK_DEPS" = true ]; then
         btop helix micro zellij cava fastfetch fish adw-gtk-theme
         papirus-icon-theme qt5ct qt6ct xsettingsd networkmanager
         pulsemixer imagemagick chafa ttf-terminus-nerd ttf-meslo-nerd
+        gcc make libpulse
     )
 
     MISSING=()
@@ -150,8 +151,13 @@ if [ -d "$DOTFILES_DIR/home" ]; then
     done
 fi
 
-# Step 4: Final checks and permissions
-echo -e "${C_BLUE}==> [4/4] Verificando permisos y scripts ejecutables...${C_RESET}"
+# Step 4: Compile Native C Tools (DotWave)
+if [ -d "$DOTFILES_DIR/src/dotwave" ]; then
+    echo -e "${C_BLUE}==> [4/4] Compilando e instalando DotWave (Osciloscopio Braille)...${C_RESET}"
+    make -C "$DOTFILES_DIR/src/dotwave" install PREFIX="$HOME/.local/bin" >/dev/null 2>&1 || true
+fi
+
+# Final checks and permissions
 chmod +x "$HOME/.local/bin"/* 2>/dev/null || true
 
 echo ""

@@ -55,6 +55,7 @@ alias zj='zellij'
 alias pkg='tui-packages'
 alias in='tui-packages'
 alias cal='tui-calendar'
+alias wave='dotwave'
 
 # Quick navigation aliases
 alias ..='cd ..'

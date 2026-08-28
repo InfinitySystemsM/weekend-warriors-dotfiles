@@ -19,3 +19,4 @@ fi
 
 export PATH="$HOME/.local/bin:$PATH"
 alias update='system-update'
+alias wave='dotwave'
