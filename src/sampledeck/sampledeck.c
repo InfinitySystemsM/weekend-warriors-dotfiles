@@ -1,7 +1,7 @@
 /*
  * ==============================================================================
  * SampleDeck - TUI Audio Waveform Inspector & Hardstyle Kick Analyzer
- * Sub-pixel Braille Rendering • Zoom • Pan • Loop Playback • Pitch Tracking
+ * Vim-Style Navigation (hjkl) • Sub-pixel Braille • Zoom • Loop Playback
  * ==============================================================================
  */
 
@@ -47,7 +47,6 @@ static const ColorTheme THEMES[] = {
 };
 #define NUM_THEMES (sizeof(THEMES) / sizeof(THEMES[0]))
 
-// Musical note names for kick tail pitch tuning
 static const char *NOTE_NAMES[] = {
     "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
 };
@@ -74,25 +73,20 @@ typedef struct {
 } AudioSample;
 
 typedef struct {
-    // Navigation / Viewport
     int64_t view_start;
     int64_t view_len;
     double zoom;            // 1.0 = full sample, 100.0 = ultra zoom
-    int64_t sel_start;      // Selection range
+    int64_t sel_start;
     int64_t sel_end;
 
-    // Playback state (thread-safe)
     volatile bool is_playing;
     volatile int64_t play_pos;
     volatile bool loop_mode;
     pthread_t play_thread;
     pthread_mutex_t play_mutex;
 
-    // Display
     int theme_idx;
     bool filled_mode;
-    bool show_minimap;
-    bool show_analysis;
 } ViewerState;
 
 static volatile bool g_running = true;
@@ -100,9 +94,6 @@ static volatile bool g_resized = true;
 static struct termios g_orig_termios;
 static int g_term_cols = 80;
 static int g_term_rows = 24;
-
-// Forward declarations
-static void hz_to_note_str(float hz, char *out, size_t out_sz);
 
 static void restore_terminal(void) {
     printf("\033[?25h\033[0m\033[?1049l");
@@ -128,7 +119,6 @@ static void setup_terminal(void) {
     raw.c_cc[VTIME] = 0;
     tcsetattr(STDIN_FILENO, TCSANOW, &raw);
 
-    // Enter alternate screen buffer & hide cursor
     printf("\033[?1049h\033[?25l\033[2J\033[H");
     fflush(stdout);
 }
@@ -142,13 +132,11 @@ static void update_terminal_size(void) {
     g_resized = false;
 }
 
-// Convert Hz to Musical Note (e.g. 49.0 Hz -> G1)
 static void hz_to_note_str(float hz, char *out, size_t out_sz) {
     if (hz < 15.0f || hz > 20000.0f) {
         snprintf(out, out_sz, "N/A");
         return;
     }
-    // MIDI note number = 69 + 12 * log2(hz / 440)
     float midi = 69.0f + 12.0f * (logf(hz / 440.0f) / logf(2.0f));
     int midi_round = (int)roundf(midi);
     int note_idx = (midi_round % 12 + 12) % 12;
@@ -164,7 +152,6 @@ static void hz_to_note_str(float hz, char *out, size_t out_sz) {
     }
 }
 
-// Load audio sample (via libsndfile or ffmpeg fallback)
 static bool load_audio_file(const char *path, AudioSample *sample) {
     memset(sample, 0, sizeof(AudioSample));
     strncpy(sample->filename, path, sizeof(sample->filename) - 1);
@@ -197,7 +184,6 @@ static bool load_audio_file(const char *path, AudioSample *sample) {
         }
         free(raw_buf);
     } else {
-        // Fallback to ffmpeg pipe for MP3/AAC/other
         char cmd[1024];
         snprintf(cmd, sizeof(cmd), "ffmpeg -v error -i \"%s\" -f f32le -ac 1 -ar 44100 - 2>/dev/null", path);
         FILE *fp = popen(cmd, "r");
@@ -229,7 +215,6 @@ static bool load_audio_file(const char *path, AudioSample *sample) {
 
     sample->duration_ms = ((double)sample->total_samples / (double)sample->sample_rate) * 1000.0;
 
-    // Run Audio Analysis
     double sum_sq = 0.0;
     double sum_dc = 0.0;
     float max_peak = 0.0f;
@@ -263,7 +248,6 @@ static bool load_audio_file(const char *path, AudioSample *sample) {
     sample->tok_time_ms = ((float)max_peak_idx / (float)sample->sample_rate) * 1000.0f;
 
     // Hardstyle Kick Transient & Tail Pitch Tracking
-    // 1. Punch Freq (10ms to 60ms window zero-crossings)
     int64_t punch_start = (int64_t)(sample->sample_rate * 0.010);
     int64_t punch_end = (int64_t)(sample->sample_rate * 0.060);
     if (punch_end > sample->total_samples) punch_end = sample->total_samples;
@@ -277,7 +261,6 @@ static bool load_audio_file(const char *path, AudioSample *sample) {
     double punch_dur_s = (double)(punch_end - punch_start) / (double)sample->sample_rate;
     sample->punch_freq_hz = punch_dur_s > 0.001 ? (float)(punch_zc / punch_dur_s) : 0.0f;
 
-    // 2. Tail Sub Freq (80ms to 350ms window zero-crossings)
     int64_t tail_start = (int64_t)(sample->sample_rate * 0.080);
     int64_t tail_end = (int64_t)(sample->sample_rate * 0.350);
     if (tail_end > sample->total_samples) tail_end = sample->total_samples;
@@ -295,7 +278,6 @@ static bool load_audio_file(const char *path, AudioSample *sample) {
     return true;
 }
 
-// Background Playback Thread
 typedef struct {
     AudioSample *sample;
     ViewerState *viewer;
@@ -366,7 +348,6 @@ static void trigger_playback(AudioSample *s, ViewerState *v) {
     pthread_create(&v->play_thread, NULL, playback_thread_func, ctx);
 }
 
-// Braille Bit Mapping
 static inline uint8_t get_braille_bit(int sub_x, int sub_y) {
     if (sub_x == 0) {
         if (sub_y == 0) return 0x01;
@@ -406,7 +387,6 @@ static void draw_line(uint8_t *grid, int cols, int rows, int x0, int y0, int x1,
     }
 }
 
-// Render the complete TUI
 static void render_sampledeck(const AudioSample *s, const ViewerState *v) {
     const ColorTheme *theme = &THEMES[v->theme_idx];
 
@@ -441,7 +421,6 @@ static void render_sampledeck(const AudioSample *s, const ViewerState *v) {
             prev_my = my;
         }
 
-        // Draw Minimap view highlight bracket
         int view_box_start = (int)((v->view_start * minimap_cols) / s->total_samples);
         int view_box_end = (int)(((v->view_start + v->view_len) * minimap_cols) / s->total_samples);
         if (view_box_end <= view_box_start) view_box_end = view_box_start + 1;
@@ -558,13 +537,12 @@ static void render_sampledeck(const AudioSample *s, const ViewerState *v) {
            g_term_cols / 2 - 18, "┤",
            view_end_ms);
 
-    // Section 4: Controls & Status Footer
+    // Section 4: Vim-Style Navigation Footer
     printf("\033[38;2;%d;%d;%dm", theme->hud_r, theme->hud_g, theme->hud_b);
-    printf(" [Space] %s  [l] Loop: %s  [+/-] Zoom: %.1fx  [←/→] Pan  [m] Modo: %s  [c] Tema  [q] Salir\033[K",
-           v->is_playing ? "PAUSAR" : "PLAY",
+    printf(" [Space] %s  [o] Loop: %s  [h/l] Pan  [k/j] Zoom: %.1fx  [0/$] Start/End  [m] Modo  [c] Tema  [q] Salir\033[K",
+           v->is_playing ? "PAUSE" : "PLAY",
            v->loop_mode ? "ON" : "OFF",
-           v->zoom,
-           v->filled_mode ? "Relleno" : "Línea");
+           v->zoom);
 
     fflush(stdout);
 }
@@ -601,37 +579,99 @@ int main(int argc, char **argv) {
     pthread_mutex_init(&viewer.play_mutex, NULL);
 
     while (g_running) {
-        // Handle input
         char ch;
         while (read(STDIN_FILENO, &ch, 1) > 0) {
-            if (ch == 'q' || ch == 'Q' || ch == 27) { // Esc / q
+            if (ch == 'q' || ch == 'Q') {
                 g_running = false;
-            } else if (ch == ' ') {
-                if (viewer.is_playing) {
-                    viewer.is_playing = false;
+                break;
+            } else if (ch == 27) { // Esc or Escape sequence
+                char next1, next2;
+                if (read(STDIN_FILENO, &next1, 1) > 0 && next1 == '[') {
+                    if (read(STDIN_FILENO, &next2, 1) > 0) {
+                        if (next2 == 'D') ch = 'h'; // Left arrow -> h
+                        else if (next2 == 'C') ch = 'l'; // Right arrow -> l
+                        else if (next2 == 'A') ch = 'k'; // Up arrow -> k (Zoom in)
+                        else if (next2 == 'B') ch = 'j'; // Down arrow -> j (Zoom out)
+                        else if (next2 == 'H') ch = '0'; // Home -> 0
+                        else if (next2 == 'F') ch = '$'; // End -> $
+                    }
                 } else {
-                    trigger_playback(&sample, &viewer);
+                    g_running = false;
+                    break;
                 }
-            } else if (ch == 'l' || ch == 'L') {
-                viewer.loop_mode = !viewer.loop_mode;
-            } else if (ch == '+' || ch == '=' || ch == 'k' || ch == 'K') {
+            }
+
+            // --- Vim Movements (h / l / H / L / 0 / $ / w / b) ---
+            if (ch == 'h') {
+                // Pan Left (10% viewport)
+                int64_t step = viewer.view_len / 10;
+                if (step < 1) step = 1;
+                viewer.view_start -= step;
+                if (viewer.view_start < 0) viewer.view_start = 0;
+            } else if (ch == 'l') {
+                // Pan Right (10% viewport)
+                int64_t step = viewer.view_len / 10;
+                if (step < 1) step = 1;
+                viewer.view_start += step;
+                if (viewer.view_start + viewer.view_len > sample.total_samples) {
+                    viewer.view_start = sample.total_samples - viewer.view_len;
+                    if (viewer.view_start < 0) viewer.view_start = 0;
+                }
+            } else if (ch == 'H') {
+                // Fast Pan Left (35% viewport)
+                int64_t step = (viewer.view_len * 35) / 100;
+                viewer.view_start -= step;
+                if (viewer.view_start < 0) viewer.view_start = 0;
+            } else if (ch == 'L') {
+                // Fast Pan Right (35% viewport)
+                int64_t step = (viewer.view_len * 35) / 100;
+                viewer.view_start += step;
+                if (viewer.view_start + viewer.view_len > sample.total_samples) {
+                    viewer.view_start = sample.total_samples - viewer.view_len;
+                    if (viewer.view_start < 0) viewer.view_start = 0;
+                }
+            } else if (ch == '0' || ch == '^') {
+                // Jump to Start (t = 0.0 ms)
+                viewer.view_start = 0;
+            } else if (ch == '$') {
+                // Jump to End
+                viewer.view_start = sample.total_samples - viewer.view_len;
+                if (viewer.view_start < 0) viewer.view_start = 0;
+            } else if (ch == 'w') {
+                // Word forward jump (25% viewport)
+                int64_t step = viewer.view_len / 4;
+                viewer.view_start += step;
+                if (viewer.view_start + viewer.view_len > sample.total_samples) {
+                    viewer.view_start = sample.total_samples - viewer.view_len;
+                    if (viewer.view_start < 0) viewer.view_start = 0;
+                }
+            } else if (ch == 'b') {
+                // Word backward jump (25% viewport)
+                int64_t step = viewer.view_len / 4;
+                viewer.view_start -= step;
+                if (viewer.view_start < 0) viewer.view_start = 0;
+            }
+
+            // --- Vim Zoom (k = in, j = out, z / r = reset) ---
+            else if (ch == 'k' || ch == '+' || ch == '=') {
                 // Zoom in centered
-                if (viewer.zoom < 200.0) {
-                    viewer.zoom *= 1.4;
+                if (viewer.zoom < 300.0) {
+                    viewer.zoom *= 1.35;
                     int64_t new_len = (int64_t)((double)sample.total_samples / viewer.zoom);
-                    if (new_len < 32) new_len = 32;
+                    if (new_len < 16) new_len = 16;
                     int64_t center = viewer.view_start + viewer.view_len / 2;
                     viewer.view_len = new_len;
                     viewer.view_start = center - new_len / 2;
                     if (viewer.view_start < 0) viewer.view_start = 0;
                     if (viewer.view_start + viewer.view_len > sample.total_samples) {
                         viewer.view_start = sample.total_samples - viewer.view_len;
+                        if (viewer.view_start < 0) viewer.view_start = 0;
                     }
                 }
-            } else if (ch == '-' || ch == '_' || ch == 'j' || ch == 'J') {
+            } else if (ch == 'j' || ch == '-' || ch == '_') {
                 // Zoom out centered
                 if (viewer.zoom > 1.0) {
-                    viewer.zoom /= 1.4;
+                    viewer.zoom /= 1.35;
                     if (viewer.zoom < 1.0) viewer.zoom = 1.0;
                     int64_t new_len = (int64_t)((double)sample.total_samples / viewer.zoom);
                     if (new_len > sample.total_samples) new_len = sample.total_samples;
@@ -641,26 +681,33 @@ int main(int argc, char **argv) {
                     if (viewer.view_start < 0) viewer.view_start = 0;
                     if (viewer.view_start + viewer.view_len > sample.total_samples) {
                         viewer.view_start = sample.total_samples - viewer.view_len;
+                        if (viewer.view_start < 0) viewer.view_start = 0;
                     }
                 }
-            } else if (ch == 'h' || ch == 'H') {
-                // Pan Left
-                int64_t step = viewer.view_len / 10;
-                viewer.view_start -= step;
-                if (viewer.view_start < 0) viewer.view_start = 0;
-            } else if (ch == 'l' || ch == 'L') {
-                // Pan Right
-                int64_t step = viewer.view_len / 10;
-                viewer.view_start += step;
-                if (viewer.view_start + viewer.view_len > sample.total_samples) {
-                    viewer.view_start = sample.total_samples - viewer.view_len;
-                }
-            } else if (ch == 'r' || ch == 'R') {
-                // Reset zoom
+            } else if (ch == 'z' || ch == 'r' || ch == 'R') {
+                // Reset zoom (1.0x full sample)
                 viewer.zoom = 1.0;
                 viewer.view_start = 0;
                 viewer.view_len = sample.total_samples;
-            } else if (ch == 'm' || ch == 'M') {
+            }
+
+            // --- Playback Controls ---
+            else if (ch == ' ' || ch == '\n' || ch == '\r') {
+                if (viewer.is_playing) {
+                    viewer.is_playing = false;
+                } else {
+                    trigger_playback(&sample, &viewer);
+                }
+            } else if (ch == 'o' || ch == 'O') {
+                // Toggle loop mode
+                viewer.loop_mode = !viewer.loop_mode;
+            } else if (ch == 's' || ch == 'S') {
+                // Stop playback
+                viewer.is_playing = false;
+            }
+
+            // --- Display & Styling ---
+            else if (ch == 'm' || ch == 'M') {
                 viewer.filled_mode = !viewer.filled_mode;
             } else if (ch == 'c' || ch == 'C') {
                 viewer.theme_idx = (viewer.theme_idx + 1) % NUM_THEMES;
