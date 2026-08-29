@@ -63,7 +63,7 @@ if [ "$CHECK_DEPS" = true ]; then
         btop helix micro zellij cava fastfetch fish adw-gtk-theme
         papirus-icon-theme qt5ct qt6ct xsettingsd networkmanager
         pulsemixer imagemagick chafa ttf-terminus-nerd ttf-meslo-nerd
-        gcc make libpulse
+        gcc make libpulse libsndfile
     )
 
     MISSING=()
@@ -151,10 +151,15 @@ if [ -d "$DOTFILES_DIR/home" ]; then
     done
 fi
 
-# Step 4: Compile Native C Tools (DotWave)
+# Step 4: Compile Native C Tools (DotWave & SampleDeck)
 if [ -d "$DOTFILES_DIR/src/dotwave" ]; then
-    echo -e "${C_BLUE}==> [4/4] Compilando e instalando DotWave (Osciloscopio Braille)...${C_RESET}"
+    echo -e "${C_BLUE}==> Compilando e instalando DotWave (Osciloscopio Braille)...${C_RESET}"
     make -C "$DOTFILES_DIR/src/dotwave" install PREFIX="$HOME/.local/bin" >/dev/null 2>&1 || true
+fi
+
+if [ -d "$DOTFILES_DIR/src/sampledeck" ]; then
+    echo -e "${C_BLUE}==> Compilando e instalando SampleDeck (Inspector y Analizador de Kicks)...${C_RESET}"
+    make -C "$DOTFILES_DIR/src/sampledeck" install PREFIX="$HOME/.local/bin" >/dev/null 2>&1 || true
 fi
 
 # Final checks and permissions
