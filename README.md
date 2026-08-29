@@ -139,8 +139,8 @@ dotfiles/
 | `$mod + i` | Gestor de paquetes (**TUI Packages**) |
 | `$mod + c` | Reloj, Calendario y Clima (**TUI Calendar**) |
 | `$mod + Shift + o` | Osciloscopio de audio forma de onda (**DotWave**) |
-| `$mod + Shift + s` | Inspector de samples y analizador de kicks (**SampleDeck**) |
-| `$mod + Shift + s` | Inspector de samples y analizador de kicks (**SampleDeck**) |
+| `$mod + Shift + k` | Inspector de samples y analizador de kicks (**SampleDeck**) |
+| `$mod + Shift + k` | Inspector de samples y analizador de kicks (**SampleDeck**) |
 | `$mod + Shift + Enter` | Terminal flotante scratchpad |
 | `$mod + Shift + -` | Enviar ventana activa al scratchpad general |
 | `$mod + -` | Alternar/Mostrar scratchpad general |
