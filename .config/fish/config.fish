@@ -20,8 +20,9 @@ set -gx TERMINAL foot
 set -gx BROWSER cachy-browser
 set -gx GTK_THEME "adw-gtk3-dark"
 set -gx ADW_DEBUG_COLOR_SCHEME "prefer-dark"
-set -gx QT_STYLE_OVERRIDE "Oxygen"
-set -gx QT_QPA_PLATFORMTHEME "qt6ct"
+set -gx QT_QPA_PLATFORMTHEME "qt5ct"
+set -gx QT_QPA_PLATFORM "wayland;xcb"
+set -gx QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
 
 # Modern Colored Line-by-Line LS / Eza Aliases
 if command -v eza >/dev/null 2>&1
