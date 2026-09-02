@@ -1,0 +1,38 @@
+/* =============================================================================
+   GTK 4 Custom Theming - Defqon.1 Weekend Warrior (Industrial Dark)
+   ============================================================================= */
+
+popover.menu {
+    background-color: #181a20;
+    color: #e4e5e8;
+    border: 1px solid #e05561;
+    border-radius: 0px;
+    padding: 4px;
+    box-shadow: none;
+}
+
+popover.menu contents {
+    background-color: #181a20;
+    color: #e4e5e8;
+    border-radius: 0px;
+}
+
+popover.menu modelbutton {
+    color: #e4e5e8;
+    border-radius: 0px;
+    padding: 5px 12px;
+    margin: 1px 0px;
+    min-height: 18px;
+    font-weight: bold;
+}
+
+popover.menu modelbutton:hover {
+    background-color: #242731;
+    color: #f38d41;
+}
+
+popover.menu separator {
+    background-color: #282b35;
+    min-height: 1px;
+    margin: 4px 6px;
+}

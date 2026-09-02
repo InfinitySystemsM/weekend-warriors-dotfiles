@@ -82,3 +82,102 @@ window#waybar {
 #tray { background-color: #14161c; padding: 0 6px; }
 #custom-arrow-power { background-color: #14161c; color: #e05561; }
 #custom-power { background-color: #e05561; color: #0f1013; padding: 0 8px; font-weight: 900; }
+
+/* =============================================================================
+   Tray Context Menus & Popups (Defqon.1 Industrial Dark)
+   ============================================================================= */
+
+#tray menu,
+window.popup menu,
+menu {
+    background-color: #181a20;
+    color: #e4e5e8;
+    border: 1px solid #e05561;
+    border-radius: 0px;
+    padding: 4px;
+    box-shadow: none;
+}
+
+#tray menu menuitem,
+menu menuitem {
+    background-color: transparent;
+    color: #e4e5e8;
+    border-radius: 0px;
+    padding: 5px 12px;
+    margin: 1px 0px;
+    min-height: 18px;
+    transition: none;
+}
+
+#tray menu menuitem:hover,
+menu menuitem:hover {
+    background-color: #242731;
+    color: #f38d41;
+}
+
+#tray menu menuitem:disabled,
+menu menuitem:disabled {
+    color: #5c6370;
+    background-color: transparent;
+}
+
+#tray menu menuitem label,
+menu menuitem label {
+    color: inherit;
+    font-weight: bold;
+}
+
+#tray menu separator,
+menu separator {
+    background-color: #282b35;
+    min-height: 1px;
+    margin: 4px 6px;
+    border: none;
+}
+
+#tray menu check,
+#tray menu radio,
+menu check,
+menu radio {
+    min-width: 12px;
+    min-height: 12px;
+    margin-right: 8px;
+    border-radius: 0px;
+    border: 1px solid #2d313d;
+    background-color: #121317;
+    color: #e05561;
+}
+
+#tray menu check:checked,
+#tray menu radio:checked,
+menu check:checked,
+menu radio:checked {
+    border-color: #e05561;
+    background-color: #e05561;
+    color: #0f1013;
+}
+
+#tray menu arrow,
+menu arrow {
+    min-width: 10px;
+    min-height: 10px;
+    color: #7d8597;
+}
+
+#tray menu menuitem:hover arrow,
+menu menuitem:hover arrow {
+    color: #f38d41;
+}
+
+#tray menu accelerator,
+menu accelerator {
+    color: #7d8597;
+    font-size: 10px;
+    margin-left: 16px;
+}
+
+#tray menu menuitem:hover accelerator,
+menu menuitem:hover accelerator {
+    color: #e5c07b;
+}
+
