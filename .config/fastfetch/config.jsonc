@@ -18,8 +18,14 @@
         }
     },
     "modules": [
-        "title",
-        "separator",
+        {
+            "type": "title",
+            "format": "{user-name-colored}{at-symbol-colored}{host-name-colored} {##e05561}• {##f38d41}Defqon.1 Weekend Warrior{#}"
+        },
+        {
+            "type": "separator",
+            "times": 52
+        },
         {
             "type": "os",
             "key": "󰣇 OS"
