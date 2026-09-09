@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Quick check of OBS Studio / TuiCast status for Waybar
+RUN_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+WAYBAR_JSON="$RUN_DIR/tuicast_waybar.json"
+
+if [ -f "$WAYBAR_JSON" ]; then
+    cat "$WAYBAR_JSON"
+    echo ""
+elif pgrep -x obs >/dev/null 2>&1; then
+    echo '{"text": "󰑋 IDLE", "tooltip": "OBS Studio running (TuiCast disconnected)", "class": "idle"}'
+else
+    echo '{"text": "󰑋 OFF", "tooltip": "OBS Studio is offline", "class": "offline"}'
+fi

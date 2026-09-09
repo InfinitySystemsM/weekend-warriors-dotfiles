@@ -32,14 +32,16 @@ usage() {
     echo "  --symlink     Crea enlaces simbólicos (por defecto)"
     echo "  --copy        Copia los archivos en lugar de crear enlaces simbólicos"
     echo "  --no-backup   No realiza copia de seguridad de los archivos existentes"
-    echo "  --check-deps  Verifica e instala dependencias del sistema (Arch / CachyOS)"
-    echo "  -h, --help    Muestra esta ayuda"
+    echo "  --check-deps    Verifica e instala dependencias del sistema (Arch / CachyOS)"
+    echo "  --with-tuicast  Compila e instala TuiCast (controlador TUI de OBS) si existe ~/tuicast"
+    echo "  -h, --help      Muestra esta ayuda"
     echo ""
 }
 
 MODE="symlink"
 DO_BACKUP=true
 CHECK_DEPS=false
+WITH_TUICAST=false
 
 while [[ "$#" -gt 0 ]]; do
     case "$1" in
@@ -47,6 +49,7 @@ while [[ "$#" -gt 0 ]]; do
         --copy) MODE="copy"; shift ;;
         --no-backup) DO_BACKUP=false; shift ;;
         --check-deps) CHECK_DEPS=true; shift ;;
+        --with-tuicast) WITH_TUICAST=true; shift ;;
         -h|--help) usage; exit 0 ;;
         *) echo -e "${C_RED}Opción desconocida: $1${C_RESET}"; usage; exit 1 ;;
     esac
@@ -160,6 +163,19 @@ fi
 if [ -d "$DOTFILES_DIR/src/sampledeck" ]; then
     echo -e "${C_BLUE}==> Compilando e instalando SampleDeck (Inspector y Analizador de Kicks)...${C_RESET}"
     make -C "$DOTFILES_DIR/src/sampledeck" install PREFIX="$HOME/.local/bin" >/dev/null 2>&1 || true
+fi
+
+# Optional: TuiCast (OBS Studio TUI Controller)
+if [ "$WITH_TUICAST" = true ]; then
+    TUICAST_DIR="${TUICAST_DIR:-$HOME/tuicast}"
+    if [ -d "$TUICAST_DIR" ] && command -v cargo >/dev/null 2>&1; then
+        echo -e "${C_BLUE}==> Compilando e instalando TuiCast (OBS Studio TUI Controller)...${C_RESET}"
+        (cd "$TUICAST_DIR" && cargo build --release && install -m 755 target/release/tuicast "$HOME/.local/bin/tuicast") || {
+            echo -e "${C_YELLOW}⚠ No se pudo compilar tuicast automáticamente. Puedes compilarlo con: cd ~/tuicast && cargo build --release${C_RESET}"
+        }
+    else
+        echo -e "${C_YELLOW}ℹ TuiCast no encontrado en $TUICAST_DIR o Rust/cargo no disponible. Saltando.${C_RESET}"
+    fi
 fi
 
 # Final checks and permissions

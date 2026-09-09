@@ -20,6 +20,8 @@
         "custom/clock-arrow-right"
     ],
     "modules-right": [
+        "custom/arrow-obs",
+        "custom/obs",
         "custom/arrow-updates",
         "custom/updates",
         "custom/arrow-cpu",
@@ -106,6 +108,20 @@
     "custom/clock-arrow-right": {
         "format": "",
         "tooltip": false
+    },
+
+    "custom/arrow-obs": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "custom/obs": {
+        "format": "{}",
+        "interval": 2,
+        "return-type": "json",
+        "exec": "~/.local/bin/check-obs",
+        "on-click": "foot --app-id=tuicast -e tuicast",
+        "signal": 9
     },
 
     "custom/arrow-updates": {
