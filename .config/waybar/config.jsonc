@@ -34,6 +34,8 @@
         "network",
         "custom/arrow-tray",
         "tray",
+        "custom/arrow-idle-inhibitor",
+        "idle_inhibitor",
         "custom/arrow-power",
         "custom/power"
     ],
@@ -192,6 +194,22 @@
         "icon-size": 15,
         "spacing": 6,
         "show-passive-items": true
+    },
+
+    "custom/arrow-idle-inhibitor": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "󰅶",
+            "deactivated": "󰛊"
+        },
+        "tooltip": true,
+        "tooltip-format-activated": "Inhibidor de inactividad: Activado\n(Bloqueo y suspensión desactivados)",
+        "tooltip-format-deactivated": "Inhibidor de inactividad: Desactivado\n(Bloqueo y suspensión automáticos activos)"
     },
 
     "custom/arrow-power": {

@@ -43,6 +43,7 @@ El diseño evita rojos fluorescentes saturados para prevenir fatiga visual duran
 
 - **Arquitectura Modular de Sway:** Configuración dividida limpiamente en `config.d/*.conf` (variables, salidas, entradas, atajos, reglas, scratchpads, autostart, tema y barra).
 - **Barra Superior Powerline Seamless:** Barra continua sin bordes redondeados ni gaps flotantes, interconectada con glifos Powerline reales (`` y ``) y módulos en tiempo real.
+- **Inhibidor de Inactividad Integrado (Anti-Sleep / Caffeine):** Botón directo e interactivo en Waybar con indicador de taza (`󰅶` / `󰛊`) para impedir manualmente el bloqueo de pantalla y la suspensión del sistema durante tareas críticas o de larga duración.
 - **Fastfetch con Logo Gráfico en Sixel:** Logotipo oficial de Defqon.1 recortado en fondo transparente y renderizado en alta definición mediante gráficos Sixel nativos en Foot.
 - **Scratchpads & Popups TUI Flotantes:** Ventanas emergentes centradas para control de volumen (`pulsemixer`), monitor del sistema (`btop`), selector de redes (`nmtui`), Git (`lazygit`), Bluetooth (`bluetui`), gestor de paquetes (`tui-packages`) y reloj/clima (`tui-calendar`).
 - **Lanzadores Dinámicos con Fuzzel:** Menú de aplicaciones, selector de portapapeles (`cliphist`), menú de energía (`fuzzel-powermenu`) y selector interactivo de Wi-Fi (`fuzzel-wifi`).

@@ -26,6 +26,7 @@ window#waybar {
 #custom-arrow-pulseaudio,
 #custom-arrow-network,
 #custom-arrow-tray,
+#custom-arrow-idle-inhibitor,
 #custom-arrow-power {
     font-family: "MesloLGS Nerd Font", "JetBrainsMono Nerd Font", monospace;
     font-size: 18px;
@@ -80,7 +81,12 @@ window#waybar {
 #network { background-color: #222530; color: #56b6c2; padding: 0 6px; }
 #custom-arrow-tray { background-color: #222530; color: #14161c; }
 #tray { background-color: #14161c; padding: 0 6px; }
-#custom-arrow-power { background-color: #14161c; color: #e05561; }
+#custom-arrow-idle-inhibitor { background-color: #14161c; color: #222530; }
+#idle_inhibitor { background-color: #222530; color: #6c7280; padding: 0 8px; font-size: 12px; }
+#idle_inhibitor.activated { color: #e05561; }
+#idle_inhibitor.deactivated { color: #6c7280; }
+#idle_inhibitor:hover { color: #f38d41; }
+#custom-arrow-power { background-color: #222530; color: #e05561; }
 #custom-power { background-color: #e05561; color: #0f1013; padding: 0 8px; font-weight: 900; }
 
 /* =============================================================================
