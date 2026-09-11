@@ -20,8 +20,9 @@
         "custom/clock-arrow-right"
     ],
     "modules-right": [
-        "custom/arrow-obs",
-        "custom/obs",
+        // Módulo opcional OBS Studio / TuiCast (descomentar para activar):
+        // "custom/arrow-obs",
+        // "custom/obs",
         "custom/arrow-updates",
         "custom/updates",
         "custom/arrow-cpu",
@@ -110,6 +111,8 @@
         "tooltip": false
     },
 
+    // Módulo Opcional: OBS Studio / TuiCast (desactivado por defecto)
+    // Para activarlo, descomenta "custom/arrow-obs" y "custom/obs" en "modules-right".
     "custom/arrow-obs": {
         "format": "",
         "tooltip": false

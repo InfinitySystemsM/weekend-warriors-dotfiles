@@ -19,6 +19,7 @@ window#waybar {
 #custom-left-arrow-window,
 #custom-clock-arrow-left,
 #custom-clock-arrow-right,
+#custom-arrow-obs,
 #custom-arrow-updates,
 #custom-arrow-cpu,
 #custom-arrow-memory,
@@ -67,6 +68,7 @@ window#waybar {
 #clock { background-color: #1e2029; color: #e05561; padding: 0 10px; }
 #custom-clock-arrow-right { background-color: #0f1013; color: #1e2029; }
 
+/* Módulo Opcional: OBS Studio / TuiCast (desactivado por defecto) */
 #custom-arrow-obs { background-color: #0f1013; color: #222530; }
 #custom-obs { background-color: #222530; color: #e4e5e8; padding: 0 6px; }
 #custom-obs.offline { color: #6c7280; }
@@ -74,7 +76,12 @@ window#waybar {
 #custom-obs.recording { color: #ff4757; font-weight: bold; }
 #custom-obs.streaming { color: #e05561; font-weight: bold; }
 #custom-obs.live_rec { color: #ff4757; font-weight: bold; }
-#custom-arrow-updates { background-color: #222530; color: #16181f; }
+
+/* Separador hacia Updates:
+   - Por defecto (sin OBS): conecta con el fondo de Waybar (#0f1013)
+   - Si se activa OBS en config.jsonc: el selector adyacente cambia el fondo a #222530 automáticamente */
+#custom-arrow-updates { background-color: #0f1013; color: #16181f; }
+#custom-obs + #custom-arrow-updates { background-color: #222530; color: #16181f; }
 #custom-updates { background-color: #16181f; color: #e5c07b; padding: 0 6px; }
 #custom-arrow-cpu { background-color: #16181f; color: #222530; }
 #cpu { background-color: #222530; color: #f38d41; padding: 0 6px; }

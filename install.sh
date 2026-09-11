@@ -173,6 +173,7 @@ if [ "$WITH_TUICAST" = true ]; then
         (cd "$TUICAST_DIR" && cargo build --release && install -m 755 target/release/tuicast "$HOME/.local/bin/tuicast") || {
             echo -e "${C_YELLOW}⚠ No se pudo compilar tuicast automáticamente. Puedes compilarlo con: cd ~/tuicast && cargo build --release${C_RESET}"
         }
+        echo -e "${C_CYAN}ℹ  Para habilitar el módulo de estado de OBS en Waybar, descomenta 'custom/arrow-obs' y 'custom/obs' en ~/.config/waybar/config.jsonc${C_RESET}"
     else
         echo -e "${C_YELLOW}ℹ TuiCast no encontrado en $TUICAST_DIR o Rust/cargo no disponible. Saltando.${C_RESET}"
     fi

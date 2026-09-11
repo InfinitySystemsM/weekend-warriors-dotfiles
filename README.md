@@ -88,6 +88,7 @@ dotfiles/
 │   └── mimeapps.list      # Asociaciones por defecto
 ├── .local/
 │   └── bin/               # Scripts y utilidades personalizadas
+│       ├── check-obs         # Verificador de estado de OBS / TuiCast para Waybar (opcional)
 │       ├── check-updates     # Verificador JSON de actualizaciones para Waybar
 │       ├── fuzzel-cliphist   # Historial del portapapeles interactivo
 │       ├── fuzzel-powermenu  # Menú de apagado, reinicio, bloqueo y suspensión
@@ -97,7 +98,6 @@ dotfiles/
 │       └── tui-packages      # Gestor interactivo de paquetes con FZF (Pacman + Yay)
 ├── src/
 │   ├── dotwave/          # Código fuente en C y Makefile de DotWave
-│   └── sampledeck/       # Código fuente en C y Makefile de SampleDeck
 │   └── sampledeck/       # Código fuente en C y Makefile de SampleDeck
 ├── home/
 │   ├── .bashrc            # Configuración interactiva de Bash
