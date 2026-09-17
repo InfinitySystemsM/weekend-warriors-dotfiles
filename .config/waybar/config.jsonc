@@ -101,6 +101,7 @@
     "mpris": {
         "format": "{player_icon} {status_icon} {dynamic}",
         "format-paused": "{player_icon} {status_icon} <i>{dynamic}</i>",
+        "format-stopped": "{player_icon} 󰓛 Inactivo",
         "player-icons": {
             "spotify": " ",
             "spotify_player": " ",
@@ -123,6 +124,7 @@
         "on-scroll-up": "playerctl -p 'spotify,spotify_player,spotify-player,%any' volume 0.05+",
         "on-scroll-down": "playerctl -p 'spotify,spotify_player,spotify-player,%any' volume 0.05-",
         "tooltip-format": "{player} [{status}]\n󰎆 {title}\n {artist}\n󰀥 {album}",
+        "tooltip-format-stopped": "{player} [Inactivo]\nNo hay reproducción activa",
         "ignored-players": ["firefox"]
     },
 

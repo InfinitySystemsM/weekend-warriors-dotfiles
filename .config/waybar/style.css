@@ -88,6 +88,9 @@ window#waybar {
 #mpris.paused {
     color: #7d8597;
 }
+#mpris.stopped {
+    color: #6c7280;
+}
 #custom-media-next {
     background-color: #222530;
     color: #f38d41;
