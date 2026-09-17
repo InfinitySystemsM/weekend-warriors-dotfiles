@@ -85,17 +85,11 @@
     "group/media": {
         "orientation": "horizontal",
         "modules": [
-            "custom/media-arrow-left",
             "custom/media-prev",
             "mpris",
             "custom/media-next",
             "custom/media-arrow-right"
         ]
-    },
-
-    "custom/media-arrow-left": {
-        "format": "",
-        "tooltip": false
     },
 
     "custom/media-prev": {

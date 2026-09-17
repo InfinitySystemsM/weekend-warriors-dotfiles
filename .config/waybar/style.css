@@ -17,7 +17,6 @@ window#waybar {
 
 #custom-left-arrow-workspaces,
 #custom-left-arrow-window,
-#custom-media-arrow-left,
 #custom-media-arrow-right,
 #custom-clock-arrow-left,
 #custom-clock-arrow-right,
@@ -64,13 +63,12 @@ window#waybar {
 #custom-left-arrow-workspaces { background-color: #1e2029; color: #14161c; }
 #mode { background-color: #1e2029; color: #e05561; padding: 0 6px; }
 #window { background-color: #1e2029; color: #e4e5e8; padding: 0 8px; }
-#custom-left-arrow-window { background-color: #0f1013; color: #1e2029; }
+#custom-left-arrow-window { background-color: #222530; color: #1e2029; }
  
 /* Media Player Module (MPRIS + Controles) */
 #media {
-    margin-left: 8px;
+    background-color: #222530;
 }
-#custom-media-arrow-left { background-color: #0f1013; color: #222530; }
 #custom-media-prev {
     background-color: #222530;
     color: #f38d41;
