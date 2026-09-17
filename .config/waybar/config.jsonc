@@ -101,7 +101,7 @@
     "custom/media-prev": {
         "format": "󰒮",
         "tooltip": false,
-        "on-click": "playerctl previous"
+        "on-click": "playerctl -p 'spotify,spotify_player,spotify-player,%any' previous"
     },
 
     "mpris": {
@@ -123,20 +123,19 @@
         "dynamic-order": ["artist", "title"],
         "dynamic-importance-order": ["title", "artist"],
         "dynamic-len": 32,
-        "on-click": "playerctl play-pause",
-        "on-click-right": "playerctl next",
-        "on-click-middle": "playerctl previous",
-        "on-scroll-up": "playerctl volume 0.05+",
-        "on-scroll-down": "playerctl volume 0.05-",
-        "tooltip-format": "{player} [{status}]\n󰎆 {title}\n {artist}\n󰀥 {album}"
-        // Descomentar para ignorar navegadores y enfocar sólo reproductores dedicados:
-        // "ignored-players": ["firefox"]
+        "on-click": "playerctl -p 'spotify,spotify_player,spotify-player,%any' play-pause",
+        "on-click-right": "playerctl -p 'spotify,spotify_player,spotify-player,%any' next",
+        "on-click-middle": "playerctl -p 'spotify,spotify_player,spotify-player,%any' previous",
+        "on-scroll-up": "playerctl -p 'spotify,spotify_player,spotify-player,%any' volume 0.05+",
+        "on-scroll-down": "playerctl -p 'spotify,spotify_player,spotify-player,%any' volume 0.05-",
+        "tooltip-format": "{player} [{status}]\n󰎆 {title}\n {artist}\n󰀥 {album}",
+        "ignored-players": ["firefox"]
     },
 
     "custom/media-next": {
         "format": "󰒭",
         "tooltip": false,
-        "on-click": "playerctl next"
+        "on-click": "playerctl -p 'spotify,spotify_player,spotify-player,%any' next"
     },
 
     "custom/media-arrow-right": {
