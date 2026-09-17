@@ -12,7 +12,8 @@
         "custom/left-arrow-workspaces",
         "sway/mode",
         "sway/window",
-        "custom/left-arrow-window"
+        "custom/left-arrow-window",
+        "group/media"
     ],
     "modules-center": [
         "custom/clock-arrow-left",
@@ -77,6 +78,68 @@
     },
 
     "custom/left-arrow-window": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "group/media": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/media-arrow-left",
+            "custom/media-prev",
+            "mpris",
+            "custom/media-next",
+            "custom/media-arrow-right"
+        ]
+    },
+
+    "custom/media-arrow-left": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "custom/media-prev": {
+        "format": "󰒮",
+        "tooltip": false,
+        "on-click": "playerctl previous"
+    },
+
+    "mpris": {
+        "format": "{player_icon} {status_icon} {dynamic}",
+        "format-paused": "{player_icon} {status_icon} <i>{dynamic}</i>",
+        "player-icons": {
+            "spotify": " ",
+            "spotify_player": " ",
+            "firefox": "󰈹 ",
+            "chromium": " ",
+            "mpv": "󰐹 ",
+            "default": "󰎆 "
+        },
+        "status-icons": {
+            "playing": "󰐊",
+            "paused": "󰏤",
+            "stopped": "󰓛"
+        },
+        "dynamic-order": ["artist", "title"],
+        "dynamic-importance-order": ["title", "artist"],
+        "dynamic-len": 32,
+        "on-click": "playerctl play-pause",
+        "on-click-right": "playerctl next",
+        "on-click-middle": "playerctl previous",
+        "on-scroll-up": "playerctl volume 0.05+",
+        "on-scroll-down": "playerctl volume 0.05-",
+        "tooltip-format": "{player} [{status}]\n󰎆 {title}\n {artist}\n󰀥 {album}"
+        // Descomentar para ignorar navegadores y enfocar sólo reproductores dedicados:
+        // "ignored-players": ["firefox"]
+    },
+
+    "custom/media-next": {
+        "format": "󰒭",
+        "tooltip": false,
+        "on-click": "playerctl next"
+    },
+
+    "custom/media-arrow-right": {
         "format": "",
         "tooltip": false
     },

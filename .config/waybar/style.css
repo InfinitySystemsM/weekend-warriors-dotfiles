@@ -17,6 +17,8 @@ window#waybar {
 
 #custom-left-arrow-workspaces,
 #custom-left-arrow-window,
+#custom-media-arrow-left,
+#custom-media-arrow-right,
 #custom-clock-arrow-left,
 #custom-clock-arrow-right,
 #custom-arrow-obs,
@@ -63,6 +65,40 @@ window#waybar {
 #mode { background-color: #1e2029; color: #e05561; padding: 0 6px; }
 #window { background-color: #1e2029; color: #e4e5e8; padding: 0 8px; }
 #custom-left-arrow-window { background-color: #0f1013; color: #1e2029; }
+ 
+/* Media Player Module (MPRIS + Controles) */
+#media {
+    margin-left: 8px;
+}
+#custom-media-arrow-left { background-color: #0f1013; color: #222530; }
+#custom-media-prev {
+    background-color: #222530;
+    color: #f38d41;
+    padding: 0 4px 0 2px;
+}
+#custom-media-prev:hover {
+    color: #e05561;
+}
+#mpris {
+    background-color: #222530;
+    color: #e4e5e8;
+    padding: 0 6px;
+}
+#mpris.playing {
+    color: #e4e5e8;
+}
+#mpris.paused {
+    color: #7d8597;
+}
+#custom-media-next {
+    background-color: #222530;
+    color: #f38d41;
+    padding: 0 2px 0 4px;
+}
+#custom-media-next:hover {
+    color: #e05561;
+}
+#custom-media-arrow-right { background-color: #0f1013; color: #222530; }
 
 #custom-clock-arrow-left { background-color: #0f1013; color: #1e2029; }
 #clock { background-color: #1e2029; color: #e05561; padding: 0 10px; }
