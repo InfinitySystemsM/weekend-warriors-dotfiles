@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# ThinkPad Battery Health & Threshold Manager (Defqon.1 Weekend Warrior)
+# ==============================================================================
+# Configures charge thresholds to preserve battery lifespan:
+# - Desk Mode: Limits charge to 80% (prevents cell degradation while plugged in)
+# - Travel Mode: Charges to 100% (maximum autonomy on the go)
+# ==============================================================================
+
+ACTION="${1:-}"
+
+# Check if battery BAT0 exists
+BAT_PATH="/sys/class/power_supply/BAT0"
+if [ ! -d "$BAT_PATH" ]; then
+    shopt -s nullglob
+    BAT_LIST=(/sys/class/power_supply/BAT*)
+    shopt -u nullglob
+    if [ ${#BAT_LIST[@]} -gt 0 ]; then
+        BAT_PATH="${BAT_LIST[0]}"
+    else
+        echo "ℹ No se detectó ninguna batería interna (BAT0) en este equipo."
+        exit 0
+    fi
+fi
+
+apply_thresholds() {
+    local start="$1"
+    local stop="$2"
+    local mode_name="$3"
+
+    if command -v tlp >/dev/null 2>&1; then
+        if [ "$stop" -eq 100 ]; then
+            sudo tlp fullcharge "$(basename "$BAT_PATH")" >/dev/null 2>&1
+        else
+            sudo tlp setcharge "$start" "$stop" "$(basename "$BAT_PATH")" >/dev/null 2>&1
+        fi
+    elif [ -f "$BAT_PATH/charge_control_end_threshold" ]; then
+        echo "$stop" | sudo tee "$BAT_PATH/charge_control_end_threshold" >/dev/null 2>&1 || true
+        [ -f "$BAT_PATH/charge_control_start_threshold" ] && echo "$start" | sudo tee "$BAT_PATH/charge_control_start_threshold" >/dev/null 2>&1 || true
+    fi
+
+    notify-send -u low -t 3000 \
+                -h string:x-canonical-private-synchronous:thinkpad-battery \
+                "Batería ThinkPad" "$mode_name configurado ($stop% máx)"
+    echo "✓ $mode_name aplicado: Umbral de parada al $stop%."
+}
+
+show_status() {
+    local cap="Desconocido"
+    local status="Desconocido"
+    local stop_thresh="100%"
+    local cycles="N/A"
+    local health="N/A"
+
+    [ -f "$BAT_PATH/capacity" ] && cap="$(< "$BAT_PATH/capacity")%"
+    [ -f "$BAT_PATH/status" ] && status="$(< "$BAT_PATH/status")"
+    [ -f "$BAT_PATH/charge_control_end_threshold" ] && stop_thresh="$(< "$BAT_PATH/charge_control_end_threshold")%"
+    [ -f "$BAT_PATH/cycle_count" ] && cycles="$(< "$BAT_PATH/cycle_count")"
+
+    if [ -f "$BAT_PATH/energy_full" ] && [ -f "$BAT_PATH/energy_full_design" ]; then
+        local full=$(< "$BAT_PATH/energy_full")
+        local design=$(< "$BAT_PATH/energy_full_design")
+        if [ "$design" -gt 0 ]; then
+            health="$(( full * 100 / design ))%"
+        fi
+    fi
+
+    echo -e "╔════════════════════════════════════════════════════════════════╗"
+    echo -e "║            Estado de Batería ThinkPad ($(basename "$BAT_PATH"))                   ║"
+    echo -e "╚════════════════════════════════════════════════════════════════╝"
+    echo -e "  • Nivel Actual:      $cap ($status)"
+    echo -e "  • Umbral de Carga:   $stop_thresh"
+    echo -e "  • Salud de Batería:  $health"
+    echo -e "  • Ciclos de Carga:   $cycles"
+    echo ""
+}
+
+# If no argument or 'menu', show interactive Fuzzel menu
+if [ -z "$ACTION" ] || [ "$ACTION" = "menu" ]; then
+    CURRENT_STOP="100"
+    [ -f "$BAT_PATH/charge_control_end_threshold" ] && CURRENT_STOP="$(< "$BAT_PATH/charge_control_end_threshold")"
+
+    D_OPT="  󰂁  [1] Modo Escritorio (Limitar al 80% - Cuidado de Batería)"
+    T_OPT="  󰁹  [2] Modo Viaje (Carga al 100% - Máxima Autonomía)"
+    S_OPT="  󰂃  [3] Ver Estado y Salud de Batería"
+
+    if [ "$CURRENT_STOP" -le 85 ]; then
+        D_OPT="✓ 󰂁  [1] Modo Escritorio (Limitar al 80%) [Activo]"
+    else
+        T_OPT="✓ 󰁹  [2] Modo Viaje (Carga al 100%) [Activo]"
+    fi
+
+    MENU="$D_OPT\n$T_OPT\n$S_OPT"
+    CHOSEN=$(echo -e "$MENU" | fuzzel --dmenu --prompt="󰁹 Batería ❯ " --width=45 --lines=4)
+
+    [ -z "$CHOSEN" ] && exit 0
+
+    case "$CHOSEN" in
+        *"[1] Modo Escritorio"*)
+            ACTION="desk"
+            ;;
+        *"[2] Modo Viaje"*)
+            ACTION="travel"
+            ;;
+        *"[3] Ver Estado"*)
+            ACTION="status"
+            ;;
+    esac
+fi
+
+case "$ACTION" in
+    desk|balance|80)
+        apply_thresholds 75 80 "Modo Escritorio (80%)"
+        ;;
+    travel|full|100)
+        apply_thresholds 95 100 "Modo Viaje (100%)"
+        ;;
+    status)
+        show_status
+        ;;
+    *)
+        echo "Uso: $0 {desk|travel|status|menu}"
+        exit 1
+        ;;
+esac

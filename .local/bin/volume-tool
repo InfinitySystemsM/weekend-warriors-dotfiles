@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Audio Volume & Microphone Helper with OSD Feedback (Defqon.1 Weekend Warrior)
+# ==============================================================================
+
+ACTION="${1:-}"
+
+if ! command -v pactl >/dev/null 2>&1; then
+    exit 0
+fi
+
+case "$ACTION" in
+    up)
+        # Unmute sink if muted, then increase volume
+        pactl set-sink-mute @DEFAULT_SINK@ 0 >/dev/null 2>&1
+        pactl set-sink-volume @DEFAULT_SINK@ +5% >/dev/null 2>&1
+        ;;
+    down)
+        # Unmute sink if muted, then decrease volume
+        pactl set-sink-mute @DEFAULT_SINK@ 0 >/dev/null 2>&1
+        pactl set-sink-volume @DEFAULT_SINK@ -5% >/dev/null 2>&1
+        ;;
+    mute)
+        pactl set-sink-mute @DEFAULT_SINK@ toggle >/dev/null 2>&1
+        ;;
+    mic-mute)
+        pactl set-source-mute @DEFAULT_SOURCE@ toggle >/dev/null 2>&1
+        MIC_MUTE=$(pactl get-source-mute @DEFAULT_SOURCE@ 2>/dev/null | grep -Po '(?<=Mute: ).*')
+        if [ "$MIC_MUTE" = "yes" ]; then
+            notify-send -u low -t 1500 \
+                        -h string:x-canonical-private-synchronous:mic \
+                        "Micrófono" "󰍭  Silenciado"
+        else
+            notify-send -u low -t 1500 \
+                        -h string:x-canonical-private-synchronous:mic \
+                        "Micrófono" "󰍬  Activo"
+        fi
+        exit 0
+        ;;
+    *)
+        echo "Usage: $0 {up|down|mute|mic-mute}"
+        exit 1
+        ;;
+esac
+
+# Query sink volume & mute status
+MUTE_STATUS=$(pactl get-sink-mute @DEFAULT_SINK@ 2>/dev/null | grep -Po '(?<=Mute: ).*')
+VOL=$(pactl get-sink-volume @DEFAULT_SINK@ 2>/dev/null | grep -Po '[0-9]+(?=%)' | head -n 1)
+VOL="${VOL:-0}"
+
+if [ "$MUTE_STATUS" = "yes" ]; then
+    notify-send -u low -t 1500 \
+                -h string:x-canonical-private-synchronous:audio \
+                "Audio" "󰝟  Silenciado"
+else
+    if [ "$VOL" -ge 65 ]; then
+        ICON="󰕾"
+    elif [ "$VOL" -ge 30 ]; then
+        ICON="󰖀"
+    elif [ "$VOL" -gt 0 ]; then
+        ICON="󰕿"
+    else
+        ICON="󰝟"
+    fi
+
+    notify-send -u low -t 1500 \
+                -h string:x-canonical-private-synchronous:audio \
+                -h int:value:"$VOL" \
+                "Volumen" "${ICON}  ${VOL}%"
+fi

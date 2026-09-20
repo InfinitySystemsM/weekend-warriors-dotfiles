@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Fuzzel Energy Profile Selector (Power Profiles Daemon / TLP / Defqon.1)
+# ==============================================================================
+
+CURRENT=$(powerprofilesctl get 2>/dev/null || echo "")
+
+P_OPT="  󰌪  [1] Rendimiento (Performance)"
+B_OPT="  󰾆  [2] Equilibrado (Balanced)"
+S_OPT="  󰌪  [3] Ahorro de Energía (Power Saver)"
+
+case "$CURRENT" in
+    performance)
+        P_OPT="✓ 󰌪  [1] Rendimiento (Performance) [Activo]"
+        ;;
+    balanced)
+        B_OPT="✓ 󰾆  [2] Equilibrado (Balanced) [Activo]"
+        ;;
+    power-saver)
+        S_OPT="✓ 󰌪  [3] Ahorro de Energía (Power Saver) [Activo]"
+        ;;
+esac
+
+MENU="$P_OPT\n$B_OPT\n$S_OPT"
+
+CHOSEN=$(echo -e "$MENU" | fuzzel --dmenu --prompt="⚡ Perfil ❯ " --width=40 --lines=4)
+
+[ -z "$CHOSEN" ] && exit 0
+
+case "$CHOSEN" in
+    *"[1] Rendimiento"*)
+        if command -v powerprofilesctl >/dev/null 2>&1; then
+            powerprofilesctl set performance
+        elif command -v tlp >/dev/null 2>&1; then
+            sudo tlp ac
+        fi
+        notify-send -u low -t 2000 \
+                    -h string:x-canonical-private-synchronous:powerprofile \
+                    "Perfil de Energía" "󰌪  Rendimiento Máximo Activado"
+        ;;
+    *"[2] Equilibrado"*)
+        if command -v powerprofilesctl >/dev/null 2>&1; then
+            powerprofilesctl set balanced
+        fi
+        notify-send -u low -t 2000 \
+                    -h string:x-canonical-private-synchronous:powerprofile \
+                    "Perfil de Energía" "󰾆  Modo Equilibrado Activado"
+        ;;
+    *"[3] Ahorro de Energía"*)
+        if command -v powerprofilesctl >/dev/null 2>&1; then
+            powerprofilesctl set power-saver
+        elif command -v tlp >/dev/null 2>&1; then
+            sudo tlp bat
+        fi
+        notify-send -u low -t 2000 \
+                    -h string:x-canonical-private-synchronous:powerprofile \
+                    "Perfil de Energía" "󰌪  Modo Ahorro de Energía Activado"
+        ;;
+esac
