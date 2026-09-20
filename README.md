@@ -42,7 +42,11 @@ El diseño evita rojos fluorescentes saturados para prevenir fatiga visual duran
 ## 🚀 Características Principales
 
 - **Arquitectura Modular de Sway:** Configuración dividida limpiamente en `config.d/*.conf` (variables, salidas, entradas, atajos, reglas, scratchpads, autostart, tema y barra).
-- **Barra Superior Powerline Seamless:** Barra continua sin bordes redondeados ni gaps flotantes, interconectada con glifos Powerline reales (`` y ``) y módulos en tiempo real.
+- **Perfiles Inteligentes Desktop / Laptop:** Detección automática de hardware en tiempo real. Activa módulos de batería, brillo, gestos y TrackPoint si detecta una laptop (ej: ThinkPad X13), manteniendo intacto y limpio el entorno en PCs de sobremesa / mini PCs.
+- **Barra Superior Powerline Seamless:** Barra continua sin bordes redondeados ni gaps flotantes, interconectada con glifos Powerline reales (`` y ``) y módulos en tiempo real (con soporte dinámico para batería y brillo en laptops).
+- **Control de Brillo y Batería con OSD:** Atajos de brillo con barra de progreso interactiva en Mako (`brightness-tool`), monitor de batería con alertas críticas a 15% y 5% (`battery-alert`), y control de brillo con la rueda del ratón sobre Waybar.
+- **Gestos Multitáctiles y Lenovo TrackPoint:** Gestos nativos Wayland con 3 y 4 dedos para cambiar de workspace y ventanas, además de configuración dedicada para el clásico botón central de desplazamiento en ThinkPads.
+- **Modo Clamshell Inteligente:** Handler automático de tapa de laptop (`laptop-lid-handler`) que apaga la pantalla interna si hay un monitor externo conectado, o bloquea la sesión si se cierra la laptop de forma autónoma.
 - **Inhibidor de Inactividad Integrado (Anti-Sleep / Caffeine):** Botón directo e interactivo en Waybar con indicador de taza (`󰅶` / `󰛊`) para impedir manualmente el bloqueo de pantalla y la suspensión del sistema durante tareas críticas o de larga duración.
 - **Fastfetch con Logo Gráfico en Sixel:** Logotipo oficial de Defqon.1 recortado en fondo transparente y renderizado en alta definición mediante gráficos Sixel nativos en Foot.
 - **Scratchpads & Popups TUI Flotantes:** Ventanas emergentes centradas para control de volumen (`pulsemixer`), monitor del sistema (`btop`), selector de redes (`nmtui`), Git (`lazygit`), Bluetooth (`bluetui`), gestor de paquetes (`tui-packages`) y reloj/clima (`tui-calendar`).
@@ -82,20 +86,27 @@ dotfiles/
 │   │   ├── config.d/      # [01_variables, 02_outputs, 03_inputs, 04_keybindings...]
 │   │   └── wallpapers/    # Fondo geométrico industrial e imágenes
 │   ├── swaylock/          # Pantalla de bloqueo con anillo rojo y desenfoque
-│   ├── waybar/            # Barra superior continua Powerline (config.jsonc + style.css)
+│   ├── waybar/            # Barra continua Powerline (config.jsonc, config-laptop.jsonc, style.css)
 │   ├── xsettingsd/        # Sincronización XWayland
 │   ├── zellij/            # Multiplexor con tema defqon1
 │   └── mimeapps.list      # Asociaciones por defecto
 ├── .local/
 │   └── bin/               # Scripts y utilidades personalizadas
+│       ├── battery-alert     # Daemon de alertas de batería baja (15% y 5%) para laptops
+│       ├── brightness-tool   # Control de brillo con notificación OSD y barra de progreso
 │       ├── check-obs         # Verificador de estado de OBS / TuiCast para Waybar (opcional)
 │       ├── check-updates     # Verificador JSON de actualizaciones para Waybar
 │       ├── fuzzel-cliphist   # Historial del portapapeles interactivo
 │       ├── fuzzel-powermenu  # Menú de apagado, reinicio, bloqueo y suspensión
+│       ├── fuzzel-powerprofile # Selector interactivo de perfiles de energía (Fuzzel OSD)
 │       ├── fuzzel-wifi       # Selector interactivo de redes Wi-Fi con NetworkManager
+│       ├── laptop-lid-handler# Gestor de tapa de laptop (modo clamshell y bloqueo)
 │       ├── screenshot-tool   # Utilidad de capturas con selección en rojo carmesí
+│       ├── thinkpad-battery  # Gestor de salud y umbrales de batería ThinkPad (80% / 100%)
 │       ├── tui-calendar      # Reloj digital gigante, calendario y clima TUI
-│       └── tui-packages      # Gestor interactivo de paquetes con FZF (Pacman + Yay)
+│       ├── tui-packages      # Gestor interactivo de paquetes con FZF (Pacman + Yay)
+│       ├── volume-tool       # Control de audio/micrófono con notificación OSD y barra
+│       └── waybar-launch     # Lanzador inteligente de Waybar según tipo de hardware
 ├── src/
 │   ├── dotwave/          # Código fuente en C y Makefile de DotWave
 │   └── sampledeck/       # Código fuente en C y Makefile de SampleDeck
@@ -141,7 +152,8 @@ dotfiles/
 | `$mod + c` | Reloj, Calendario y Clima (**TUI Calendar**) |
 | `$mod + Shift + o` | Osciloscopio de audio forma de onda (**DotWave**) |
 | `$mod + Shift + k` | Inspector de samples y analizador de kicks (**SampleDeck**) |
-| `$mod + Shift + k` | Inspector de samples y analizador de kicks (**SampleDeck**) |
+| `$mod + Shift + p` | Selector de perfiles de energía (**Fuzzel Power Profile**) |
+| `$mod + Shift + u` | Gestor de salud de batería ThinkPad 80%/100% (**ThinkPad Battery**) |
 | `$mod + Shift + Enter` | Terminal flotante scratchpad |
 | `$mod + Shift + -` | Enviar ventana activa al scratchpad general |
 | `$mod + -` | Alternar/Mostrar scratchpad general |
@@ -171,16 +183,26 @@ dotfiles/
 | `Shift + Print` o `$mod + Shift + s` | Selección de área interactiva con `slurp` |
 | `$mod + Print` | Captura de la ventana activa enfocada |
 
-### 🔊 Controles de Medios y Brillo
+### 🔊 Controles de Medios, Volumen y Brillo
 | Atajo | Acción |
 |---|---|
-| `XF86AudioMute` | Silenciar / Activar audio |
-| `XF86AudioLowerVolume` | Bajar volumen (-5%) |
-| `XF86AudioRaiseVolume` | Subir volumen (+5%) |
-| `XF86AudioMicMute` | Silenciar / Activar micrófono |
+| `XF86AudioMute` | Silenciar / Activar audio con notificación OSD |
+| `XF86AudioLowerVolume` | Bajar volumen (-5%) con barra de progreso OSD en Mako |
+| `XF86AudioRaiseVolume` | Subir volumen (+5%) con barra de progreso OSD en Mako |
+| `XF86AudioMicMute` | Silenciar / Activar micrófono con notificación OSD |
 | `XF86AudioPlay` / `Pause` | Reproducir / Pausar medios |
 | `XF86AudioNext` / `Prev` | Siguiente / Anterior pista |
-| `XF86MonBrightnessUp/Down` | Ajustar brillo de pantalla (+/- 5%) |
+| `XF86MonBrightnessUp/Down` | Ajustar brillo con barra de progreso OSD en Mako |
+
+### 💻 Gestos Táctiles y Laptop (Sway Wayland)
+| Gesto / Dispositivo | Acción |
+|---|---|
+| `Swipe 3/4 dedos (Izquierda/Derecha)` | Cambiar al workspace anterior / siguiente |
+| `Swipe 3 dedos (Arriba)` | Alternar pantalla completa (*Fullscreen*) |
+| `Pinch 3 dedos (Hacia adentro)` | Enviar ventana activa al scratchpad |
+| `Pinch 3 dedos (Hacia afuera)` | Mostrar / alternar scratchpad |
+| `ThinkPad TrackPoint (Botón Central)` | Mantener presionado botón central físico para scroll fluido |
+| `Cerrar Tapa (Lid Close)` | Activa modo Clamshell (si hay monitor externo) o bloquea sesión |
 
 ---
 
@@ -194,7 +216,15 @@ sudo pacman -S --needed \
     cliphist playerctl brightnessctl libnotify polkit-gnome starship \
     btop helix micro zellij cava fastfetch fish yazi thunar \
     adw-gtk-theme papirus-icon-theme qt5ct qt6ct xsettingsd \
-    ttf-terminus-nerd ttf-meslo-nerd networkmanager pulsemixer imagemagick chafa
+    ttf-terminus-nerd ttf-meslo-nerd networkmanager pulsemixer imagemagick chafa jq
+```
+
+Paquetes optimizados para Laptop (**Lenovo ThinkPad X13 / Intel Core Tiger Lake**):
+
+```bash
+sudo pacman -S --needed \
+    brightnessctl tlp thermald intel-media-driver vulkan-intel sof-firmware bluez bluez-utils
+sudo systemctl enable --now tlp.service thermald.service bluetooth.service
 ```
 
 Y vía **AUR / Yay**:

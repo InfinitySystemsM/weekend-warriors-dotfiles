@@ -16,8 +16,13 @@ set -g fish_greeting ""
 set -gx PATH "$HOME/.local/bin" $PATH
 set -gx EDITOR micro
 set -gx VISUAL micro
-set -gx TERMINAL foot
-set -gx BROWSER cachy-browser
+if command -v cachy-browser >/dev/null 2>&1
+    set -gx BROWSER cachy-browser
+else if command -v firefox >/dev/null 2>&1
+    set -gx BROWSER firefox
+else if command -v chromium >/dev/null 2>&1
+    set -gx BROWSER chromium
+end
 set -gx GTK_THEME "adw-gtk3-dark"
 set -gx ADW_DEBUG_COLOR_SCHEME "prefer-dark"
 set -gx QT_QPA_PLATFORMTHEME "qt5ct"
@@ -75,3 +80,8 @@ end
 alias update='system-update'
 alias sdeck='sampledeck'
 alias sampleview='sampledeck'
+alias dots='git -C "$HOME/dotfiles"'
+alias power='fuzzel-powerprofile'
+alias tp-bat='thinkpad-battery'
+alias vol='volume-tool'
+alias bright='brightness-tool'

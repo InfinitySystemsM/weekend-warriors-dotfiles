@@ -66,7 +66,7 @@ if [ "$CHECK_DEPS" = true ]; then
         btop helix micro zellij cava fastfetch fish adw-gtk-theme
         papirus-icon-theme qt5ct qt6ct xsettingsd networkmanager
         pulsemixer imagemagick chafa ttf-terminus-nerd ttf-meslo-nerd
-        gcc make libpulse libsndfile
+        gcc make libpulse libsndfile jq
     )
 
     MISSING=()
@@ -86,6 +86,47 @@ if [ "$CHECK_DEPS" = true ]; then
         fi
     else
         echo -e "${C_GREEN}✓ Todas las dependencias principales están instaladas.${C_RESET}"
+    fi
+
+    # Laptop / ThinkPad Hardware Detection
+    CHASSIS=$(cat /sys/class/dmi/id/chassis_type 2>/dev/null || echo "")
+    IS_LAPTOP=false
+    if compgen -G "/sys/class/power_supply/BAT*" >/dev/null || \
+       { [ -d /sys/class/backlight ] && [ -n "$(ls -A /sys/class/backlight 2>/dev/null)" ]; } || \
+       [[ "$CHASSIS" =~ ^(8|9|10|14|31|32)$ ]]; then
+        IS_LAPTOP=true
+    fi
+
+    if [ "$IS_LAPTOP" = true ]; then
+        echo -e "${C_CYAN}ℹ Detectado chasis tipo Laptop (ThinkPad / Batería encontrada).${C_RESET}"
+        LAPTOP_PKGS=(brightnessctl tlp thermald power-profiles-daemon intel-media-driver vulkan-intel sof-firmware bluez bluez-utils)
+        LAPTOP_MISSING=()
+        for pkg in "${LAPTOP_PKGS[@]}"; do
+            if ! pacman -Qi "$pkg" &>/dev/null; then
+                LAPTOP_MISSING+=("$pkg")
+            fi
+        done
+
+        if [ ${#LAPTOP_MISSING[@]} -gt 0 ]; then
+            echo -e "${C_YELLOW}Paquetes recomendados para laptop / Intel Tiger Lake faltantes: ${LAPTOP_MISSING[*]}${C_RESET}"
+            if command -v yay &>/dev/null; then
+                read -rp "¿Deseas instalar los paquetes para laptop con yay? [S/n]: " ans
+                if [[ "$ans" =~ ^[sSyY]?$ ]]; then
+                    yay -S --needed "${LAPTOP_MISSING[@]}"
+                fi
+            fi
+        else
+            echo -e "${C_GREEN}✓ Paquetes optimizados para laptop ya instalados.${C_RESET}"
+        fi
+
+        # Power saving services recommendation
+        if command -v systemctl &>/dev/null; then
+            read -rp "¿Deseas habilitar y arrancar los servicios recomendados de energía (tlp, thermald, bluetooth)? [S/n]: " srv_ans
+            if [[ "$srv_ans" =~ ^[sSyY]?$ ]]; then
+                echo -e "${C_BLUE}==> Habilitando servicios tlp, thermald y bluetooth...${C_RESET}"
+                sudo systemctl enable --now tlp.service thermald.service bluetooth.service 2>/dev/null || true
+            fi
+        fi
     fi
 fi
 
