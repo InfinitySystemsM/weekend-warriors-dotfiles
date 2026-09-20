@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Battery Warning Daemon - Defqon.1 Weekend Warrior
+# ==============================================================================
+# Lightweight daemon for laptops. Monitors battery capacity and emits Mako
+# notifications at 15% (Low) and 5% (Critical).
+# Exits immediately with code 0 if no laptop battery is detected.
+# ==============================================================================
+
+# Check if any BAT* device exists (prevents running on desktops/mini PCs)
+shopt -s nullglob
+BATTERIES=(/sys/class/power_supply/BAT*)
+shopt -u nullglob
+
+if [ ${#BATTERIES[@]} -eq 0 ]; then
+    exit 0
+fi
+
+BAT_PATH="${BATTERIES[0]}"
+NOTIFIED_LOW=false
+NOTIFIED_CRITICAL=false
+
+while true; do
+    if [ -f "$BAT_PATH/status" ] && [ -f "$BAT_PATH/capacity" ]; then
+        STATUS=$(< "$BAT_PATH/status")
+        CAPACITY=$(< "$BAT_PATH/capacity")
+
+        if [ "$STATUS" = "Discharging" ]; then
+            if [ "$CAPACITY" -le 5 ]; then
+                if [ "$NOTIFIED_CRITICAL" = false ]; then
+                    notify-send -u critical \
+                                -h string:x-canonical-private-synchronous:battery \
+                                -t 0 \
+                                "¡BATERÍA CRÍTICA ($CAPACITY%)!" \
+                                "El sistema se apagará pronto. Conecta el cargador inmediatamente."
+                    NOTIFIED_CRITICAL=true
+                    NOTIFIED_LOW=true
+                fi
+            elif [ "$CAPACITY" -le 15 ]; then
+                if [ "$NOTIFIED_LOW" = false ]; then
+                    notify-send -u normal \
+                                -h string:x-canonical-private-synchronous:battery \
+                                -t 8000 \
+                                "Batería Baja ($CAPACITY%)" \
+                                "Nivel de batería restante: $CAPACITY%. Considera conectar el cargador."
+                    NOTIFIED_LOW=true
+                fi
+            fi
+        else
+            # Charging or Full: reset flags
+            NOTIFIED_LOW=false
+            NOTIFIED_CRITICAL=false
+        fi
+    fi
+
+    sleep 60
+done

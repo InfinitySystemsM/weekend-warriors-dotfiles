@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Screen Brightness Helper with OSD Notification (Defqon.1 Weekend Warrior)
+# ==============================================================================
+
+ACTION="${1:-}"
+
+if ! command -v brightnessctl >/dev/null 2>&1; then
+    exit 0
+fi
+
+case "$ACTION" in
+    up)
+        brightnessctl set 5%+ >/dev/null 2>&1
+        ;;
+    down)
+        brightnessctl set 5%- >/dev/null 2>&1
+        ;;
+    *)
+        echo "Usage: $0 {up|down}"
+        exit 1
+        ;;
+esac
+
+# Query brightness percentage
+PERCENT=$(brightnessctl -m 2>/dev/null | cut -d, -f4 | tr -d '%')
+
+if [ -n "$PERCENT" ]; then
+    notify-send -h string:x-canonical-private-synchronous:brightness \
+                -h int:value:"$PERCENT" \
+                -u low \
+                -t 1500 \
+                "Brillo de Pantalla" "${PERCENT}%"
+fi

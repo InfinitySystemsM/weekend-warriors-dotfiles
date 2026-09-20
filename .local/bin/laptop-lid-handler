@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Laptop Lid Event Handler - Clamshell Mode & Lock (Defqon.1 Weekend Warrior)
+# ==============================================================================
+# - Lid Close (on):
+#   * If external monitor(s) connected: Disables internal display (Clamshell mode)
+#   * If no external monitor: Locks screen with swaylock
+# - Lid Open (off):
+#   * Re-enables internal display
+# ==============================================================================
+
+ACTION="${1:-toggle}"
+
+# Detect internal laptop display (usually eDP-1 on Intel/AMD)
+INTERNAL_OUTPUT=$(swaymsg -t get_outputs 2>/dev/null | jq -r '.[] | select(.name | test("^eDP")) | .name' | head -n 1)
+[ -z "$INTERNAL_OUTPUT" ] && INTERNAL_OUTPUT="eDP-1"
+
+# Count active external displays
+EXTERNAL_COUNT=$(swaymsg -t get_outputs 2>/dev/null | jq -r "[.[] | select(.name != \"$INTERNAL_OUTPUT\" and .active == true)] | length")
+EXTERNAL_COUNT="${EXTERNAL_COUNT:-0}"
+
+case "$ACTION" in
+    on)
+        # Laptop lid was closed
+        if [ "$EXTERNAL_COUNT" -gt 0 ]; then
+            # Clamshell mode: dock / external display is active
+            swaymsg output "$INTERNAL_OUTPUT" disable
+        else
+            # Standalone laptop: lock screen
+            swaylock -f
+        fi
+        ;;
+    off)
+        # Laptop lid was opened
+        swaymsg output "$INTERNAL_OUTPUT" enable
+        ;;
+    *)
+        echo "Usage: $0 {on|off}"
+        exit 1
+        ;;
+esac
