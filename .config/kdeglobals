@@ -11,7 +11,7 @@ contrast=7
 lookAndFeelPackage=org.kde.oxygen.desktop
 
 [Icons]
-Theme=Papirus-Dark
+Theme=oxygen
 
 [ColorEffects:Disabled]
 Color=56,56,56
