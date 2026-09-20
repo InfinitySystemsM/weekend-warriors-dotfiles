@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Waybar Smart Profile Launcher - Defqon.1 Weekend Warrior
+# ==============================================================================
+# Automatically selects the optimal Waybar configuration:
+# - Laptop Profile: config-laptop.jsonc (includes battery, backlight, powerline alignment)
+# - Desktop / Mini PC Profile: config.jsonc (standard desktop modules)
+#
+# Manual Override:
+# - Set WAYBAR_PROFILE=laptop or WAYBAR_PROFILE=desktop in environment, OR
+# - Create ~/.config/waybar/profile with "laptop" or "desktop"
+# ==============================================================================
+
+PROFILE="${WAYBAR_PROFILE:-}"
+
+if [ -z "$PROFILE" ] && [ -f "$HOME/.config/waybar/profile" ]; then
+    PROFILE=$(tr -d '[:space:]' < "$HOME/.config/waybar/profile")
+fi
+
+if [ -z "$PROFILE" ]; then
+    CHASSIS=$(cat /sys/class/dmi/id/chassis_type 2>/dev/null || echo "")
+    # Check for laptop battery (BAT0, BAT1), internal backlight, or mobile chassis types
+    # (8=Portable, 9=Laptop, 10=Notebook, 14=Sub-notebook, 31=Convertible, 32=Detachable)
+    if compgen -G "/sys/class/power_supply/BAT*" >/dev/null || \
+       { [ -d /sys/class/backlight ] && [ -n "$(ls -A /sys/class/backlight 2>/dev/null)" ]; } || \
+       [[ "$CHASSIS" =~ ^(8|9|10|14|31|32)$ ]]; then
+        PROFILE="laptop"
+    else
+        PROFILE="desktop"
+    fi
+fi
+
+CONFIG_DIR="$HOME/.config/waybar"
+if [ "$PROFILE" = "laptop" ] && [ -f "$CONFIG_DIR/config-laptop.jsonc" ]; then
+    exec /usr/bin/waybar -c "$CONFIG_DIR/config-laptop.jsonc" "$@"
+else
+    exec /usr/bin/waybar -c "$CONFIG_DIR/config.jsonc" "$@"
+fi

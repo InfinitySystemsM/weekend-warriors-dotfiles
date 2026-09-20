@@ -1,0 +1,365 @@
+{
+    "layer": "top",
+    "position": "top",
+    "margin-top": 0,
+    "margin-bottom": 0,
+    "margin-left": 0,
+    "margin-right": 0,
+    "spacing": 0,
+
+    "modules-left": [
+        "sway/workspaces",
+        "custom/left-arrow-workspaces",
+        "sway/mode",
+        "sway/window",
+        "custom/left-arrow-window",
+        "group/media"
+    ],
+    "modules-center": [
+        "custom/clock-arrow-left",
+        "clock",
+        "custom/clock-arrow-right"
+    ],
+    "modules-right": [
+        // Módulo opcional OBS Studio / TuiCast (descomentar para activar):
+        // "custom/arrow-obs",
+        // "custom/obs",
+        "custom/arrow-updates",
+        "custom/updates",
+        "custom/arrow-cpu",
+        "cpu",
+        "custom/arrow-memory",
+        "memory",
+        "custom/arrow-disk",
+        "disk",
+        "custom/arrow-pulseaudio",
+        "pulseaudio",
+        "custom/arrow-backlight",
+        "backlight",
+        "custom/arrow-battery",
+        "battery",
+        "custom/arrow-network",
+        "network",
+        "custom/arrow-bluetooth",
+        "bluetooth",
+        "custom/arrow-tray",
+        "tray",
+        "custom/arrow-idle-inhibitor",
+        "idle_inhibitor",
+        "custom/arrow-power",
+        "custom/power"
+    ],
+
+    "sway/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "format": "{name}",
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": []
+        }
+    },
+
+    "custom/left-arrow-workspaces": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+
+    "sway/window": {
+        "format": "{title}",
+        "max-length": 40,
+        "rewrite": {
+            "(.*) - foot": "  $1",
+            "(.*) — Mozilla Firefox": "󰈹  $1",
+            "^Terminal$": "  Terminal",
+            "^$": "  Desktop"
+        }
+    },
+
+    "custom/left-arrow-window": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "group/media": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/media-prev",
+            "mpris",
+            "custom/media-next",
+            "custom/media-arrow-right"
+        ]
+    },
+
+    "custom/media-prev": {
+        "format": "󰒮",
+        "tooltip": false,
+        "on-click": "playerctl -p 'spotify,spotify_player,spotify-player,%any' previous"
+    },
+
+    "mpris": {
+        "format": "{player_icon} {status_icon} {dynamic}",
+        "format-paused": "{player_icon} {status_icon} <i>{dynamic}</i>",
+        "format-stopped": "{player_icon} 󰓛 Inactivo",
+        "player-icons": {
+            "spotify": " ",
+            "spotify_player": " ",
+            "firefox": "󰈹 ",
+            "chromium": " ",
+            "mpv": "󰐹 ",
+            "default": "󰎆 "
+        },
+        "status-icons": {
+            "playing": "󰐊",
+            "paused": "󰏤",
+            "stopped": "󰓛"
+        },
+        "dynamic-order": ["artist", "title"],
+        "dynamic-importance-order": ["title", "artist"],
+        "dynamic-len": 32,
+        "on-click": "playerctl -p 'spotify,spotify_player,spotify-player,%any' play-pause",
+        "on-click-right": "playerctl -p 'spotify,spotify_player,spotify-player,%any' next",
+        "on-click-middle": "playerctl -p 'spotify,spotify_player,spotify-player,%any' previous",
+        "on-scroll-up": "playerctl -p 'spotify,spotify_player,spotify-player,%any' volume 0.05+",
+        "on-scroll-down": "playerctl -p 'spotify,spotify_player,spotify-player,%any' volume 0.05-",
+        "tooltip-format": "{player} [{status}]\n󰎆 {title}\n {artist}\n󰀥 {album}",
+        "tooltip-format-stopped": "{player} [Inactivo]\nNo hay reproducción activa",
+        "ignored-players": ["firefox"]
+    },
+
+    "custom/media-next": {
+        "format": "󰒭",
+        "tooltip": false,
+        "on-click": "playerctl -p 'spotify,spotify_player,spotify-player,%any' next"
+    },
+
+    "custom/media-arrow-right": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "custom/clock-arrow-left": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "clock": {
+        "interval": 1,
+        "format": "  {:%H:%M:%S   󰃭  %a %d %b}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#e05561'><b>{}</b></span>",
+                "days": "<span color='#e4e5e8'><b>{}</b></span>",
+                "weeks": "<span color='#56b6c2'><b>W{}</b></span>",
+                "weekdays": "<span color='#f38d41'><b>{}</b></span>",
+                "today": "<span color='#ff4757'><b><u>{}</u></b></span>"
+            }
+        },
+        "on-click": "foot --app-id=tui-calendar -e tui-calendar"
+    },
+
+    "custom/clock-arrow-right": {
+        "format": "",
+        "tooltip": false
+    },
+
+    // Módulo Opcional: OBS Studio / TuiCast (desactivado por defecto)
+    // Para activarlo, descomenta "custom/arrow-obs" y "custom/obs" en "modules-right".
+    "custom/arrow-obs": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "custom/obs": {
+        "format": "{}",
+        "interval": 2,
+        "return-type": "json",
+        "exec": "~/.local/bin/check-obs",
+        "on-click": "foot --app-id=tuicast -e tuicast",
+        "signal": 9
+    },
+
+    "custom/arrow-updates": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "custom/updates": {
+        "format": "{}",
+        "interval": 1800,
+        "return-type": "json",
+        "exec": "~/.local/bin/check-updates",
+        "on-click": "foot --app-id=tui-updates -e system-update",
+        "signal": 8
+    },
+
+    "custom/arrow-cpu": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "cpu": {
+        "interval": 2,
+        "format": "  {usage}%",
+        "on-click": "foot --app-id=tui-btop -e btop"
+    },
+
+    "custom/arrow-memory": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "memory": {
+        "interval": 2,
+        "format": "󰘚  {percentage}%",
+        "tooltip-format": "RAM: {used:0.1f}GiB / {total:0.1f}GiB",
+        "on-click": "foot --app-id=tui-btop -e btop"
+    },
+
+    "custom/arrow-disk": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "disk": {
+        "interval": 30,
+        "format": "󰋊  {percentage_used}%",
+        "path": "/"
+    },
+
+    "custom/arrow-pulseaudio": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "pulseaudio": {
+        "format": "{icon}  {volume}%",
+        "format-muted": "󰝟  Muted",
+        "format-icons": {
+            "default": ["", "", ""]
+        },
+        "scroll-step": 5,
+        "on-click": "foot --app-id=tui-pulsemixer -e pulsemixer"
+    },
+
+    "custom/arrow-backlight": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "backlight": {
+        "interval": 2,
+        "align": 0,
+        "rotate": 0,
+        "format": "{icon}  {percent}%",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "on-scroll-up": "brightness-tool up",
+        "on-scroll-down": "brightness-tool down",
+        "tooltip-format": "Brillo de pantalla: {percent}%",
+        "smooth-scrolling-threshold": 1
+    },
+
+    "custom/arrow-battery": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "battery": {
+        "interval": 10,
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}  {capacity}%",
+        "format-charging": "󰂄  {capacity}%",
+        "format-plugged": "󰚥  {capacity}%",
+        "format-alt": "{icon}  {time}",
+        "format-icons": ["󰂃", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "tooltip-format": "Batería: {capacity}%\nEstado: {timeTo}\nPotencia: {power:0.1f}W",
+        "tooltip-format-charging": "Cargando: {capacity}%\nTiempo restante: {timeTo}\nPotencia: +{power:0.1f}W",
+        "tooltip-format-plugged": "Conectado a CA (Completo)"
+    },
+
+    "custom/arrow-network": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "network": {
+        "interval": 5,
+        "format-wifi": "󰤨  {essid}",
+        "format-ethernet": "󰈀  {ifname}",
+        "format-disconnected": "󰤭  Offline",
+        "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
+        "on-click": "fuzzel-wifi"
+    },
+
+    "custom/arrow-bluetooth": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "bluetooth": {
+        "format": "󰂯 {status}",
+        "format-disabled": "󰂲 Off",
+        "format-off": "󰂲 Off",
+        "format-connected": "󰂱 {device_alias}",
+        "format-connected-battery": "󰂱 {device_alias} ({device_battery_percentage}%)",
+        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} conectados",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} conectados:\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "• {device_alias}\t{device_address}",
+        "tooltip-format-enumerate-connected-battery": "• {device_alias}\t({device_battery_percentage}%)",
+        "on-click": "foot --app-id=tui-bluetui -e bluetui"
+    },
+
+    "custom/arrow-tray": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "tray": {
+        "icon-size": 15,
+        "spacing": 6,
+        "show-passive-items": true
+    },
+
+    "custom/arrow-idle-inhibitor": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "󰅶",
+            "deactivated": "󰛊"
+        },
+        "tooltip": true,
+        "tooltip-format-activated": "Inhibidor de inactividad: Activado\n(Bloqueo y suspensión desactivados)",
+        "tooltip-format-deactivated": "Inhibidor de inactividad: Desactivado\n(Bloqueo y suspensión automáticos activos)"
+    },
+
+    "custom/arrow-power": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "custom/power": {
+        "format": " ",
+        "tooltip": false,
+        "on-click": "fuzzel-powermenu"
+    }
+}
