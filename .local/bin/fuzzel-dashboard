@@ -135,20 +135,16 @@ toggle_anti_sleep() {
 apply_wallpaper() {
     local wp="$1"
     local wp_name="$(basename "$wp")"
+    local current_link="$HOME/.config/sway/wallpapers/current"
     if [ -f "$wp" ]; then
+        ln -sfn "$wp" "$current_link"
         if command -v swaymsg >/dev/null 2>&1; then
-            swaymsg output "*" bg "$wp" fill
-        fi
-
-        # Persistir en 02_outputs.conf
-        local out_conf="$HOME/.config/sway/config.d/02_outputs.conf"
-        if [ -f "$out_conf" ]; then
-            sed -i "s|output \* bg .* fill #0f1013|output * bg ~/.config/sway/wallpapers/$wp_name fill #0f1013|" "$out_conf"
+            swaymsg output "*" bg "$current_link" fill
         fi
 
         notify-send -u low -t 2500 \
             -h string:x-canonical-private-synchronous:wallpaper \
-            "Fondo de Pantalla" "󰔎 Aplicado: $wp_name"
+            "Fondo de Pantalla" "󰋩 Aplicado: $wp_name"
     fi
 }
 
@@ -174,19 +170,19 @@ set_waybar_profile() {
 
 menu_wallpapers() {
     local wp_dir="$HOME/.config/sway/wallpapers"
-    local items="⬅   [0] Volver a Personalización"
+    local items="󰁍   [0] Volver a Personalización"
 
     if [ -d "$wp_dir" ]; then
         shopt -s nullglob
         for file in "$wp_dir"/*.{jpg,png,jpeg,webp}; do
             [ -f "$file" ] || continue
             local bname="$(basename "$file")"
-            items="$items\n🖼️   $bname"
+            items="$items\n󰋩   $bname"
         done
         shopt -u nullglob
     fi
 
-    local chosen=$(echo -e "$items" | fuzzel --dmenu --prompt="🖼️ Fondos ❯ " --width=$MENU_WIDTH --lines=6)
+    local chosen=$(echo -e "$items" | fuzzel --dmenu --prompt="󰋩 Fondos ❯ " --width=$MENU_WIDTH --lines=6)
     [ -z "$chosen" ] && return 0
 
     case "$chosen" in
@@ -194,7 +190,7 @@ menu_wallpapers() {
             menu_customization
             ;;
         *)
-            local file_selected=$(echo "$chosen" | sed 's/^.*🖼️[[:space:]]*//' | tr -d '[:space:]')
+            local file_selected=$(echo "$chosen" | sed 's/^.*󰋩[[:space:]]*//' | tr -d '[:space:]')
             if [ -n "$file_selected" ] && [ -f "$wp_dir/$file_selected" ]; then
                 apply_wallpaper "$wp_dir/$file_selected"
             fi
@@ -208,13 +204,13 @@ menu_wallpapers() {
 
 menu_config() {
     local options="\
-⬅   [0] Volver al Menú Principal\n\
+󰁍   [0] Volver al Menú Principal\n\
 󰤨   [1] Red: Conectar a Wi-Fi (Selector interactivo)\n\
 󰈀   [2] Red: Conexiones y Ethernet (NMTUI)\n\
 󰂯   [3] Bluetooth: Administrar dispositivos (Bluetui)\n\
 󰕾   [4] Audio: Mezclador de volumen y salidas (Pulsemixer)\n\
 󰍬   [5] Audio: Efectos y Ecualizador (EasyEffects)\n\
-⚡  [6] Energía: Perfil de Rendimiento / Ahorro (Fuzzel)\n\
+󱐋   [6] Energía: Perfil de Rendimiento / Ahorro (Fuzzel)\n\
 󰂄  [7] Batería: Umbral de salud ThinkPad (80% / 100%)\n\
 󰃠   [8] Pantalla: Subir Brillo (+5%)\n\
 󰃞   [9] Pantalla: Bajar Brillo (-5%)\n\
@@ -274,23 +270,23 @@ menu_config() {
 
 menu_actions() {
     local options="\
-⬅   [0] Volver al Menú Principal\n\
+󰁍   [0] Volver al Menú Principal\n\
 󰄀   [1] Captura: Seleccionar Área con Slurp\n\
 󰹑   [2] Captura: Pantalla Completa\n\
 󰖲   [3] Captura: Ventana Activa Enfocada\n\
 󰅌   [4] Portapapeles: Historial interactivo (Cliphist)\n\
    [5] Terminal: Abrir Scratchpad Flotante Rápido\n\
-📁  [6] Archivos: Explorador en Terminal (Yazi)\n\
-📂  [7] Archivos: Explorador Gráfico (PCManFM-Qt / Thunar)\n\
+󰉋   [6] Archivos: Explorador en Terminal (Yazi)\n\
+󰉋   [7] Archivos: Explorador Gráfico (PCManFM-Qt / Thunar)\n\
 󰊢   [8] Git: Interfaz de Repositorios (Lazygit)\n\
 󰑓   [9] Sway: Recargar Configuración en Caliente\n\
 󱂬   [10] Ventana: Alternar Flotante / Mosaico\n\
 󰍹   [11] Ventana: Alternar Pantalla Completa\n\
 󰝟   [12] Audio: Silenciar / Activar Sonido (Mute)\n\
 󰍭   [13] Audio: Silenciar / Activar Micrófono\n\
-⌨️   [14] Atajos de Teclado: Aprender Atajos (Learn Keybindings)"
+󰌌   [14] Atajos de Teclado: Aprender Atajos (Learn Keybindings)"
 
-    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="⚡ Acciones ❯ " --width=$MENU_WIDTH --lines=15)
+    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="󱐋 Acciones ❯ " --width=$MENU_WIDTH --lines=15)
     [ -z "$chosen" ] && return 0
 
     case "$chosen" in
@@ -352,8 +348,8 @@ menu_actions() {
 
 menu_customization() {
     local options="\
-⬅   [0] Volver al Menú Principal\n\
-🖼️   [1] Fondo de Pantalla: Seleccionar Wallpaper Defqon.1\n\
+󰁍   [0] Volver al Menú Principal\n\
+󰋩   [1] Fondo de Pantalla: Seleccionar Wallpaper Defqon.1\n\
 󰌢   [2] Waybar: Activar Perfil Laptop (Batería, Brillo, BT)\n\
 󰍹   [3] Waybar: Activar Perfil Desktop (PC Sobremesa Limpio)\n\
 󰑓   [4] Waybar: Reiniciar Barra de Estado\n\
@@ -405,8 +401,8 @@ menu_customization() {
 
 menu_status() {
     local options="\
-⬅   [0] Volver al Menú Principal\n\
-📊  [1] Monitor de Recursos Completo en Vivo (Btop)\n\
+󰁍   [0] Volver al Menú Principal\n\
+󰍛   [1] Monitor de Recursos Completo en Vivo (Btop)\n\
 󰣇   [2] Resumen de Hardware y Sistema (Fastfetch)\n\
 󰃭   [3] Calendario, Reloj Digital y Clima (TUI Calendar)\n\
 󰏓   [4] Comprobar Actualizaciones Pendientes (Pacman/AUR)\n\
@@ -415,7 +411,7 @@ menu_status() {
 󰋊   [7] Espacio en Disco y Almacenamiento (df)\n\
 󰔚   [8] Tiempo de Actividad y Carga del Sistema (Uptime)"
 
-    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="󰍛 Estado del Sistema ❯ " --width=$MENU_WIDTH --lines=10)
+    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="󰄦 Diagnóstico ❯ " --width=$MENU_WIDTH --lines=10)
     [ -z "$chosen" ] && return 0
 
     case "$chosen" in
@@ -455,14 +451,14 @@ menu_status() {
 
 menu_session() {
     local options="\
-⬅   [0] Volver al Menú Principal\n\
+󰁍   [0] Volver al Menú Principal\n\
    [1] Bloquear Pantalla (Swaylock)\n\
 󰒲   [2] Suspender Sistema\n\
 󰍃   [3] Cerrar Sesión (Exit Sway)\n\
 󰑓   [4] Reiniciar Sistema\n\
    [5] Apagar Sistema"
 
-    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="⏻ Sesión ❯ " --width=$MENU_WIDTH --lines=7)
+    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="󰐥 Sesión ❯ " --width=$MENU_WIDTH --lines=7)
     [ -z "$chosen" ] && return 0
 
     case "$chosen" in
@@ -470,7 +466,7 @@ menu_session() {
             main_menu
             ;;
         *"[1] Bloquear"*)
-            swaylock -f -c 1e1e2e || swaylock
+            swaylock -f -c 121317 || swaylock
             ;;
         *"[2] Suspender"*)
             systemctl suspend
@@ -493,11 +489,11 @@ menu_session() {
 
 menu_keybindings() {
     local options="\
-⬅   [0] Volver al Menú Principal\n\
-📋  [1] Abrir Guía Visual Interactiva (TUI en Foot)\n\
-🔍  [2] Buscar Atajo Rápido aquí en Fuzzel"
+󰁍   [0] Volver al Menú Principal\n\
+󰅌   [1] Abrir Guía Visual Interactiva (TUI en Foot)\n\
+󰍉   [2] Buscar Atajo Rápido aquí en Fuzzel"
 
-    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="⌨️ Atajos ❯ " --width=$MENU_WIDTH --lines=4)
+    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="󰌌 Atajos ❯ " --width=$MENU_WIDTH --lines=4)
     [ -z "$chosen" ] && return 0
 
     case "$chosen" in
@@ -520,13 +516,13 @@ menu_keybindings() {
 main_menu() {
     local options="\
 󰒓   [1] Configuración        ❯  Redes, Bluetooth, Audio, Energía, Paquetes...\n\
-⚡  [2] Acciones Principales ❯  Capturas, Portapapeles, Scratchpads, Atajos...\n\
+󱐋   [2] Acciones Principales ❯  Capturas, Portapapeles, Scratchpads, Atajos...\n\
 󰔎   [3] Personalización      ❯  Wallpapers, Waybar, Cava, Temas, Dotfiles...\n\
-󰍛   [4] Estado del Sistema    ❯  Monitor btop, Fastfetch, Clima, Recursos...\n\
-⌨️   [5] Atajos de Teclado    ❯  Aprender y buscar atajos (Cheat Sheet)...\n\
-⏻   [6] Sesión y Energía      ❯  Bloquear, Suspender, Reiniciar, Apagar..."
+󰄦   [4] Estado del Sistema    ❯  Monitor btop, Fastfetch, Clima, Recursos...\n\
+󰌌   [5] Atajos de Teclado    ❯  Aprender y buscar atajos (Cheat Sheet)...\n\
+󰐥   [6] Sesión y Energía      ❯  Bloquear, Suspender, Reiniciar, Apagar..."
 
-    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="🛡️ Menú Principal ❯ " --width=$MENU_WIDTH --lines=7)
+    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="󰍜 Menú Principal ❯ " --width=$MENU_WIDTH --lines=7)
     [ -z "$chosen" ] && exit 0
 
     case "$chosen" in

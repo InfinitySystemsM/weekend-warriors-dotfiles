@@ -18,63 +18,63 @@ export FZF_DEFAULT_OPTS=" \
 
 # Array de atajos estructurados: Categoría | Atajo | Acción Corta | Comando Ejecutable | Descripción Detallada
 BINDINGS=(
-    "🚀 Lanzadores|Super + Enter|Abrir terminal Wayland (Foot)|foot|Abre el emulador de terminal Foot nativo de Wayland con tema Industrial Dark y baja latencia."
-    "🚀 Lanzadores|Super + Space / Super + d|Lanzador de aplicaciones (Fuzzel)|fuzzel|Abre el menú interactivo Fuzzel para buscar e iniciar cualquier programa instalado."
-    "🛡️ Menú Hub|Super + x / Super + p|Menú Principal / Centro de Control|fuzzel-dashboard|Despliega el Centro de Control Defqon.1 con menús de Configuración, Acciones, Personalización, Estado y Sesión."
-    "📋 Portapapeles|Super + v|Historial del portapapeles (Cliphist)|fuzzel-cliphist|Muestra el historial reciente de texto e imágenes copiadas para pegarlas en cualquier app."
-    "📁 Archivos|Super + y|Explorador de archivos TUI (Yazi)|foot -T yazi -e yazi|Explorador de archivos en terminal ultra rápido con previsualización gráfica."
-    "📂 Archivos|Super + Shift + f|Explorador de archivos GUI (PCManFM-Qt)|pcmanfm-qt|Explorador de archivos gráfico ligero integrado con tema Oxygen Dark."
-    "🔒 Sesión|Super + Esc|Bloquear pantalla (Swaylock)|swaylock -f|Bloquea la sesión de inmediato con pantalla oscura y anillo indicador Defqon.1."
-    "⏻ Sesión|Super + Shift + e|Menú de energía y apagado|fuzzel-powermenu|Menú emergente con opciones de Bloquear, Suspender, Cerrar Sesión, Reiniciar y Apagar."
-    "🔄 Sistema|Super + Shift + c|Recargar configuración de Sway|swaymsg reload|Vuelve a leer y aplicar todos los archivos de configuración en ~/.config/sway/config.d/ sin cerrar aplicaciones."
-    "❌ Ventanas|Super + Shift + q|Cerrar ventana enfocada|swaymsg kill|Cierra el contenedor o aplicación activa de forma segura."
-    "📖 Ayuda|Super + F1 / Super + ?|Visor de Atajos (Learn Keybindings)|tui-keybindings|Abre este panel interactivo para aprender, buscar y consultar todos los atajos de teclado."
-    "🪟 Scratchpads|Super + m|Mezclador de audio (Pulsemixer)|foot --app-id=tui-pulsemixer -e pulsemixer|Popup flotante centrado para ajustar volúmenes de canales, micrófonos y tarjetas de audio."
-    "🪟 Scratchpads|Super + Shift + b|Monitor de recursos del sistema (Btop)|foot --app-id=tui-btop -e btop|Popup flotante para ver uso de CPU, RAM, GPU, procesos y temperaturas en tiempo real."
-    "🪟 Scratchpads|Super + Shift + n|Gestor de redes completo (NMTUI)|foot --app-id=tui-nmtui -e nmtui|Interfaz de texto para configurar conexiones Wi-Fi, Ethernet, VPN y DNS."
-    "🪟 Scratchpads|Super + Shift + w|Selector rápido de Wi-Fi|fuzzel-wifi|Menú Fuzzel para escanear redes inalámbricas cercanas y conectarse al instante."
-    "🪟 Scratchpads|Super + Shift + g|Control de versiones Git (Lazygit)|foot --app-id=tui-lazygit -e lazygit|Interfaz TUI completa para Git con árbol de ramas, diff interactivo y commits rápidos."
-    "🪟 Scratchpads|Super + Shift + t|Administrador Bluetooth (Bluetui)|foot --app-id=tui-bluetui -e bluetui|Herramienta de terminal para emparejar, conectar y desconectar auriculares y periféricos."
-    "🪟 Scratchpads|Super + i|Gestor de paquetes Pacman/AUR (TUI)|foot --app-id=tui-packages -e tui-packages|Buscador interactivo con FZF para instalar, actualizar y limpiar software vía Pacman y Yay."
-    "🪟 Scratchpads|Super + c|Reloj gigante, Calendario y Clima|foot --app-id=tui-calendar -e tui-calendar|Widget TUI con reloj digital en dígitos ASCII, calendario mensual y clima en vivo."
-    "🪟 Scratchpads|Super + Shift + o|Osciloscopio de audio en C (DotWave)|foot --app-id=tui-dotwave -e dotwave|Visualizador de forma de onda de audio en tiempo real con subpíxeles Braille Unicode."
-    "🪟 Scratchpads|Super + Shift + k|Inspector de Samples y Kicks (SampleDeck)|foot --app-id=tui-sampledeck -e sampledeck|Analizador estático de kicks Hardstyle con zoom, minimapa y detección de tono."
-    "🪟 Scratchpads|Super + Shift + p|Selector de perfil de energía|fuzzel-powerprofile|Alterna entre Rendimiento Máximo, Equilibrado y Ahorro de Energía (powerprofilesctl / TLP)."
-    "🪟 Scratchpads|Super + Shift + u|Salud de batería ThinkPad (80%/100%)|thinkpad-battery menu|Menú interactivo para cambiar umbrales de carga a 80% (Modo Escritorio) o 100% (Modo Viaje)."
-    "🪟 Scratchpads|Super + Shift + Enter|Terminal flotante scratchpad rápido|foot --app-id=tui-scratchpad|Abre una terminal flotante centrada para comandos rápidos y pruebas."
-    "🪟 Scratchpads|Super + Shift + -|Enviar ventana al Scratchpad general|swaymsg move scratchpad|Oculta la ventana activa en el scratchpad de fondo de Sway."
-    "🪟 Scratchpads|Super + -|Alternar / Mostrar ventana Scratchpad|swaymsg scratchpad show|Trae al frente secuencialmente las ventanas ocultas en el scratchpad general."
-    "🧭 Navegación|Super + h / j / k / l|Mover foco de ventana (Estilo Vim)|swaymsg focus left|Cambia el foco a la ventana situada a la izquierda (h), abajo (j), arriba (k) o derecha (l)."
-    "🧭 Navegación|Super + Flechas|Mover foco con flechas del cursor|swaymsg focus left|Cambia el foco entre ventanas contiguas usando las flechas de dirección estándar."
-    "🧭 Navegación|Super + Shift + h/j/k/l|Mover posición de ventana (Vim)|swaymsg move left|Desplaza la ventana activa dentro del mosaico hacia la izquierda, abajo, arriba o derecha."
-    "🧭 Navegación|Super + Shift + Flechas|Mover posición con flechas|swaymsg move left|Mueve la posición de la ventana activa en la dirección de la flecha pulsada."
-    "🧭 Navegación|Super + 1 al 0|Ir al espacio de trabajo 1 al 10|swaymsg workspace number 1|Cambia inmediatamente al Workspace numérico indicado (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)."
-    "🧭 Navegación|Super + Shift + 1 al 0|Mover ventana al espacio 1 al 10|swaymsg move container to workspace number 1|Envía la ventana enfocada al Workspace indicado (1 al 10)."
-    "🧭 Navegación|Super + a|Enfocar contenedor padre (Focus parent)|swaymsg focus parent|Sube un nivel en la jerarquía del árbol de contenedores de Sway."
-    "🧭 Navegación|Super + Tab|Alternar foco flotante / mosaico|swaymsg focus mode_toggle|Alterna rápidamente el foco entre ventanas en mosaico y ventanas que están flotando."
-    "📦 Layouts|Super + f|Alternar pantalla completa (Fullscreen)|swaymsg fullscreen toggle|Expande la ventana enfocada a pantalla completa eliminando bordes y barras."
-    "📦 Layouts|Super + Shift + Space|Alternar ventana flotante / mosaico|swaymsg floating toggle|Convierte una ventana en mosaico a ventana flotante independiente o viceversa."
-    "📦 Layouts|Super + b|División horizontal (Splith)|swaymsg splith|La próxima ventana que se abra se ubicará a la derecha de la ventana actual."
-    "📦 Layouts|Super + n|División vertical (Splitv)|swaymsg splitv|La próxima ventana que se abra se ubicará debajo de la ventana actual."
-    "📦 Layouts|Super + s|Diseño en pila (Stacking layout)|swaymsg layout stacking|Agrupa las ventanas del contenedor en una lista vertical con barra de título superior."
-    "📦 Layouts|Super + w|Diseño en pestañas (Tabbed layout)|swaymsg layout tabbed|Muestra las ventanas en pestañas horizontales estilo navegador web."
-    "📦 Layouts|Super + e|Alternar división (Toggle split)|swaymsg layout toggle split|Alterna la dirección de división actual entre horizontal y vertical."
-    "📦 Layouts|Super + r|Entrar en modo redimensión (Resize)|swaymsg mode 'resize'|Activa el modo de ajuste de tamaño. Usa h/j/k/l o Flechas para redimensionar y Enter/Esc para salir."
-    "📸 Capturas|Print|Captura de pantalla completa|screenshot-tool full|Captura toda la pantalla y la copia automáticamente al portapapeles con notificación."
-    "📸 Capturas|Shift + Print / Super + Shift + s|Captura de área interactiva|screenshot-tool area|Permite seleccionar una región con 'slurp' en rojo carmesí y la guarda en el portapapeles."
-    "📸 Capturas|Super + Print|Captura de ventana activa|screenshot-tool window|Captura exclusivamente la ventana actualmente enfocada y la copia al portapapeles."
-    "🔊 Multimedia|XF86AudioMute|Silenciar / Activar sonido (Mute)|volume-tool mute|Alterna el silencio de salida de audio con barra de volumen OSD en Mako."
-    "🔊 Multimedia|XF86AudioLowerVolume|Bajar volumen de audio (-5%)|volume-tool down|Reduce el volumen en 5% y muestra la barra de progreso OSD en tiempo real."
-    "🔊 Multimedia|XF86AudioRaiseVolume|Subir volumen de audio (+5%)|volume-tool up|Incrementa el volumen en 5% con notificación de nivel en pantalla."
-    "🔊 Multimedia|XF86AudioMicMute|Silenciar / Activar micrófono|volume-tool mic-mute|Alterna el silencio de entrada de micrófono con notificación OSD."
-    "🔊 Multimedia|XF86AudioPlay / Pause|Reproducir / Pausar medios|playerctl play-pause|Controla reproductores activos compatibles con MPRIS (Spotify, Firefox, mpv, etc.)."
-    "🔊 Multimedia|XF86AudioNext / Prev|Pista siguiente / anterior|playerctl next|Salta a la siguiente o anterior canción en el reproductor activo."
-    "☀️ Pantalla|XF86MonBrightnessUp / Down|Subir / Bajar brillo de pantalla|brightness-tool up|Ajusta el brillo del panel en tramos de 5% con barra de porcentaje en Mako."
-    "💻 Gestos|Swipe 3/4 dedos (Izq/Der)|Cambiar de espacio de trabajo|swaymsg workspace prev|Desliza 3 o 4 dedos en el touchpad hacia los lados para alternar entre escritorios contiguos."
-    "💻 Gestos|Swipe 3 dedos (Arriba)|Alternar pantalla completa|swaymsg fullscreen toggle|Desliza 3 dedos hacia arriba para activar o salir de pantalla completa."
-    "💻 Gestos|Pinch 3 dedos (In/Out)|Enviar / Mostrar Scratchpad|swaymsg scratchpad show|Pellizca con 3 dedos hacia adentro para enviar al scratchpad o hacia afuera para mostrarlo."
-    "💻 TrackPoint|Botón Central Físico|Desplazamiento fluido (Scroll)|swaymsg input|Mantén presionado el botón central sobre el teclado ThinkPad y mueve el TrackPoint para scroll rápido."
-    "💻 Tapa Laptop|Cerrar tapa (Lid Switch)|Modo Clamshell o Bloqueo automático|laptop-lid-handler on|Si hay monitor externo apaga la pantalla integrada; si está sola bloquea la sesión."
+    "󰄛 Lanzadores|Super + Enter|Abrir terminal Wayland (Foot)|foot|Abre el emulador de terminal Foot nativo de Wayland con tema Industrial Dark y baja latencia."
+    "󰄛 Lanzadores|Super + Space / Super + d|Lanzador de aplicaciones (Fuzzel)|fuzzel|Abre el menú interactivo Fuzzel para buscar e iniciar cualquier programa instalado."
+    "󰍜 Menú Hub|Super + x / Super + p|Menú Principal / Centro de Control|fuzzel-dashboard|Despliega el Centro de Control Defqon.1 con menús de Configuración, Acciones, Personalización, Estado y Sesión."
+    "󰅌 Portapapeles|Super + v|Historial del portapapeles (Cliphist)|fuzzel-cliphist|Muestra el historial reciente de texto e imágenes copiadas para pegarlas en cualquier app."
+    "󰉋 Archivos|Super + y|Explorador de archivos TUI (Yazi)|foot -T yazi -e yazi|Explorador de archivos en terminal ultra rápido con previsualización gráfica."
+    "󰉋 Archivos|Super + Shift + f|Explorador de archivos GUI (PCManFM-Qt)|pcmanfm-qt|Explorador de archivos gráfico ligero integrado con tema Oxygen Dark."
+    "󰌾 Sesión|Super + Esc|Bloquear pantalla (Swaylock)|swaylock -f|Bloquea la sesión de inmediato con pantalla oscura y anillo indicador Defqon.1."
+    "󰐥 Sesión|Super + Shift + e|Menú de energía y apagado|fuzzel-powermenu|Menú emergente con opciones de Bloquear, Suspender, Cerrar Sesión, Reiniciar y Apagar."
+    "󰑓 Sistema|Super + Shift + c|Recargar configuración de Sway|swaymsg reload|Vuelve a leer y aplicar todos los archivos de configuración en ~/.config/sway/config.d/ sin cerrar aplicaciones."
+    "󰅖 Ventanas|Super + Shift + q|Cerrar ventana enfocada|swaymsg kill|Cierra el contenedor o aplicación activa de forma segura."
+    "󰋖 Ayuda|Super + F1 / Super + ?|Visor de Atajos (Learn Keybindings)|tui-keybindings|Abre este panel interactivo para aprender, buscar y consultar todos los atajos de teclado."
+    "󱂬 Scratchpads|Super + m|Mezclador de audio (Pulsemixer)|foot --app-id=tui-pulsemixer -e pulsemixer|Popup flotante centrado para ajustar volúmenes de canales, micrófonos y tarjetas de audio."
+    "󱂬 Scratchpads|Super + Shift + b|Monitor de recursos del sistema (Btop)|foot --app-id=tui-btop -e btop|Popup flotante para ver uso de CPU, RAM, GPU, procesos y temperaturas en tiempo real."
+    "󱂬 Scratchpads|Super + Shift + n|Gestor de redes completo (NMTUI)|foot --app-id=tui-nmtui -e nmtui|Interfaz de texto para configurar conexiones Wi-Fi, Ethernet, VPN y DNS."
+    "󱂬 Scratchpads|Super + Shift + w|Selector rápido de Wi-Fi|fuzzel-wifi|Menú Fuzzel para escanear redes inalámbricas cercanas y conectarse al instante."
+    "󱂬 Scratchpads|Super + Shift + g|Control de versiones Git (Lazygit)|foot --app-id=tui-lazygit -e lazygit|Interfaz TUI completa para Git con árbol de ramas, diff interactivo y commits rápidos."
+    "󱂬 Scratchpads|Super + Shift + t|Administrador Bluetooth (Bluetui)|foot --app-id=tui-bluetui -e bluetui|Herramienta de terminal para emparejar, conectar y desconectar auriculares y periféricos."
+    "󱂬 Scratchpads|Super + i|Gestor de paquetes Pacman/AUR (TUI)|foot --app-id=tui-packages -e tui-packages|Buscador interactivo con FZF para instalar, actualizar y limpiar software vía Pacman y Yay."
+    "󱂬 Scratchpads|Super + c|Reloj gigante, Calendario y Clima|foot --app-id=tui-calendar -e tui-calendar|Widget TUI con reloj digital en dígitos ASCII, calendario mensual y clima en vivo."
+    "󱂬 Scratchpads|Super + Shift + o|Osciloscopio de audio en C (DotWave)|foot --app-id=tui-dotwave -e dotwave|Visualizador de forma de onda de audio en tiempo real con subpíxeles Braille Unicode."
+    "󱂬 Scratchpads|Super + Shift + k|Inspector de Samples y Kicks (SampleDeck)|foot --app-id=tui-sampledeck -e sampledeck|Analizador estático de kicks Hardstyle con zoom, minimapa y detección de tono."
+    "󱂬 Scratchpads|Super + Shift + p|Selector de perfil de energía|fuzzel-powerprofile|Alterna entre Rendimiento Máximo, Equilibrado y Ahorro de Energía (powerprofilesctl / TLP)."
+    "󱂬 Scratchpads|Super + Shift + u|Salud de batería ThinkPad (80%/100%)|thinkpad-battery menu|Menú interactivo para cambiar umbrales de carga a 80% (Modo Escritorio) o 100% (Modo Viaje)."
+    "󱂬 Scratchpads|Super + Shift + Enter|Terminal flotante scratchpad rápido|foot --app-id=tui-scratchpad|Abre una terminal flotante centrada para comandos rápidos y pruebas."
+    "󱂬 Scratchpads|Super + Shift + -|Enviar ventana al Scratchpad general|swaymsg move scratchpad|Oculta la ventana activa en el scratchpad de fondo de Sway."
+    "󱂬 Scratchpads|Super + -|Alternar / Mostrar ventana Scratchpad|swaymsg scratchpad show|Trae al frente secuencialmente las ventanas ocultas en el scratchpad general."
+    "󰍉 Navegación|Super + h / j / k / l|Mover foco de ventana (Estilo Vim)|swaymsg focus left|Cambia el foco a la ventana situada a la izquierda (h), abajo (j), arriba (k) o derecha (l)."
+    "󰍉 Navegación|Super + Flechas|Mover foco con flechas del cursor|swaymsg focus left|Cambia el foco entre ventanas contiguas usando las flechas de dirección estándar."
+    "󰍉 Navegación|Super + Shift + h/j/k/l|Mover posición de ventana (Vim)|swaymsg move left|Desplaza la ventana activa dentro del mosaico hacia la izquierda, abajo, arriba o derecha."
+    "󰍉 Navegación|Super + Shift + Flechas|Mover posición con flechas|swaymsg move left|Mueve la posición de la ventana activa en la dirección de la flecha pulsada."
+    "󰍉 Navegación|Super + 1 al 0|Ir al espacio de trabajo 1 al 10|swaymsg workspace number 1|Cambia inmediatamente al Workspace numérico indicado (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)."
+    "󰍉 Navegación|Super + Shift + 1 al 0|Mover ventana al espacio 1 al 10|swaymsg move container to workspace number 1|Envía la ventana enfocada al Workspace indicado (1 al 10)."
+    "󰍉 Navegación|Super + a|Enfocar contenedor padre (Focus parent)|swaymsg focus parent|Sube un nivel en la jerarquía del árbol de contenedores de Sway."
+    "󰍉 Navegación|Super + Tab|Alternar foco flotante / mosaico|swaymsg focus mode_toggle|Alterna rápidamente el foco entre ventanas en mosaico y ventanas que están flotando."
+    "󰕮 Layouts|Super + f|Alternar pantalla completa (Fullscreen)|swaymsg fullscreen toggle|Expande la ventana enfocada a pantalla completa eliminando bordes y barras."
+    "󰕮 Layouts|Super + Shift + Space|Alternar ventana flotante / mosaico|swaymsg floating toggle|Convierte una ventana en mosaico a ventana flotante independiente o viceversa."
+    "󰕮 Layouts|Super + b|División horizontal (Splith)|swaymsg splith|La próxima ventana que se abra se ubicará a la derecha de la ventana actual."
+    "󰕮 Layouts|Super + n|División vertical (Splitv)|swaymsg splitv|La próxima ventana que se abra se ubicará debajo de la ventana actual."
+    "󰕮 Layouts|Super + s|Diseño en pila (Stacking layout)|swaymsg layout stacking|Agrupa las ventanas del contenedor en una lista vertical con barra de título superior."
+    "󰕮 Layouts|Super + w|Diseño en pestañas (Tabbed layout)|swaymsg layout tabbed|Muestra las ventanas en pestañas horizontales estilo navegador web."
+    "󰕮 Layouts|Super + e|Alternar división (Toggle split)|swaymsg layout toggle split|Alterna la dirección de división actual entre horizontal y vertical."
+    "󰕮 Layouts|Super + r|Entrar en modo redimensión (Resize)|swaymsg mode 'resize'|Activa el modo de ajuste de tamaño. Usa h/j/k/l o Flechas para redimensionar y Enter/Esc para salir."
+    "󰹑 Capturas|Print|Captura de pantalla completa|screenshot-tool full|Captura toda la pantalla y la copia automáticamente al portapapeles con notificación."
+    "󰹑 Capturas|Shift + Print / Super + Shift + s|Captura de área interactiva|screenshot-tool area|Permite seleccionar una región con 'slurp' en rojo carmesí y la guarda en el portapapeles."
+    "󰹑 Capturas|Super + Print|Captura de ventana activa|screenshot-tool window|Captura exclusivamente la ventana actualmente enfocada y la copia al portapapeles."
+    "󰕾 Multimedia|XF86AudioMute|Silenciar / Activar sonido (Mute)|volume-tool mute|Alterna el silencio de salida de audio con barra de volumen OSD en Mako."
+    "󰕾 Multimedia|XF86AudioLowerVolume|Bajar volumen de audio (-5%)|volume-tool down|Reduce el volumen en 5% y muestra la barra de progreso OSD en tiempo real."
+    "󰕾 Multimedia|XF86AudioRaiseVolume|Subir volumen de audio (+5%)|volume-tool up|Incrementa el volumen en 5% con notificación de nivel en pantalla."
+    "󰕾 Multimedia|XF86AudioMicMute|Silenciar / Activar micrófono|volume-tool mic-mute|Alterna el silencio de entrada de micrófono con notificación OSD."
+    "󰕾 Multimedia|XF86AudioPlay / Pause|Reproducir / Pausar medios|playerctl play-pause|Controla reproductores activos compatibles con MPRIS (Spotify, Firefox, mpv, etc.)."
+    "󰕾 Multimedia|XF86AudioNext / Prev|Pista siguiente / anterior|playerctl next|Salta a la siguiente o anterior canción en el reproductor activo."
+    "󰃠 Pantalla|XF86MonBrightnessUp / Down|Subir / Bajar brillo de pantalla|brightness-tool up|Ajusta el brillo del panel en tramos de 5% con barra de porcentaje en Mako."
+    "󰟀 Gestos|Swipe 3/4 dedos (Izq/Der)|Cambiar de espacio de trabajo|swaymsg workspace prev|Desliza 3 o 4 dedos en el touchpad hacia los lados para alternar entre escritorios contiguos."
+    "󰟀 Gestos|Swipe 3 dedos (Arriba)|Alternar pantalla completa|swaymsg fullscreen toggle|Desliza 3 dedos hacia arriba para activar o salir de pantalla completa."
+    "󰟀 Gestos|Pinch 3 dedos (In/Out)|Enviar / Mostrar Scratchpad|swaymsg scratchpad show|Pellizca con 3 dedos hacia adentro para enviar al scratchpad o hacia afuera para mostrarlo."
+    "󰍽 TrackPoint|Botón Central Físico|Desplazamiento fluido (Scroll)|swaymsg input|Mantén presionado el botón central sobre el teclado ThinkPad y mueve el TrackPoint para scroll rápido."
+    "󰌢 Tapa Laptop|Cerrar tapa (Lid Switch)|Modo Clamshell o Bloqueo automático|laptop-lid-handler on|Si hay monitor externo apaga la pantalla integrada; si está sola bloquea la sesión."
 )
 
 # ------------------------------------------------------------------------------
@@ -87,7 +87,7 @@ run_fuzzel() {
         list="$list$cat  ❯  $key  •  $desc\n"
     done
 
-    local chosen=$(echo -e "$list" | fuzzel --dmenu --prompt="⌨️ Atajos ❯ " --width=70 --lines=15)
+    local chosen=$(echo -e "$list" | fuzzel --dmenu --prompt="󰌌 Atajos ❯ " --width=70 --lines=15)
     [ -z "$chosen" ] && exit 0
 
     local selected_key=$(echo "$chosen" | awk -F'  ❯  ' '{print $2}' | awk -F'  •  ' '{print $1}')
@@ -102,11 +102,11 @@ run_fuzzel() {
                 fi
                 notify-send -u low -t 3000 \
                     -h string:x-canonical-private-synchronous:keybind \
-                    "⌨️ Atajo de Teclado" "$key: $desc\n(Copiado al portapapeles)"
+                    "󰌌 Atajo de Teclado" "$key: $desc\n(Copiado al portapapeles)"
             else
                 notify-send -u low -t 2000 \
                     -h string:x-canonical-private-synchronous:keybind \
-                    "⌨️ Ejecutando Atajo" "$key ❯ $desc"
+                    "󰌌 Ejecutando Atajo" "$key ❯ $desc"
                 eval "$cmd" &
             fi
             break
@@ -124,7 +124,7 @@ preview_keybind() {
         local match_str="$cat  •  $key"
         if [[ "$match_str" == *"$target"* ]] || [[ "$key" == "$target" ]]; then
             echo -e "\033[1;31m╔════════════════════════════════════════════════════════════════╗\033[0m"
-            echo -e "\033[1;31m║\033[0m  \033[1;33m🛡️  DEFQON.1 • GUÍA DE ATAJOS DE TECLADO (SWAY WM)\033[0m           \033[1;31m║\033[0m"
+            echo -e "\033[1;31m║\033[0m  \033[1;33m󰍜  DEFQON.1 • GUÍA DE ATAJOS DE TECLADO (SWAY WM)\033[0m           \033[1;31m║\033[0m"
             echo -e "\033[1;31m╚════════════════════════════════════════════════════════════════╝\033[0m"
             echo ""
             echo -e " \033[1;36mCategoría:\033[0m        $cat"
@@ -139,7 +139,7 @@ preview_keybind() {
             echo -e " \033[0;36m$cmd\033[0m"
             echo -e "\033[1;35m────────────────────────────────────────────────────────────────\033[0m"
             echo ""
-            echo -e " \033[1;33m💡 Consejo:\033[0m Pulsa \033[1;32m[Enter]\033[0m para probar la acción o copiar el atajo."
+            echo -e " \033[1;33m󰛩  Consejo:\033[0m Pulsa \033[1;32m[Enter]\033[0m para probar la acción o copiar el atajo."
             return
         fi
     done
@@ -162,7 +162,7 @@ run_tui() {
     selected=$(echo -e "$fzf_items" | fzf \
         --border=sharp \
         --header="DEFQON.1 KEYBINDINGS CHEAT SHEET  |  [Enter]: Ejecutar/Copiar  |  [ESC]: Salir  |  [Escribir]: Filtrar" \
-        --prompt="⌨️ Buscar Atajo ❯ " \
+        --prompt="󰌌 Buscar Atajo ❯ " \
         --preview="$SCRIPT_SELF --preview {2}" \
         --preview-window="right:52%:wrap")
 
