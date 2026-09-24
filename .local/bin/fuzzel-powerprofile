@@ -21,9 +21,18 @@ case "$CURRENT" in
         ;;
 esac
 
+run_root() {
+    if [ ! -t 0 ]; then
+        export SUDO_ASKPASS="${SUDO_ASKPASS:-$HOME/.local/bin/fuzzel-askpass}"
+        sudo -A "$@"
+    else
+        sudo "$@"
+    fi
+}
+
 MENU="$P_OPT\n$B_OPT\n$S_OPT"
 
-CHOSEN=$(echo -e "$MENU" | fuzzel --dmenu --prompt="⚡ Perfil ❯ " --width=40 --lines=4)
+CHOSEN=$(echo -e "$MENU" | fuzzel --dmenu --prompt="󱐋 Perfil ❯ " --width=40 --lines=4)
 
 [ -z "$CHOSEN" ] && exit 0
 
@@ -32,7 +41,7 @@ case "$CHOSEN" in
         if command -v powerprofilesctl >/dev/null 2>&1; then
             powerprofilesctl set performance
         elif command -v tlp >/dev/null 2>&1; then
-            sudo tlp ac
+            run_root tlp ac
         fi
         notify-send -u low -t 2000 \
                     -h string:x-canonical-private-synchronous:powerprofile \
@@ -50,7 +59,7 @@ case "$CHOSEN" in
         if command -v powerprofilesctl >/dev/null 2>&1; then
             powerprofilesctl set power-saver
         elif command -v tlp >/dev/null 2>&1; then
-            sudo tlp bat
+            run_root tlp bat
         fi
         notify-send -u low -t 2000 \
                     -h string:x-canonical-private-synchronous:powerprofile \

@@ -23,6 +23,15 @@ if [ ! -d "$BAT_PATH" ]; then
     fi
 fi
 
+run_root() {
+    if [ ! -t 0 ]; then
+        export SUDO_ASKPASS="${SUDO_ASKPASS:-$HOME/.local/bin/fuzzel-askpass}"
+        sudo -A "$@"
+    else
+        sudo "$@"
+    fi
+}
+
 apply_thresholds() {
     local start="$1"
     local stop="$2"
@@ -30,13 +39,13 @@ apply_thresholds() {
 
     if command -v tlp >/dev/null 2>&1; then
         if [ "$stop" -eq 100 ]; then
-            sudo tlp fullcharge "$(basename "$BAT_PATH")" >/dev/null 2>&1
+            run_root tlp fullcharge "$(basename "$BAT_PATH")" >/dev/null 2>&1
         else
-            sudo tlp setcharge "$start" "$stop" "$(basename "$BAT_PATH")" >/dev/null 2>&1
+            run_root tlp setcharge "$start" "$stop" "$(basename "$BAT_PATH")" >/dev/null 2>&1
         fi
     elif [ -f "$BAT_PATH/charge_control_end_threshold" ]; then
-        echo "$stop" | sudo tee "$BAT_PATH/charge_control_end_threshold" >/dev/null 2>&1 || true
-        [ -f "$BAT_PATH/charge_control_start_threshold" ] && echo "$start" | sudo tee "$BAT_PATH/charge_control_start_threshold" >/dev/null 2>&1 || true
+        echo "$stop" | run_root tee "$BAT_PATH/charge_control_end_threshold" >/dev/null 2>&1 || true
+        [ -f "$BAT_PATH/charge_control_start_threshold" ] && echo "$start" | run_root tee "$BAT_PATH/charge_control_start_threshold" >/dev/null 2>&1 || true
     fi
 
     notify-send -u low -t 3000 \

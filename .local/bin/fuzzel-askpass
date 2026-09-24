@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Fuzzel Askpass - Defqon.1 Industrial Dark Password Prompt
+# ==============================================================================
+# Modal interactivo con Fuzzel para autenticación gráfica con estética del sistema.
+# Usado como SUDO_ASKPASS / SSH_ASKPASS en entornos Sway / Wayland.
+# ==============================================================================
+
+PROMPT="${1:-Autenticación requerida}"
+CLEAN_PROMPT=$(echo "$PROMPT" | sed -E 's/\[sudo\] password for [^:]*:/Clave de usuario/; s/:[[:space:]]*$//')
+
+# Lanzar Fuzzel en modo contraseña de una sola línea con prompt Defqon.1
+fuzzel --dmenu \
+       --password \
+       --prompt="󰌾 $CLEAN_PROMPT ❯ " \
+       --width=42 \
+       --lines=1
