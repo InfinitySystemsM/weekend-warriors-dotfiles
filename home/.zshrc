@@ -18,6 +18,31 @@ else
 fi
 
 export PATH="$HOME/.local/bin:$PATH"
+export EDITOR=micro
+export VISUAL=micro
+
+# Quick navigation aliases
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+# Modern CLI tools
+if command -v bat &>/dev/null; then
+    alias cat='bat --paging=never'
+    alias bcat='bat'
+fi
+
+# TUI & System Aliases
+alias lg='lazygit'
+alias y='yazi'
+alias top='btop'
+alias mix='pulsemixer'
+alias bt='bluetui'
+alias wifi='fuzzel-wifi'
+alias zj='zellij'
+alias pkg='tui-packages'
+alias in='tui-packages'
+alias cal='tui-calendar'
 alias update='system-update'
 alias wave='dotwave'
 alias sdeck='sampledeck'
@@ -31,3 +56,13 @@ alias menu='fuzzel-dashboard'
 alias dash='fuzzel-dashboard'
 alias keys='tui-keybindings'
 alias atajos='tui-keybindings'
+
+# Starship Prompt integration
+if command -v starship &>/dev/null; then
+    eval "$(starship init zsh)"
+fi
+
+# Zoxide smart jump integration
+if command -v zoxide &>/dev/null; then
+    eval "$(zoxide init zsh)"
+fi
