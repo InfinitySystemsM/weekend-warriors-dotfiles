@@ -22,3 +22,14 @@ fish_variables
 history
 buffers/
 *.old
+.config/pcmanfm-qt/default/recent-files.conf
+.config/gtk-3.0/bookmarks
+.config/sway/wallpapers/current
+.config/waybar/profile
+
+# Build artifacts & compiled binaries
+*.o
+*.a
+src/dotwave/dotwave
+src/sampledeck/sampledeck
+target/
