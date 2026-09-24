@@ -287,9 +287,10 @@ menu_actions() {
 󱂬   [10] Ventana: Alternar Flotante / Mosaico\n\
 󰍹   [11] Ventana: Alternar Pantalla Completa\n\
 󰝟   [12] Audio: Silenciar / Activar Sonido (Mute)\n\
-󰍭   [13] Audio: Silenciar / Activar Micrófono"
+󰍭   [13] Audio: Silenciar / Activar Micrófono\n\
+⌨️   [14] Atajos de Teclado: Aprender Atajos (Learn Keybindings)"
 
-    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="⚡ Acciones ❯ " --width=$MENU_WIDTH --lines=14)
+    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="⚡ Acciones ❯ " --width=$MENU_WIDTH --lines=15)
     [ -z "$chosen" ] && return 0
 
     case "$chosen" in
@@ -338,6 +339,9 @@ menu_actions() {
             ;;
         *"[13] Audio: Silenciar / Activar Micrófono"*)
             volume-tool mic-mute
+            ;;
+        *"[14] Atajos de Teclado"*)
+            foot --app-id=tui-keybindings -e tui-keybindings &
             ;;
     esac
 }
@@ -484,6 +488,32 @@ menu_session() {
 }
 
 # ------------------------------------------------------------------------------
+# Submenú: Atajos de Teclado (Learn Keybindings)
+# ------------------------------------------------------------------------------
+
+menu_keybindings() {
+    local options="\
+⬅   [0] Volver al Menú Principal\n\
+📋  [1] Abrir Guía Visual Interactiva (TUI en Foot)\n\
+🔍  [2] Buscar Atajo Rápido aquí en Fuzzel"
+
+    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="⌨️ Atajos ❯ " --width=$MENU_WIDTH --lines=4)
+    [ -z "$chosen" ] && return 0
+
+    case "$chosen" in
+        *"[0] Volver"*)
+            main_menu
+            ;;
+        *"[1] Abrir Guía Visual"*)
+            foot --app-id=tui-keybindings -e tui-keybindings &
+            ;;
+        *"[2] Buscar Atajo Rápido"*)
+            tui-keybindings --fuzzel
+            ;;
+    esac
+}
+
+# ------------------------------------------------------------------------------
 # Menú Principal (Hub de Inicio)
 # ------------------------------------------------------------------------------
 
@@ -493,9 +523,10 @@ main_menu() {
 ⚡  [2] Acciones Principales ❯  Capturas, Portapapeles, Scratchpads, Atajos...\n\
 󰔎   [3] Personalización      ❯  Wallpapers, Waybar, Cava, Temas, Dotfiles...\n\
 󰍛   [4] Estado del Sistema    ❯  Monitor btop, Fastfetch, Clima, Recursos...\n\
-⏻   [5] Sesión y Energía      ❯  Bloquear, Suspender, Reiniciar, Apagar..."
+⌨️   [5] Atajos de Teclado    ❯  Aprender y buscar atajos (Cheat Sheet)...\n\
+⏻   [6] Sesión y Energía      ❯  Bloquear, Suspender, Reiniciar, Apagar..."
 
-    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="🛡️ Menú Principal ❯ " --width=$MENU_WIDTH --lines=6)
+    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="🛡️ Menú Principal ❯ " --width=$MENU_WIDTH --lines=7)
     [ -z "$chosen" ] && exit 0
 
     case "$chosen" in
@@ -511,7 +542,10 @@ main_menu() {
         *"[4] Estado del Sistema"*)
             menu_status
             ;;
-        *"[5] Sesión y Energía"*)
+        *"[5] Atajos de Teclado"*)
+            menu_keybindings
+            ;;
+        *"[6] Sesión y Energía"*)
             menu_session
             ;;
     esac
@@ -533,6 +567,9 @@ case "${1:-}" in
         ;;
     status|estado|info)
         menu_status
+        ;;
+    keys|keybindings|atajos|learn)
+        menu_keybindings
         ;;
     session|sesion|power)
         menu_session

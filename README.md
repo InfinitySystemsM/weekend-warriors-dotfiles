@@ -107,6 +107,7 @@ dotfiles/
 │       ├── screenshot-tool   # Utilidad de capturas con selección en rojo carmesí
 │       ├── thinkpad-battery  # Gestor de salud y umbrales de batería ThinkPad (80% / 100%)
 │       ├── tui-calendar      # Reloj digital gigante, calendario y clima TUI
+│       ├── tui-keybindings   # Guía visual interactiva y buscador de atajos (TUI & Fuzzel)
 │       ├── tui-packages      # Gestor interactivo de paquetes con FZF (Pacman + Yay)
 │       ├── volume-tool       # Control de audio/micrófono con notificación OSD y barra
 │       └── waybar-launch     # Lanzador inteligente de Waybar según tipo de hardware
@@ -137,6 +138,7 @@ dotfiles/
 | `$mod + Enter` | Abrir terminal (**Foot**) |
 | `$mod + Space` / `$mod + d` | Abrir lanzador de aplicaciones (**Fuzzel**) |
 | `$mod + x` / `$mod + p` | **Menú Principal / Centro de Control** (**fuzzel-dashboard**) |
+| `$mod + F1` / `$mod + ?` | **Guía de Atajos de Teclado (Learn Keybindings)** (**tui-keybindings**) |
 | `$mod + v` | Historial del portapapeles (**Fuzzel + Cliphist**) |
 | `$mod + y` | Explorador de archivos TUI (**Yazi**) |
 | `$mod + Shift + f` | Explorador de archivos GUI (**Thunar**) |
