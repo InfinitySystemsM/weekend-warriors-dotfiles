@@ -3,6 +3,10 @@
 # Fuzzel Wi-Fi Menu (Interactive NetworkManager Wayland Selector)
 # ==============================================================================
 
+# Detect active Wi-Fi interface dynamically
+WIFI_IFACE=$(nmcli -t -f DEVICE,TYPE device 2>/dev/null | awk -F: '$2=="wifi"{print $1; exit}')
+[ -z "$WIFI_IFACE" ] && WIFI_IFACE="wlan0"
+
 # Check Wi-Fi radio state
 WIFI_STATE=$(nmcli -fields WIFI g | sed -n '2p' | tr -d ' ')
 
@@ -62,7 +66,7 @@ case "$CHOSEN" in
         ACTION=$(echo -e "󰌙  Desconectar\n󰆴  Olvidar Red" | fuzzel --dmenu --prompt="󰤨 $SSID ❯ " --width=30 --lines=3)
         case "$ACTION" in
             *"Desconectar"*)
-                nmcli connection down id "$SSID" 2>/dev/null || nmcli device disconnect wlan0 2>/dev/null
+                nmcli connection down id "$SSID" 2>/dev/null || nmcli device disconnect "$WIFI_IFACE" 2>/dev/null
                 notify-send "Wi-Fi" "Desconectado de $SSID"
                 ;;
             *"Olvidar Red"*)

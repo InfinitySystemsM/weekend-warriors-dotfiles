@@ -3,7 +3,9 @@
 # Screenshot Utility for Sway & Wayland (Clipboard Only + Notification)
 # ==============================================================================
 
-TMP_IMG="/tmp/screenshot_tmp.png"
+TMP_IMG=$(mktemp --suffix=.png /tmp/screenshot_XXXXXX)
+trap 'rm -f "$TMP_IMG"' EXIT
+
 mode="${1:-full}"
 
 case "$mode" in
@@ -15,7 +17,7 @@ case "$mode" in
         fi
         ;;
     area)
-        # Interactive area selection with slurp (styled in Catppuccin Mauve)
+        # Interactive area selection with slurp (styled in Defqon.1 Warrior Red)
         GEOM=$(slurp -d -b "#12131788" -c "#e05561ff" -s "#e0556133" -w 2 2>/dev/null)
         if [ -n "$GEOM" ]; then
             grim -g "$GEOM" "$TMP_IMG"
@@ -38,11 +40,11 @@ case "$mode" in
         ;;
     *)
         options="󰹑  [1] Pantalla Completa\n󰆞  [2] Selección de Área\n󰍹  [3] Ventana Activa"
-        chosen=$(echo -e "$options" | fuzzel --dmenu --prompt=" Captura ❯ " --width=35 --lines=4)
+        chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="󰹑 Captura ❯ " --width=35 --lines=4)
         case "$chosen" in
-            *"[1] Pantalla Completa"*) ~/.local/bin/screenshot-tool full ;;
-            *"[2] Selección de Área"*) ~/.local/bin/screenshot-tool area ;;
-            *"[3] Ventana Activa"*) ~/.local/bin/screenshot-tool window ;;
+            *"[1] Pantalla Completa"*) "$0" full ;;
+            *"[2] Selección de Área"*) "$0" area ;;
+            *"[3] Ventana Activa"*) "$0" window ;;
         esac
         ;;
 esac

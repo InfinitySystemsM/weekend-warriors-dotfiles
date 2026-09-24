@@ -29,9 +29,11 @@ usage() {
     echo "Uso: $0 [OPCIONES]"
     echo ""
     echo "Opciones:"
-    echo "  --symlink     Crea enlaces simbólicos (por defecto)"
-    echo "  --copy        Copia los archivos en lugar de crear enlaces simbólicos"
-    echo "  --no-backup   No realiza copia de seguridad de los archivos existentes"
+    echo "  --symlink       Crea enlaces simbólicos (por defecto)"
+    echo "  --copy          Copia los archivos en lugar de crear enlaces simbólicos"
+    echo "  --no-backup     No realiza copia de seguridad de los archivos existentes"
+    echo "  --dry-run       Simula las operaciones sin modificar el disco"
+    echo "  --status        Comprueba el estado de los enlaces simbólicos de dotfiles"
     echo "  --check-deps    Verifica e instala dependencias del sistema (Arch / CachyOS)"
     echo "  --with-tuicast  Compila e instala TuiCast (controlador TUI de OBS) si existe ~/tuicast"
     echo "  -h, --help      Muestra esta ayuda"
@@ -42,12 +44,16 @@ MODE="symlink"
 DO_BACKUP=true
 CHECK_DEPS=false
 WITH_TUICAST=false
+DRY_RUN=false
+CHECK_STATUS=false
 
 while [[ "$#" -gt 0 ]]; do
     case "$1" in
         --symlink) MODE="symlink"; shift ;;
         --copy) MODE="copy"; shift ;;
         --no-backup) DO_BACKUP=false; shift ;;
+        --dry-run) DRY_RUN=true; shift ;;
+        --status) CHECK_STATUS=true; shift ;;
         --check-deps) CHECK_DEPS=true; shift ;;
         --with-tuicast) WITH_TUICAST=true; shift ;;
         -h|--help) usage; exit 0 ;;
@@ -57,7 +63,69 @@ done
 
 banner
 
-# Step 1: Dependencies check
+check_status() {
+    echo -e "${C_BLUE}==> Comprobando estado de enlaces de dotfiles...${C_RESET}"
+    local ok=0
+    local total=0
+    local missing=0
+
+    # Comprobar .config
+    for item in "$DOTFILES_DIR/.config"/*; do
+        [ -e "$item" ] || continue
+        local name="$(basename "$item")"
+        local dest="$HOME/.config/$name"
+        total=$((total + 1))
+        if [ -L "$dest" ] && [ "$(readlink "$dest")" = "$item" ]; then
+            echo -e "${C_GREEN}  ✓ [OK] ~/.config/$name -> $item${C_RESET}"
+            ok=$((ok + 1))
+        else
+            echo -e "${C_YELLOW}  ⚠ [PENDIENTE] ~/.config/$name${C_RESET}"
+            missing=$((missing + 1))
+        fi
+    done
+
+    # Comprobar .local/bin
+    for script in "$DOTFILES_DIR/.local/bin"/*; do
+        [ -e "$script" ] || continue
+        local name="$(basename "$script")"
+        [[ "$name" == "__pycache__" || "$name" == *.pyc ]] && continue
+        local dest="$HOME/.local/bin/$name"
+        total=$((total + 1))
+        if [ -L "$dest" ] && [ "$(readlink "$dest")" = "$script" ]; then
+            echo -e "${C_GREEN}  ✓ [OK] ~/.local/bin/$name -> $script${C_RESET}"
+            ok=$((ok + 1))
+        else
+            echo -e "${C_YELLOW}  ⚠ [PENDIENTE] ~/.local/bin/$name${C_RESET}"
+            missing=$((missing + 1))
+        fi
+    done
+
+    # Comprobar home
+    if [ -d "$DOTFILES_DIR/home" ]; then
+        for hfile in "$DOTFILES_DIR/home"/.*; do
+            [ -f "$hfile" ] || continue
+            local name="$(basename "$hfile")"
+            [[ "$name" == "." || "$name" == ".." ]] && continue
+            local dest="$HOME/$name"
+            total=$((total + 1))
+            if [ -L "$dest" ] && [ "$(readlink "$dest")" = "$hfile" ]; then
+                echo -e "${C_GREEN}  ✓ [OK] ~/$name -> $hfile${C_RESET}"
+                ok=$((ok + 1))
+            else
+                echo -e "${C_YELLOW}  ⚠ [PENDIENTE] ~/$name${C_RESET}"
+                missing=$((missing + 1))
+            fi
+        done
+    fi
+
+    echo ""
+    echo -e "${C_CYAN}Resumen: $ok de $total componentes enlazados correctamente ($missing pendientes).${C_RESET}"
+    exit 0
+}
+
+if [ "$CHECK_STATUS" = true ]; then
+    check_status
+fi
 if [ "$CHECK_DEPS" = true ]; then
     echo -e "${C_BLUE}==> [1/4] Verificando dependencias del sistema...${C_RESET}"
     CORE_PKGS=(
@@ -140,6 +208,10 @@ backup_item() {
     local target="$1"
     if [ -e "$target" ] || [ -L "$target" ]; then
         if [ "$DO_BACKUP" = true ]; then
+            if [ "$DRY_RUN" = true ]; then
+                echo -e "${C_YELLOW}  [DRY-RUN] Respaldaría: $target -> $BACKUP_DIR/${C_RESET}"
+                return
+            fi
             mkdir -p "$BACKUP_DIR"
             echo -e "${C_YELLOW}  -> Respaldando: $target -> $BACKUP_DIR/${C_RESET}"
             cp -r --parents "$target" "$BACKUP_DIR/" 2>/dev/null || mv "$target" "$BACKUP_DIR/"
@@ -157,11 +229,19 @@ install_item() {
             return
         fi
         backup_item "$dest"
+        if [ "$DRY_RUN" = true ]; then
+            echo -e "${C_YELLOW}  [DRY-RUN] Enlazaría: $dest -> $src${C_RESET}"
+            return
+        fi
         rm -rf "$dest"
         ln -sfn "$src" "$dest"
         echo -e "${C_GREEN}  ✓ Enlazado: $dest -> $src${C_RESET}"
     else
         backup_item "$dest"
+        if [ "$DRY_RUN" = true ]; then
+            echo -e "${C_YELLOW}  [DRY-RUN] Copiaría: $src -> $dest${C_RESET}"
+            return
+        fi
         rm -rf "$dest"
         cp -r "$src" "$dest"
         echo -e "${C_GREEN}  ✓ Copiado: $src -> $dest${C_RESET}"
@@ -169,6 +249,11 @@ install_item() {
 }
 
 echo -e "${C_BLUE}==> [3/4] Instalando dotfiles ($MODE)...${C_RESET}"
+
+# Ensure default wallpaper current symlink exists
+if [ ! -L "$DOTFILES_DIR/.config/sway/wallpapers/current" ] && [ ! -f "$DOTFILES_DIR/.config/sway/wallpapers/current" ]; then
+    ln -sfn defqon_minimalist.png "$DOTFILES_DIR/.config/sway/wallpapers/current" 2>/dev/null || true
+fi
 
 # Install .config folders and files
 for item in "$DOTFILES_DIR/.config"/*; do
@@ -181,7 +266,8 @@ done
 for script in "$DOTFILES_DIR/.local/bin"/*; do
     [ -e "$script" ] || continue
     name="$(basename "$script")"
-    chmod +x "$script"
+    [[ "$name" == "__pycache__" || "$name" == *.pyc ]] && continue
+    chmod +x "$script" 2>/dev/null || true
     install_item "$script" "$HOME/.local/bin/$name"
 done
 
@@ -190,20 +276,24 @@ if [ -d "$DOTFILES_DIR/home" ]; then
     for hfile in "$DOTFILES_DIR/home"/.*; do
         [ -f "$hfile" ] || continue
         name="$(basename "$hfile")"
-        [ "$name" = "." ] || [ "$name" = ".." ] && continue
+        [[ "$name" == "." || "$name" == ".." ]] && continue
         install_item "$hfile" "$HOME/$name"
     done
 fi
 
 # Step 4: Compile Native C Tools (DotWave & SampleDeck)
-if [ -d "$DOTFILES_DIR/src/dotwave" ]; then
-    echo -e "${C_BLUE}==> Compilando e instalando DotWave (Osciloscopio Braille)...${C_RESET}"
-    make -C "$DOTFILES_DIR/src/dotwave" install PREFIX="$HOME/.local/bin" >/dev/null 2>&1 || true
-fi
+if [ "$DRY_RUN" = false ]; then
+    if [ -d "$DOTFILES_DIR/src/dotwave" ]; then
+        echo -e "${C_BLUE}==> Compilando e instalando DotWave (Osciloscopio Braille)...${C_RESET}"
+        make -C "$DOTFILES_DIR/src/dotwave" install PREFIX="$HOME/.local/bin" >/dev/null 2>&1 || true
+    fi
 
-if [ -d "$DOTFILES_DIR/src/sampledeck" ]; then
-    echo -e "${C_BLUE}==> Compilando e instalando SampleDeck (Inspector y Analizador de Kicks)...${C_RESET}"
-    make -C "$DOTFILES_DIR/src/sampledeck" install PREFIX="$HOME/.local/bin" >/dev/null 2>&1 || true
+    if [ -d "$DOTFILES_DIR/src/sampledeck" ]; then
+        echo -e "${C_BLUE}==> Compilando e instalando SampleDeck (Inspector y Analizador de Kicks)...${C_RESET}"
+        make -C "$DOTFILES_DIR/src/sampledeck" install PREFIX="$HOME/.local/bin" >/dev/null 2>&1 || true
+    fi
+else
+    echo -e "${C_YELLOW}  [DRY-RUN] Omitiendo compilación de DotWave y SampleDeck.${C_RESET}"
 fi
 
 # Optional: TuiCast (OBS Studio TUI Controller)
