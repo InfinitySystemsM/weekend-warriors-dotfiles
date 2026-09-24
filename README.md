@@ -51,6 +51,7 @@ El diseño evita rojos fluorescentes saturados para prevenir fatiga visual duran
 - **Fastfetch con Logo Gráfico en Sixel:** Logotipo oficial de Defqon.1 recortado en fondo transparente y renderizado en alta definición mediante gráficos Sixel nativos en Foot.
 - **Scratchpads & Popups TUI Flotantes:** Ventanas emergentes centradas para control de volumen (`pulsemixer`), monitor del sistema (`btop`), selector de redes (`nmtui`), Git (`lazygit`), Bluetooth (`bluetui`), gestor de paquetes (`tui-packages`) y reloj/clima (`tui-calendar`).
 - **Lanzadores Dinámicos con Fuzzel:** Menú de aplicaciones, selector de portapapeles (`cliphist`), menú de energía (`fuzzel-powermenu`) y selector interactivo de Wi-Fi (`fuzzel-wifi`).
+- **Centro de Control / Menú Principal Unificado (`fuzzel-dashboard`):** Hub central interactivo activado con `$mod + x` o `$mod + p` para acceso rápido a Configuración de hardware (Wi-Fi, Bluetooth, Audio, Energía, Brillo, Paquetes), Acciones principales (Capturas, Portapapeles, Scratchpad, Archivos, Git), Personalización estética (Cambio de Wallpapers en caliente con persistencia, perfiles Waybar, Cava), Estado del sistema (Btop, Fastfetch, Clima, Batería, Red, Disco) y Gestión de sesión.
 - **Editor Helix & Multiplexor Zellij:** Temas dedicados `defqon1` diseñados a medida para resaltar código de forma clara y descansada.
 - **Inspector de Samples `sampledeck` (`sdeck`):** Analizador TUI estático de audio y kicks de Hardstyle con zoom, minimapa, tono de cola (tuning) y reproducción.
 - **Osciloscopio de Audio `dotwave` (`wave`):** Visualizador de forma de onda en tiempo real en C nativo con subpíxeles Braille Unicode y paleta Defqon.1.
@@ -97,6 +98,8 @@ dotfiles/
 │       ├── check-obs         # Verificador de estado de OBS / TuiCast para Waybar (opcional)
 │       ├── check-updates     # Verificador JSON de actualizaciones para Waybar
 │       ├── fuzzel-cliphist   # Historial del portapapeles interactivo
+│       ├── fuzzel-dashboard  # Menú principal / Centro de control interactivo (Config, Acciones, Estilo, Estado)
+│       ├── fuzzel-menu       # Enlace simbólico a fuzzel-dashboard
 │       ├── fuzzel-powermenu  # Menú de apagado, reinicio, bloqueo y suspensión
 │       ├── fuzzel-powerprofile # Selector interactivo de perfiles de energía (Fuzzel OSD)
 │       ├── fuzzel-wifi       # Selector interactivo de redes Wi-Fi con NetworkManager
@@ -133,6 +136,7 @@ dotfiles/
 |---|---|
 | `$mod + Enter` | Abrir terminal (**Foot**) |
 | `$mod + Space` / `$mod + d` | Abrir lanzador de aplicaciones (**Fuzzel**) |
+| `$mod + x` / `$mod + p` | **Menú Principal / Centro de Control** (**fuzzel-dashboard**) |
 | `$mod + v` | Historial del portapapeles (**Fuzzel + Cliphist**) |
 | `$mod + y` | Explorador de archivos TUI (**Yazi**) |
 | `$mod + Shift + f` | Explorador de archivos GUI (**Thunar**) |

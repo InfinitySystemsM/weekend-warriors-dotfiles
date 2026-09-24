@@ -1,0 +1,543 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Fuzzel Dashboard / Control Center - Defqon.1 Weekend Warrior
+# ==============================================================================
+# Menú central e interactivo con Fuzzel para configuración, acciones principales,
+# personalización estética y diagnóstico del estado del sistema.
+# ==============================================================================
+
+MENU_WIDTH=62
+
+# ------------------------------------------------------------------------------
+# Funciones Auxiliares de Diagnóstico y Estado
+# ------------------------------------------------------------------------------
+
+notify_battery_status() {
+    shopt -s nullglob
+    local bats=(/sys/class/power_supply/BAT*)
+    shopt -u nullglob
+
+    if [ ${#bats[@]} -eq 0 ]; then
+        notify-send -u low -t 3000 \
+            -h string:x-canonical-private-synchronous:battery \
+            "Batería" "ℹ No se detectó ninguna batería interna en este equipo."
+        return
+    fi
+
+    local b="${bats[0]}"
+    local cap="Desconocido"
+    local st="Desconocido"
+    local thresh="100%"
+    local health="N/A"
+
+    [ -f "$b/capacity" ] && cap="$(< "$b/capacity")%"
+    [ -f "$b/status" ] && st="$(< "$b/status")"
+    [ -f "$b/charge_control_end_threshold" ] && thresh="$(< "$b/charge_control_end_threshold")%"
+
+    if [ -f "$b/energy_full" ] && [ -f "$b/energy_full_design" ]; then
+        local ef=$(< "$b/energy_full")
+        local ed=$(< "$b/energy_full_design")
+        if [ "$ed" -gt 0 ] 2>/dev/null; then
+            health="$(( (ef * 100) / ed ))%"
+        fi
+    fi
+
+    notify-send -u normal -t 5000 \
+        -h string:x-canonical-private-synchronous:battery \
+        "󰂄 Estado de la Batería" \
+        "Carga actual: $cap\nEstado: $st\nSalud de celdas: $health\nUmbral de parada: $thresh"
+}
+
+notify_network_status() {
+    local route_info=$(ip route get 1.1.1.1 2>/dev/null)
+    local iface=""
+    local local_ip=""
+    local gateway=""
+
+    if [ -n "$route_info" ]; then
+        iface=$(echo "$route_info" | awk '{print $5}')
+        local_ip=$(echo "$route_info" | awk '{print $7}')
+        gateway=$(echo "$route_info" | awk '{print $3}')
+    fi
+
+    local wifi_ssid=""
+    if command -v nmcli >/dev/null 2>&1; then
+        wifi_ssid=$(nmcli -t -f active,ssid dev wifi 2>/dev/null | grep -E '^(sí|yes):' | cut -d: -f2)
+    fi
+
+    local status_text=""
+    if [ -n "$iface" ]; then
+        status_text="Interfaz: $iface\nIP Local: $local_ip\nGateway: $gateway"
+        [ -n "$wifi_ssid" ] && status_text="Red Wi-Fi: $wifi_ssid\n$status_text"
+    else
+        status_text="Sin conexión de red activa."
+    fi
+
+    notify-send -u normal -t 5000 \
+        -h string:x-canonical-private-synchronous:network \
+        "󰤨 Diagnóstico de Red" "$status_text"
+}
+
+notify_updates_status() {
+    notify-send -u low -t 2000 \
+        -h string:x-canonical-private-synchronous:updates \
+        "󰏓 Comprobando Paquetes" "Buscando actualizaciones en repositorios..."
+
+    local count=0
+    if command -v checkupdates >/dev/null 2>&1; then
+        count=$(checkupdates 2>/dev/null | wc -l)
+    elif command -v pacman >/dev/null 2>&1; then
+        count=$(pacman -Qu 2>/dev/null | wc -l)
+    fi
+
+    if [ "$count" -gt 0 ]; then
+        notify-send -u normal -t 4000 \
+            -h string:x-canonical-private-synchronous:updates \
+            "󰏓 Actualizaciones Disponibles" \
+            "Hay $count paquetes pendientes por actualizar.\nEjecuta 'system-update' para instalarlos."
+    else
+        notify-send -u low -t 3000 \
+            -h string:x-canonical-private-synchronous:updates \
+            "󰏓 Sistema al Día" "✓ No hay paquetes pendientes de actualización."
+    fi
+}
+
+notify_disk_status() {
+    local disk_info=$(df -h / /home 2>/dev/null | awk 'NR>1 {printf "%s: %s usados de %s (%s libre)\n", $6, $3, $2, $4}' | sort -u)
+    notify-send -u normal -t 5000 \
+        -h string:x-canonical-private-synchronous:disk \
+        "󰋊 Almacenamiento en Disco" "$disk_info"
+}
+
+notify_uptime_status() {
+    local up_time=$(uptime -p 2>/dev/null || uptime)
+    local load=$(awk '{print $1", "$2", "$3}' /proc/loadavg 2>/dev/null || echo "N/A")
+    notify-send -u normal -t 4000 \
+        -h string:x-canonical-private-synchronous:uptime \
+        "󰔚 Tiempo de Actividad" \
+        "Sistema encendido: $up_time\nCarga promedio (1, 5, 15 min): $load"
+}
+
+toggle_anti_sleep() {
+    if pgrep -f "systemd-inhibit.*sleep infinity" >/dev/null 2>&1; then
+        pkill -f "systemd-inhibit.*sleep infinity"
+        notify-send -u low -t 2500 \
+            -h string:x-canonical-private-synchronous:anti-sleep \
+            "Inhibidor de Inactividad" "󰛊 Desactivado (Bloqueo automático reactivado)"
+    else
+        systemd-inhibit --what=idle --who="Defqon.1 Hub" --why="Anti-Sleep activado manualmente" sleep infinity &
+        notify-send -u low -t 2500 \
+            -h string:x-canonical-private-synchronous:anti-sleep \
+            "Inhibidor de Inactividad" "󰅶 Activado (Pantalla e inactividad inhibidas)"
+    fi
+}
+
+apply_wallpaper() {
+    local wp="$1"
+    local wp_name="$(basename "$wp")"
+    if [ -f "$wp" ]; then
+        if command -v swaymsg >/dev/null 2>&1; then
+            swaymsg output "*" bg "$wp" fill
+        fi
+
+        # Persistir en 02_outputs.conf
+        local out_conf="$HOME/.config/sway/config.d/02_outputs.conf"
+        if [ -f "$out_conf" ]; then
+            sed -i "s|output \* bg .* fill #0f1013|output * bg ~/.config/sway/wallpapers/$wp_name fill #0f1013|" "$out_conf"
+        fi
+
+        notify-send -u low -t 2500 \
+            -h string:x-canonical-private-synchronous:wallpaper \
+            "Fondo de Pantalla" "󰔎 Aplicado: $wp_name"
+    fi
+}
+
+set_waybar_profile() {
+    local profile="$1"
+    local profile_file="$HOME/.config/waybar/profile"
+    echo "$profile" > "$profile_file"
+    pkill -x waybar 2>/dev/null || true
+    sleep 0.3
+    if command -v waybar-launch >/dev/null 2>&1; then
+        waybar-launch &
+    else
+        waybar &
+    fi
+    notify-send -u low -t 2500 \
+        -h string:x-canonical-private-synchronous:waybar \
+        "Waybar" "󰌢 Perfil '$profile' activado y barra recargada."
+}
+
+# ------------------------------------------------------------------------------
+# Submenú: Personalización y Fondos
+# ------------------------------------------------------------------------------
+
+menu_wallpapers() {
+    local wp_dir="$HOME/.config/sway/wallpapers"
+    local items="⬅   [0] Volver a Personalización"
+
+    if [ -d "$wp_dir" ]; then
+        shopt -s nullglob
+        for file in "$wp_dir"/*.{jpg,png,jpeg,webp}; do
+            [ -f "$file" ] || continue
+            local bname="$(basename "$file")"
+            items="$items\n🖼️   $bname"
+        done
+        shopt -u nullglob
+    fi
+
+    local chosen=$(echo -e "$items" | fuzzel --dmenu --prompt="🖼️ Fondos ❯ " --width=$MENU_WIDTH --lines=6)
+    [ -z "$chosen" ] && return 0
+
+    case "$chosen" in
+        *"[0] Volver"*)
+            menu_customization
+            ;;
+        *)
+            local file_selected=$(echo "$chosen" | sed 's/^.*🖼️[[:space:]]*//' | tr -d '[:space:]')
+            if [ -n "$file_selected" ] && [ -f "$wp_dir/$file_selected" ]; then
+                apply_wallpaper "$wp_dir/$file_selected"
+            fi
+            ;;
+    esac
+}
+
+# ------------------------------------------------------------------------------
+# Submenú: Configuración
+# ------------------------------------------------------------------------------
+
+menu_config() {
+    local options="\
+⬅   [0] Volver al Menú Principal\n\
+󰤨   [1] Red: Conectar a Wi-Fi (Selector interactivo)\n\
+󰈀   [2] Red: Conexiones y Ethernet (NMTUI)\n\
+󰂯   [3] Bluetooth: Administrar dispositivos (Bluetui)\n\
+󰕾   [4] Audio: Mezclador de volumen y salidas (Pulsemixer)\n\
+󰍬   [5] Audio: Efectos y Ecualizador (EasyEffects)\n\
+⚡  [6] Energía: Perfil de Rendimiento / Ahorro (Fuzzel)\n\
+󰂄  [7] Batería: Umbral de salud ThinkPad (80% / 100%)\n\
+󰃠   [8] Pantalla: Subir Brillo (+5%)\n\
+󰃞   [9] Pantalla: Bajar Brillo (-5%)\n\
+󰅶   [10] Sistema: Alternar Anti-Inactividad (Anti-Sleep)\n\
+󰏓   [11] Software: Gestor de Paquetes Pacman/AUR (TUI)\n\
+󰑓   [12] Software: Actualizar Sistema Completo (system-update)"
+
+    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="󰒓 Configuración ❯ " --width=$MENU_WIDTH --lines=14)
+    [ -z "$chosen" ] && return 0
+
+    case "$chosen" in
+        *"[0] Volver"*)
+            main_menu
+            ;;
+        *"[1] Red: Conectar a Wi-Fi"*)
+            fuzzel-wifi
+            ;;
+        *"[2] Red: Conexiones"*)
+            foot --app-id=tui-nmtui -e nmtui &
+            ;;
+        *"[3] Bluetooth"*)
+            foot --app-id=tui-bluetui -e bluetui &
+            ;;
+        *"[4] Audio: Mezclador"*)
+            foot --app-id=tui-pulsemixer -e pulsemixer &
+            ;;
+        *"[5] Audio: Efectos"*)
+            easyeffects &
+            ;;
+        *"[6] Energía"*)
+            fuzzel-powerprofile
+            ;;
+        *"[7] Batería"*)
+            thinkpad-battery menu
+            ;;
+        *"[8] Pantalla: Subir Brillo"*)
+            brightness-tool up
+            ;;
+        *"[9] Pantalla: Bajar Brillo"*)
+            brightness-tool down
+            ;;
+        *"[10] Sistema: Alternar Anti-Inactividad"*)
+            toggle_anti_sleep
+            ;;
+        *"[11] Software: Gestor"*)
+            foot --app-id=tui-packages -e tui-packages &
+            ;;
+        *"[12] Software: Actualizar"*)
+            foot -T "System Update" -e system-update &
+            ;;
+    esac
+}
+
+# ------------------------------------------------------------------------------
+# Submenú: Acciones Principales
+# ------------------------------------------------------------------------------
+
+menu_actions() {
+    local options="\
+⬅   [0] Volver al Menú Principal\n\
+󰄀   [1] Captura: Seleccionar Área con Slurp\n\
+󰹑   [2] Captura: Pantalla Completa\n\
+󰖲   [3] Captura: Ventana Activa Enfocada\n\
+󰅌   [4] Portapapeles: Historial interactivo (Cliphist)\n\
+   [5] Terminal: Abrir Scratchpad Flotante Rápido\n\
+📁  [6] Archivos: Explorador en Terminal (Yazi)\n\
+📂  [7] Archivos: Explorador Gráfico (PCManFM-Qt / Thunar)\n\
+󰊢   [8] Git: Interfaz de Repositorios (Lazygit)\n\
+󰑓   [9] Sway: Recargar Configuración en Caliente\n\
+󱂬   [10] Ventana: Alternar Flotante / Mosaico\n\
+󰍹   [11] Ventana: Alternar Pantalla Completa\n\
+󰝟   [12] Audio: Silenciar / Activar Sonido (Mute)\n\
+󰍭   [13] Audio: Silenciar / Activar Micrófono"
+
+    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="⚡ Acciones ❯ " --width=$MENU_WIDTH --lines=14)
+    [ -z "$chosen" ] && return 0
+
+    case "$chosen" in
+        *"[0] Volver"*)
+            main_menu
+            ;;
+        *"[1] Captura: Seleccionar Área"*)
+            screenshot-tool area
+            ;;
+        *"[2] Captura: Pantalla Completa"*)
+            screenshot-tool full
+            ;;
+        *"[3] Captura: Ventana Activa"*)
+            screenshot-tool window
+            ;;
+        *"[4] Portapapeles"*)
+            fuzzel-cliphist
+            ;;
+        *"[5] Terminal"*)
+            foot --app-id=tui-scratchpad &
+            ;;
+        *"[6] Archivos: Explorador en Terminal"*)
+            foot -T "yazi" -e yazi &
+            ;;
+        *"[7] Archivos: Explorador Gráfico"*)
+            if command -v pcmanfm-qt >/dev/null 2>&1; then
+                pcmanfm-qt &
+            elif command -v thunar >/dev/null 2>&1; then
+                thunar &
+            fi
+            ;;
+        *"[8] Git"*)
+            foot --app-id=tui-lazygit -e lazygit &
+            ;;
+        *"[9] Sway: Recargar"*)
+            swaymsg reload && notify-send -u low -t 2000 "Sway WM" "Configuración recargada exitosamente."
+            ;;
+        *"[10] Ventana: Alternar Flotante"*)
+            swaymsg floating toggle
+            ;;
+        *"[11] Ventana: Alternar Pantalla Completa"*)
+            swaymsg fullscreen toggle
+            ;;
+        *"[12] Audio: Silenciar / Activar Sonido"*)
+            volume-tool mute
+            ;;
+        *"[13] Audio: Silenciar / Activar Micrófono"*)
+            volume-tool mic-mute
+            ;;
+    esac
+}
+
+# ------------------------------------------------------------------------------
+# Submenú: Personalización y Estética
+# ------------------------------------------------------------------------------
+
+menu_customization() {
+    local options="\
+⬅   [0] Volver al Menú Principal\n\
+🖼️   [1] Fondo de Pantalla: Seleccionar Wallpaper Defqon.1\n\
+󰌢   [2] Waybar: Activar Perfil Laptop (Batería, Brillo, BT)\n\
+󰍹   [3] Waybar: Activar Perfil Desktop (PC Sobremesa Limpio)\n\
+󰑓   [4] Waybar: Reiniciar Barra de Estado\n\
+󰎆   [5] Audio Visual: Cava (Espectro de Fuego)\n\
+󰎈   [6] Audio Visual: DotWave (Osciloscopio en C TUI)\n\
+󰓃   [7] Audio Synth: SampleDeck (Analizador de Kicks)\n\
+󰷈   [8] Dotfiles: Abrir Directorio en Editor Helix"
+
+    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="󰔎 Personalización ❯ " --width=$MENU_WIDTH --lines=10)
+    [ -z "$chosen" ] && return 0
+
+    case "$chosen" in
+        *"[0] Volver"*)
+            main_menu
+            ;;
+        *"[1] Fondo de Pantalla"*)
+            menu_wallpapers
+            ;;
+        *"[2] Waybar: Activar Perfil Laptop"*)
+            set_waybar_profile "laptop"
+            ;;
+        *"[3] Waybar: Activar Perfil Desktop"*)
+            set_waybar_profile "desktop"
+            ;;
+        *"[4] Waybar: Reiniciar"*)
+            pkill -x waybar 2>/dev/null || true
+            sleep 0.3
+            waybar-launch &
+            notify-send -u low -t 2000 "Waybar" "Barra de estado reiniciada."
+            ;;
+        *"[5] Audio Visual: Cava"*)
+            foot -T "Cava" -e cava &
+            ;;
+        *"[6] Audio Visual: DotWave"*)
+            foot --app-id=tui-dotwave -e dotwave &
+            ;;
+        *"[7] Audio Synth: SampleDeck"*)
+            foot --app-id=tui-sampledeck -e sampledeck &
+            ;;
+        *"[8] Dotfiles"*)
+            foot -D "$HOME/dotfiles" -e hx . &
+            ;;
+    esac
+}
+
+# ------------------------------------------------------------------------------
+# Submenú: Estado del Sistema y Diagnóstico
+# ------------------------------------------------------------------------------
+
+menu_status() {
+    local options="\
+⬅   [0] Volver al Menú Principal\n\
+📊  [1] Monitor de Recursos Completo en Vivo (Btop)\n\
+󰣇   [2] Resumen de Hardware y Sistema (Fastfetch)\n\
+󰃭   [3] Calendario, Reloj Digital y Clima (TUI Calendar)\n\
+󰏓   [4] Comprobar Actualizaciones Pendientes (Pacman/AUR)\n\
+󰂄  [5] Diagnóstico de Batería y Salud\n\
+󰤨   [6] Diagnóstico de Red e IP Local\n\
+󰋊   [7] Espacio en Disco y Almacenamiento (df)\n\
+󰔚   [8] Tiempo de Actividad y Carga del Sistema (Uptime)"
+
+    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="󰍛 Estado del Sistema ❯ " --width=$MENU_WIDTH --lines=10)
+    [ -z "$chosen" ] && return 0
+
+    case "$chosen" in
+        *"[0] Volver"*)
+            main_menu
+            ;;
+        *"[1] Monitor de Recursos"*)
+            foot --app-id=tui-btop -e btop &
+            ;;
+        *"[2] Resumen de Hardware"*)
+            foot --app-id=tui-fastfetch -e bash -c "fastfetch; echo ''; read -n 1 -s -r -p 'Presiona cualquier tecla para salir...'" &
+            ;;
+        *"[3] Calendario"*)
+            foot --app-id=tui-calendar -e tui-calendar &
+            ;;
+        *"[4] Comprobar Actualizaciones"*)
+            notify_updates_status
+            ;;
+        *"[5] Diagnóstico de Batería"*)
+            notify_battery_status
+            ;;
+        *"[6] Diagnóstico de Red"*)
+            notify_network_status
+            ;;
+        *"[7] Espacio en Disco"*)
+            notify_disk_status
+            ;;
+        *"[8] Tiempo de Actividad"*)
+            notify_uptime_status
+            ;;
+    esac
+}
+
+# ------------------------------------------------------------------------------
+# Submenú: Sesión y Energía
+# ------------------------------------------------------------------------------
+
+menu_session() {
+    local options="\
+⬅   [0] Volver al Menú Principal\n\
+   [1] Bloquear Pantalla (Swaylock)\n\
+󰒲   [2] Suspender Sistema\n\
+󰍃   [3] Cerrar Sesión (Exit Sway)\n\
+󰑓   [4] Reiniciar Sistema\n\
+   [5] Apagar Sistema"
+
+    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="⏻ Sesión ❯ " --width=$MENU_WIDTH --lines=7)
+    [ -z "$chosen" ] && return 0
+
+    case "$chosen" in
+        *"[0] Volver"*)
+            main_menu
+            ;;
+        *"[1] Bloquear"*)
+            swaylock -f -c 1e1e2e || swaylock
+            ;;
+        *"[2] Suspender"*)
+            systemctl suspend
+            ;;
+        *"[3] Cerrar Sesión"*)
+            swaymsg exit
+            ;;
+        *"[4] Reiniciar"*)
+            systemctl reboot
+            ;;
+        *"[5] Apagar"*)
+            systemctl poweroff
+            ;;
+    esac
+}
+
+# ------------------------------------------------------------------------------
+# Menú Principal (Hub de Inicio)
+# ------------------------------------------------------------------------------
+
+main_menu() {
+    local options="\
+󰒓   [1] Configuración        ❯  Redes, Bluetooth, Audio, Energía, Paquetes...\n\
+⚡  [2] Acciones Principales ❯  Capturas, Portapapeles, Scratchpads, Atajos...\n\
+󰔎   [3] Personalización      ❯  Wallpapers, Waybar, Cava, Temas, Dotfiles...\n\
+󰍛   [4] Estado del Sistema    ❯  Monitor btop, Fastfetch, Clima, Recursos...\n\
+⏻   [5] Sesión y Energía      ❯  Bloquear, Suspender, Reiniciar, Apagar..."
+
+    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="🛡️ Menú Principal ❯ " --width=$MENU_WIDTH --lines=6)
+    [ -z "$chosen" ] && exit 0
+
+    case "$chosen" in
+        *"[1] Configuración"*)
+            menu_config
+            ;;
+        *"[2] Acciones Principales"*)
+            menu_actions
+            ;;
+        *"[3] Personalización"*)
+            menu_customization
+            ;;
+        *"[4] Estado del Sistema"*)
+            menu_status
+            ;;
+        *"[5] Sesión y Energía"*)
+            menu_session
+            ;;
+    esac
+}
+
+# ------------------------------------------------------------------------------
+# Manejador de Argumentos Directos
+# ------------------------------------------------------------------------------
+
+case "${1:-}" in
+    config|conf|ajustes)
+        menu_config
+        ;;
+    actions|act|acciones)
+        menu_actions
+        ;;
+    custom|personalizacion|theme)
+        menu_customization
+        ;;
+    status|estado|info)
+        menu_status
+        ;;
+    session|sesion|power)
+        menu_session
+        ;;
+    *)
+        main_menu
+        ;;
+esac
