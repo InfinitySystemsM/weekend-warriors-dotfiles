@@ -25,8 +25,11 @@ fi
 
 run_root() {
     if [ ! -t 0 ]; then
-        export SUDO_ASKPASS="${SUDO_ASKPASS:-$HOME/.local/bin/fuzzel-askpass}"
-        sudo -A "$@"
+        if command -v pkexec >/dev/null 2>&1; then
+            pkexec "$@"
+        else
+            sudo "$@"
+        fi
     else
         sudo "$@"
     fi
@@ -44,8 +47,11 @@ apply_thresholds() {
             run_root tlp setcharge "$start" "$stop" "$(basename "$BAT_PATH")" >/dev/null 2>&1
         fi
     elif [ -f "$BAT_PATH/charge_control_end_threshold" ]; then
-        echo "$stop" | run_root tee "$BAT_PATH/charge_control_end_threshold" >/dev/null 2>&1 || true
-        [ -f "$BAT_PATH/charge_control_start_threshold" ] && echo "$start" | run_root tee "$BAT_PATH/charge_control_start_threshold" >/dev/null 2>&1 || true
+        local cmd="echo $stop > \"$BAT_PATH/charge_control_end_threshold\""
+        if [ -f "$BAT_PATH/charge_control_start_threshold" ]; then
+            cmd="$cmd && echo $start > \"$BAT_PATH/charge_control_start_threshold\""
+        fi
+        run_root sh -c "$cmd" >/dev/null 2>&1 || true
     fi
 
     notify-send -u low -t 3000 \
