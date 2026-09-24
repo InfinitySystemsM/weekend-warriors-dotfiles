@@ -21,6 +21,11 @@ export PATH="$HOME/.local/bin:$PATH"
 export EDITOR=micro
 export VISUAL=micro
 
+# SSH Agent Socket
+if [ -z "$SSH_AUTH_SOCK" ] && [ -n "$XDG_RUNTIME_DIR" ] && [ -S "$XDG_RUNTIME_DIR/ssh-agent.socket" ]; then
+    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+fi
+
 # Quick navigation aliases
 alias ..='cd ..'
 alias ...='cd ../..'
