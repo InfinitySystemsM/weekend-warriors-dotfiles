@@ -1,0 +1,47 @@
+# ==============================================================================
+# Micro Colorscheme - Defqon.1 Weekend Warrior (Industrial Dark)
+# ==============================================================================
+
+color-link default "#e4e5e8,#121317"
+color-link comment "#5c6370"
+
+color-link identifier "#56b6c2"
+color-link identifier.class "#56b6c2"
+color-link identifier.var "#56b6c2"
+
+color-link constant "#f38d41"
+color-link constant.number "#f38d41"
+color-link constant.string "#8ebd6b"
+
+color-link symbol "#e05561"
+color-link symbol.brackets "#e4e5e8"
+color-link symbol.tag "#56b6c2"
+
+color-link type "#61afef"
+color-link type.keyword "#e5c07b"
+
+color-link special "#eb6f7b"
+color-link statement "#e05561"
+color-link preproc "#e5c07b"
+
+color-link underlined "#56b6c2"
+color-link error "bold #ff4757"
+color-link todo "bold #f38d41"
+
+color-link diff-added "#8ebd6b"
+color-link diff-modified "#e5c07b"
+color-link diff-deleted "#ff4757"
+
+color-link gutter-error "#ff4757"
+color-link gutter-warning "#f38d41"
+
+color-link statusline "#e4e5e8,#181a20"
+color-link tabbar "#7d8597,#181a20"
+color-link indent-char "#2d313d"
+color-link line-number "#5c6370,#181a20"
+color-link current-line-number "#e05561,#181a20"
+
+color-link cursor-line "#181a20"
+color-link color-column "#181a20"
+color-link divider "#2d313d"
+color-link type.extended "default"
