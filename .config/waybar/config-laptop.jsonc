@@ -168,7 +168,7 @@
 
     "clock": {
         "interval": 1,
-        "format": "  {:%H:%M:%S   󰃭  %a %d %b}",
+        "format": "󰈸  {:%H:%M:%S   󰃭  %a %d %b}",
         "tooltip-format": "<tt><small>{calendar}</small></tt>",
         "calendar": {
             "mode": "month",
@@ -176,11 +176,11 @@
             "weeks-pos": "right",
             "on-scroll": 1,
             "format": {
-                "months": "<span color='#e05561'><b>{}</b></span>",
-                "days": "<span color='#e4e5e8'><b>{}</b></span>",
-                "weeks": "<span color='#56b6c2'><b>W{}</b></span>",
-                "weekdays": "<span color='#f38d41'><b>{}</b></span>",
-                "today": "<span color='#ff4757'><b><u>{}</u></b></span>"
+                "months": "<span color='#dc2626'><b>{}</b></span>",
+                "days": "<span color='#f1f5f9'><b>{}</b></span>",
+                "weeks": "<span color='#06b6d4'><b>W{}</b></span>",
+                "weekdays": "<span color='#f97316'><b>{}</b></span>",
+                "today": "<span color='#ef4444'><b><u>{}</u></b></span>"
             }
         },
         "on-click": "foot --app-id=tui-calendar -e tui-calendar"

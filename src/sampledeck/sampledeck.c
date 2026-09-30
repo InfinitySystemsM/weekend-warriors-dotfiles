@@ -34,8 +34,8 @@ typedef struct {
 } ColorTheme;
 
 static const ColorTheme THEMES[] = {
-    // 0: Defqon.1 Flame (Warrior Red & Amber)
-    { "Defqon.1 Flame",  20, 22, 28,   243, 141, 65,  224, 85, 97,   255, 255, 255,  86, 182, 194 },
+    // 0: Defqon.1 Flame (Defqon Red & Pyro Flame)
+    { "Defqon.1 Flame",  14, 16, 21,   249, 115, 22,  220, 38, 38,   241, 245, 249,  245, 158, 11 },
     // 1: Cyberpunk Neon
     { "Cyberpunk Neon",  24, 18, 42,   86, 182, 194,  211, 54, 130,  255, 255, 80,   180, 140, 255 },
     // 2: Studio Amber

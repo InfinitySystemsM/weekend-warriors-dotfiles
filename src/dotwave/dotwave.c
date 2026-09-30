@@ -33,14 +33,14 @@ typedef struct {
 } ColorTheme;
 
 static const ColorTheme THEMES[] = {
-    // 0: Defqon.1 Flame (Amber to Warrior Red / Fire)
-    { "Defqon.1 Flame", 243, 141, 65,   224, 85, 97,    255, 71, 87 },
-    // 1: Laser Cyan (Teal to Electric Cyan)
-    { "Laser Cyan",     86, 182, 194,   97, 175, 239,   82, 222, 240 },
-    // 2: Acid Green (Industrial CRT / Oscilloscope Green)
-    { "Acid Green",     142, 189, 107,  152, 195, 121,  180, 255, 100 },
+    // 0: Defqon.1 Flame (Incandescent Yellow to Pyro Orange to Defqon Red)
+    { "Defqon.1 Flame", 250, 204, 21,   249, 115, 22,   220, 38, 38 },
+    // 1: Stage Laser Cyan (Stage Cyan to Laser Blue to Electric Sky)
+    { "Stage Cyan",     6,   182, 212,  56,  189, 248,  96,  165, 250 },
+    // 2: Laser Green (Festival Acid Green)
+    { "Laser Green",    132, 204, 22,   163, 230, 53,   217, 249, 157 },
     // 3: Steel Monochrome (Chalk White & Steel)
-    { "Steel Chalk",    171, 178, 191,  228, 229, 232,  255, 255, 255 }
+    { "Steel Chalk",    71,  85,  105,  203, 213, 225,  248, 250, 252 }
 };
 #define NUM_THEMES (sizeof(THEMES) / sizeof(THEMES[0]))
 
@@ -376,10 +376,15 @@ int main(int argc, char **argv) {
             }
         }
 
-        // Help bar footer if toggled
+        // Help bar footer if toggled (Styled in Defqon.1 RED Mainstage palette)
         if (g_show_help) {
             out_len += snprintf(out_buf + out_len, sizeof(out_buf) - out_len,
-                "\033[38;2;100;105;115m [q] Salir  [c] Tema (%s)  [m] Modo  [+/-] Ganancia (%.1fx)  [t] Trigger (%s)  [Space] %s\033[0m",
+                "\033[38;2;220;38;38m[q]\033[38;2;125;133;151m Salir  "
+                "\033[38;2;245;158;11m[c]\033[38;2;125;133;151m Tema (\033[38;2;241;245;249m%s\033[38;2;125;133;151m)  "
+                "\033[38;2;245;158;11m[m]\033[38;2;125;133;151m Modo  "
+                "\033[38;2;245;158;11m[+/-]\033[38;2;125;133;151m Ganancia (\033[38;2;241;245;249m%.1fx\033[38;2;125;133;151m)  "
+                "\033[38;2;245;158;11m[t]\033[38;2;125;133;151m Trigger (\033[38;2;241;245;249m%s\033[38;2;125;133;151m)  "
+                "\033[38;2;245;158;11m[Space]\033[38;2;125;133;151m %s\033[0m",
                 theme->name, g_gain, g_trigger_sync ? "ON" : "OFF", g_paused ? "PAUSADO" : "PLAY");
         }
 

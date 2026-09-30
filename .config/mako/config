@@ -3,10 +3,10 @@
 # ==============================================================================
 
 font=Terminess Nerd Font 10
-background-color=#181a20ff
-text-color=#e4e5e8ff
-border-color=#e05561ff
-border-size=1
+background-color=#151821ff
+text-color=#f1f5f9ff
+border-color=#dc2626ff
+border-size=2
 border-radius=0
 padding=12
 margin=10
@@ -20,14 +20,14 @@ layer=overlay
 anchor=top-right
 
 [urgency=low]
-border-color=#56b6c2ff
+border-color=#06b6d4ff
 default-timeout=3000
 
 [urgency=normal]
-border-color=#e05561ff
+border-color=#dc2626ff
 default-timeout=5000
 
 [urgency=high]
-border-color=#ff4757ff
-text-color=#ff4757ff
+border-color=#ef4444ff
+text-color=#ef4444ff
 default-timeout=0

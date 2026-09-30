@@ -7,9 +7,9 @@ menu,
 .menu,
 .context-menu,
 window.popup menu {
-    background-color: #181a20;
-    color: #e4e5e8;
-    border: 1px solid #e05561;
+    background-color: #151821;
+    color: #f1f5f9;
+    border: 1px solid #dc2626;
     border-radius: 0px;
     padding: 4px;
     box-shadow: none;
@@ -19,7 +19,7 @@ menu menuitem,
 .menu menuitem,
 .context-menu menuitem {
     background-color: transparent;
-    color: #e4e5e8;
+    color: #f1f5f9;
     border-radius: 0px;
     padding: 5px 12px;
     margin: 1px 0px;
@@ -30,8 +30,8 @@ menu menuitem,
 menu menuitem:hover,
 .menu menuitem:hover,
 .context-menu menuitem:hover {
-    background-color: #242731;
-    color: #f38d41;
+    background-color: #242733;
+    color: #f97316;
 }
 
 menu menuitem:disabled,
@@ -51,7 +51,7 @@ menu menuitem label,
 menu separator,
 .menu separator,
 .context-menu separator {
-    background-color: #282b35;
+    background-color: #282c37;
     min-height: 1px;
     margin: 4px 6px;
     border: none;
@@ -63,16 +63,16 @@ menu menuitem radio {
     min-height: 12px;
     margin-right: 8px;
     border-radius: 0px;
-    border: 1px solid #2d313d;
-    background-color: #121317;
-    color: #e05561;
+    border: 1px solid #282c37;
+    background-color: #0e1015;
+    color: #dc2626;
 }
 
 menu menuitem check:checked,
 menu menuitem radio:checked {
-    border-color: #e05561;
-    background-color: #e05561;
-    color: #0f1013;
+    border-color: #dc2626;
+    background-color: #dc2626;
+    color: #0e1015;
 }
 
 menu menuitem arrow {
@@ -82,7 +82,7 @@ menu menuitem arrow {
 }
 
 menu menuitem:hover arrow {
-    color: #f38d41;
+    color: #f97316;
 }
 
 menu menuitem accelerator {
@@ -92,5 +92,5 @@ menu menuitem accelerator {
 }
 
 menu menuitem:hover accelerator {
-    color: #e5c07b;
+    color: #f59e0b;
 }

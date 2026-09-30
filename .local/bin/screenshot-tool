@@ -17,8 +17,8 @@ case "$mode" in
         fi
         ;;
     area)
-        # Interactive area selection with slurp (styled in Defqon.1 Warrior Red)
-        GEOM=$(slurp -d -b "#12131788" -c "#e05561ff" -s "#e0556133" -w 2 2>/dev/null)
+        # Interactive area selection with slurp (styled in Defqon.1 Red)
+        GEOM=$(slurp -d -b "#0e101588" -c "#dc2626ff" -s "#dc262633" -w 2 2>/dev/null)
         if [ -n "$GEOM" ]; then
             grim -g "$GEOM" "$TMP_IMG"
             if [ -f "$TMP_IMG" ]; then

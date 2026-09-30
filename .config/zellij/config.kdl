@@ -12,16 +12,16 @@ default_shell "fish"
 
 themes {
     defqon1 {
-        bg "#242731"
-        fg "#e4e5e8"
-        red "#e05561"
-        green "#8ebd6b"
-        blue "#61afef"
-        yellow "#e5c07b"
-        magenta "#e05561"
-        orange "#f38d41"
-        cyan "#56b6c2"
-        black "#121317"
-        white "#e4e5e8"
+        bg "#242733"
+        fg "#f1f5f9"
+        red "#dc2626"
+        green "#84cc16"
+        blue "#38bdf8"
+        yellow "#f59e0b"
+        magenta "#dc2626"
+        orange "#f97316"
+        cyan "#06b6d4"
+        black "#0e1015"
+        white "#f1f5f9"
     }
 }

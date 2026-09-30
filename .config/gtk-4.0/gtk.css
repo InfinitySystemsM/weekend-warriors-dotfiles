@@ -3,22 +3,22 @@
    ============================================================================= */
 
 popover.menu {
-    background-color: #181a20;
-    color: #e4e5e8;
-    border: 1px solid #e05561;
+    background-color: #151821;
+    color: #f1f5f9;
+    border: 1px solid #dc2626;
     border-radius: 0px;
     padding: 4px;
     box-shadow: none;
 }
 
 popover.menu contents {
-    background-color: #181a20;
-    color: #e4e5e8;
+    background-color: #151821;
+    color: #f1f5f9;
     border-radius: 0px;
 }
 
 popover.menu modelbutton {
-    color: #e4e5e8;
+    color: #f1f5f9;
     border-radius: 0px;
     padding: 5px 12px;
     margin: 1px 0px;
@@ -27,12 +27,12 @@ popover.menu modelbutton {
 }
 
 popover.menu modelbutton:hover {
-    background-color: #242731;
-    color: #f38d41;
+    background-color: #242733;
+    color: #f97316;
 }
 
 popover.menu separator {
-    background-color: #282b35;
+    background-color: #282c37;
     min-height: 1px;
     margin: 4px 6px;
 }

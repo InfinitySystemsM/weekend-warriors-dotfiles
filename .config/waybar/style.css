@@ -11,8 +11,8 @@
 }
 
 window#waybar {
-    background-color: #0f1013;
-    color: #e4e5e8;
+    background-color: #0e1015;
+    color: #f1f5f9;
 }
 
 #custom-left-arrow-workspaces,
@@ -56,37 +56,37 @@ window#waybar {
 }
 
 #workspaces button.focused {
-    color: #0f1013;
-    background-color: #e05561;
+    color: #0e1015;
+    background-color: #dc2626;
     font-weight: 900;
 }
 
-#workspaces button.urgent { color: #0f1013; background-color: #ff4757; }
-#workspaces button:hover { background-color: #242732; color: #f38d41; }
-#custom-left-arrow-workspaces { background-color: #1e2029; color: #14161c; }
-#mode { background-color: #1e2029; color: #e05561; padding: 0 6px; }
-#window { background-color: #1e2029; color: #e4e5e8; padding: 0 8px; }
-#custom-left-arrow-window { background-color: #222530; color: #1e2029; }
+#workspaces button.urgent { color: #0e1015; background-color: #ef4444; }
+#workspaces button:hover { background-color: #282c37; color: #f97316; }
+#custom-left-arrow-workspaces { background-color: #1a1d27; color: #14161c; }
+#mode { background-color: #1a1d27; color: #dc2626; padding: 0 6px; }
+#window { background-color: #1a1d27; color: #f1f5f9; padding: 0 8px; }
+#custom-left-arrow-window { background-color: #202430; color: #1a1d27; }
  
 /* Media Player Module (MPRIS + Controles) */
 #media {
-    background-color: #222530;
+    background-color: #202430;
 }
 #custom-media-prev {
-    background-color: #222530;
-    color: #f38d41;
+    background-color: #202430;
+    color: #f97316;
     padding: 0 4px 0 2px;
 }
 #custom-media-prev:hover {
-    color: #e05561;
+    color: #dc2626;
 }
 #mpris {
-    background-color: #222530;
-    color: #e4e5e8;
+    background-color: #202430;
+    color: #f1f5f9;
     padding: 0 6px;
 }
 #mpris.playing {
-    color: #e4e5e8;
+    color: #f1f5f9;
 }
 #mpris.paused {
     color: #7d8597;
@@ -95,54 +95,54 @@ window#waybar {
     color: #6c7280;
 }
 #custom-media-next {
-    background-color: #222530;
-    color: #f38d41;
+    background-color: #202430;
+    color: #f97316;
     padding: 0 2px 0 4px;
 }
 #custom-media-next:hover {
-    color: #e05561;
+    color: #dc2626;
 }
-#custom-media-arrow-right { background-color: #0f1013; color: #222530; }
+#custom-media-arrow-right { background-color: #0e1015; color: #202430; }
 
-#custom-clock-arrow-left { background-color: #0f1013; color: #1e2029; }
-#clock { background-color: #1e2029; color: #e05561; padding: 0 10px; }
-#custom-clock-arrow-right { background-color: #0f1013; color: #1e2029; }
+#custom-clock-arrow-left { background-color: #0e1015; color: #1a1d27; }
+#clock { background-color: #1a1d27; color: #dc2626; padding: 0 10px; font-weight: 900; }
+#custom-clock-arrow-right { background-color: #0e1015; color: #1a1d27; }
 
 /* Módulo Opcional: OBS Studio / TuiCast (desactivado por defecto) */
-#custom-arrow-obs { background-color: #0f1013; color: #222530; }
-#custom-obs { background-color: #222530; color: #e4e5e8; padding: 0 6px; }
+#custom-arrow-obs { background-color: #0e1015; color: #202430; }
+#custom-obs { background-color: #202430; color: #f1f5f9; padding: 0 6px; }
 #custom-obs.offline { color: #6c7280; }
-#custom-obs.idle { color: #f38d41; }
-#custom-obs.recording { color: #ff4757; font-weight: bold; }
-#custom-obs.streaming { color: #e05561; font-weight: bold; }
-#custom-obs.live_rec { color: #ff4757; font-weight: bold; }
+#custom-obs.idle { color: #f97316; }
+#custom-obs.recording { color: #ef4444; font-weight: bold; }
+#custom-obs.streaming { color: #dc2626; font-weight: bold; }
+#custom-obs.live_rec { color: #ef4444; font-weight: bold; }
 
 /* Separador hacia Updates:
-   - Por defecto (sin OBS): conecta con el fondo de Waybar (#0f1013)
-   - Si se activa OBS en config.jsonc: el selector adyacente cambia el fondo a #222530 automáticamente */
-#custom-arrow-updates { background-color: #0f1013; color: #16181f; }
-#custom-obs + #custom-arrow-updates { background-color: #222530; color: #16181f; }
-#custom-updates { background-color: #16181f; color: #e5c07b; padding: 0 6px; }
-#custom-arrow-cpu { background-color: #16181f; color: #222530; }
-#cpu { background-color: #222530; color: #f38d41; padding: 0 6px; }
-#custom-arrow-memory { background-color: #222530; color: #16181f; }
-#memory { background-color: #16181f; color: #e5c07b; padding: 0 6px; }
-#custom-arrow-disk { background-color: #16181f; color: #222530; }
-#disk { background-color: #222530; color: #e05561; padding: 0 6px; }
-#custom-arrow-pulseaudio { background-color: #222530; color: #16181f; }
-#pulseaudio { background-color: #16181f; color: #f38d41; padding: 0 6px; }
+   - Por defecto (sin OBS): conecta con el fondo de Waybar (#0e1015)
+   - Si se activa OBS en config.jsonc: el selector adyacente cambia el fondo a #202430 automáticamente */
+#custom-arrow-updates { background-color: #0e1015; color: #151821; }
+#custom-obs + #custom-arrow-updates { background-color: #202430; color: #151821; }
+#custom-updates { background-color: #151821; color: #f59e0b; padding: 0 6px; }
+#custom-arrow-cpu { background-color: #151821; color: #202430; }
+#cpu { background-color: #202430; color: #f97316; padding: 0 6px; }
+#custom-arrow-memory { background-color: #202430; color: #151821; }
+#memory { background-color: #151821; color: #f59e0b; padding: 0 6px; }
+#custom-arrow-disk { background-color: #151821; color: #202430; }
+#disk { background-color: #202430; color: #dc2626; padding: 0 6px; }
+#custom-arrow-pulseaudio { background-color: #202430; color: #151821; }
+#pulseaudio { background-color: #151821; color: #f97316; padding: 0 6px; }
 
-/* Laptop: Backlight Module (Hazard Gold) */
-#custom-arrow-backlight { background-color: #16181f; color: #222530; }
-#backlight { background-color: #222530; color: #e5c07b; padding: 0 6px; }
+/* Laptop: Backlight Module (Solar Gold) */
+#custom-arrow-backlight { background-color: #151821; color: #202430; }
+#backlight { background-color: #202430; color: #f59e0b; padding: 0 6px; }
 
 /* Laptop: Battery Module (Laser Green / Amber / Red) */
-#custom-arrow-battery { background-color: #222530; color: #16181f; }
-#battery { background-color: #16181f; color: #8ebd6b; padding: 0 6px; }
-#battery.charging, #battery.plugged { color: #8ebd6b; }
-#battery.warning:not(.charging) { color: #f38d41; }
+#custom-arrow-battery { background-color: #202430; color: #151821; }
+#battery { background-color: #151821; color: #84cc16; padding: 0 6px; }
+#battery.charging, #battery.plugged { color: #84cc16; }
+#battery.warning:not(.charging) { color: #f97316; }
 #battery.critical:not(.charging) {
-    color: #ff4757;
+    color: #ef4444;
     animation-name: blink-battery;
     animation-duration: 0.8s;
     animation-timing-function: linear;
@@ -152,33 +152,33 @@ window#waybar {
 
 @keyframes blink-battery {
     to {
-        background-color: #ff4757;
-        color: #0f1013;
+        background-color: #ef4444;
+        color: #0e1015;
     }
 }
 
-#custom-arrow-network { background-color: #16181f; color: #222530; }
-#network { background-color: #222530; color: #56b6c2; padding: 0 6px; }
+#custom-arrow-network { background-color: #151821; color: #202430; }
+#network { background-color: #202430; color: #06b6d4; padding: 0 6px; }
 
 /* Laptop: Bluetooth Module (Stage Laser Blue) */
-#custom-arrow-bluetooth { background-color: #222530; color: #16181f; }
-#bluetooth { background-color: #16181f; color: #61afef; padding: 0 6px; }
+#custom-arrow-bluetooth { background-color: #202430; color: #151821; }
+#bluetooth { background-color: #151821; color: #38bdf8; padding: 0 6px; }
 #bluetooth.disabled, #bluetooth.off { color: #6c7280; }
-#bluetooth.connected { color: #61afef; font-weight: bold; }
+#bluetooth.connected { color: #38bdf8; font-weight: bold; }
 
 /* Separador hacia Tray:
-   - Por defecto (Desktop sin Bluetooth): conecta desde network (#222530) hacia tray (#14161c)
-   - En Laptop (con Bluetooth): el selector adyacente cambia el fondo a #16181f automáticamente */
-#custom-arrow-tray { background-color: #222530; color: #14161c; }
-#bluetooth + #custom-arrow-tray { background-color: #16181f; color: #14161c; }
+   - Por defecto (Desktop sin Bluetooth): conecta desde network (#202430) hacia tray (#14161c)
+   - En Laptop (con Bluetooth): el selector adyacente cambia el fondo a #151821 automáticamente */
+#custom-arrow-tray { background-color: #202430; color: #14161c; }
+#bluetooth + #custom-arrow-tray { background-color: #151821; color: #14161c; }
 #tray { background-color: #14161c; padding: 0 6px; }
-#custom-arrow-idle-inhibitor { background-color: #14161c; color: #222530; }
-#idle_inhibitor { background-color: #222530; color: #6c7280; padding: 0 8px; font-size: 12px; }
-#idle_inhibitor.activated { color: #e05561; }
+#custom-arrow-idle-inhibitor { background-color: #14161c; color: #202430; }
+#idle_inhibitor { background-color: #202430; color: #6c7280; padding: 0 8px; font-size: 12px; }
+#idle_inhibitor.activated { color: #dc2626; }
 #idle_inhibitor.deactivated { color: #6c7280; }
-#idle_inhibitor:hover { color: #f38d41; }
-#custom-arrow-power { background-color: #222530; color: #e05561; }
-#custom-power { background-color: #e05561; color: #0f1013; padding: 0 8px; font-weight: 900; }
+#idle_inhibitor:hover { color: #f97316; }
+#custom-arrow-power { background-color: #202430; color: #dc2626; }
+#custom-power { background-color: #dc2626; color: #0e1015; padding: 0 8px; font-weight: 900; }
 
 /* =============================================================================
    Tray Context Menus & Popups (Defqon.1 Industrial Dark)
@@ -187,9 +187,9 @@ window#waybar {
 #tray menu,
 window.popup menu,
 menu {
-    background-color: #181a20;
-    color: #e4e5e8;
-    border: 1px solid #e05561;
+    background-color: #151821;
+    color: #f1f5f9;
+    border: 1px solid #dc2626;
     border-radius: 0px;
     padding: 4px;
     box-shadow: none;
@@ -198,7 +198,7 @@ menu {
 #tray menu menuitem,
 menu menuitem {
     background-color: transparent;
-    color: #e4e5e8;
+    color: #f1f5f9;
     border-radius: 0px;
     padding: 5px 12px;
     margin: 1px 0px;
@@ -208,8 +208,8 @@ menu menuitem {
 
 #tray menu menuitem:hover,
 menu menuitem:hover {
-    background-color: #242731;
-    color: #f38d41;
+    background-color: #242733;
+    color: #f97316;
 }
 
 #tray menu menuitem:disabled,
@@ -226,7 +226,7 @@ menu menuitem label {
 
 #tray menu separator,
 menu separator {
-    background-color: #282b35;
+    background-color: #282c37;
     min-height: 1px;
     margin: 4px 6px;
     border: none;
@@ -240,18 +240,18 @@ menu radio {
     min-height: 12px;
     margin-right: 8px;
     border-radius: 0px;
-    border: 1px solid #2d313d;
-    background-color: #121317;
-    color: #e05561;
+    border: 1px solid #282c37;
+    background-color: #0e1015;
+    color: #dc2626;
 }
 
 #tray menu check:checked,
 #tray menu radio:checked,
 menu check:checked,
 menu radio:checked {
-    border-color: #e05561;
-    background-color: #e05561;
-    color: #0f1013;
+    border-color: #dc2626;
+    background-color: #dc2626;
+    color: #0e1015;
 }
 
 #tray menu arrow,
@@ -263,7 +263,7 @@ menu arrow {
 
 #tray menu menuitem:hover arrow,
 menu menuitem:hover arrow {
-    color: #f38d41;
+    color: #f97316;
 }
 
 #tray menu accelerator,
@@ -275,6 +275,6 @@ menu accelerator {
 
 #tray menu menuitem:hover accelerator,
 menu menuitem:hover accelerator {
-    color: #e5c07b;
+    color: #f59e0b;
 }
 

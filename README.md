@@ -17,25 +17,26 @@
   <img src="assets/preview.png" alt="Defqon.1 Weekend Warrior Sway Desktop Preview" width="100%">
 </p>
 
-> Entorno de escritorio modular, ligero y de alto rendimiento para **Sway (Wayland)** con estética industrial inspirada en el festival de hardstyle **Defqon.1 ("Weekend Warriors")**, bordes afilados de 1px, paleta de colores balanceada (**Warrior Red** & **Amber Flame**), barra de estado continua **Powerline** y ecosistema orientado a herramientas de terminal (TUI).
+> Entorno de escritorio modular, ligero y de alto rendimiento para **Sway (Wayland)** con estética industrial y pirotécnica inspirada en el festival de hardstyle **Defqon.1 ("Weekend Warriors - RED Mainstage")**, bordes de armadura de 2px, paleta de alto impacto (**Defqon Red**, **Pyro Orange** & **Solar Gold**), barra de estado continua **Powerline** con tótem central y ecosistema orientado a herramientas de terminal (TUI).
 
 ---
 
-## 🎨 Filosofía y Paleta de Colores
+## 🎨 Filosofía y Paleta de Colores (RED Mainstage Edition)
 
-El diseño evita rojos fluorescentes saturados para prevenir fatiga visual durante sesiones prolongadas de programación y uso diario, combinando una base de asfalto/carbón profundo con acentos de escenario y láseres:
+El diseño captura la arquitectura colosal de los escenarios principales de Defqon.1: acero obsidiana profundo, bordes afilados en rojo carmesí puro, llamaradas pirotécnicas (oro solar a naranja fuego) y acentos de láseres de festival:
 
 | Token Semántico | Código HEX | Rol en la Interfaz |
 |---|---|---|
-| **Asphalt Base** | `#121317` | Fondo principal de terminal Foot, ventanas y barra Waybar |
-| **Surface Dark** | `#181a20` | Superficies de popups, menús Fuzzel, tarjetas y notificaciones |
-| **Steel Border** | `#2d313d` | Bordes inactivos (1px), separadores y líneas de corte |
-| **Warrior Red** | `#e05561` | Borde de ventana activa, prompt Starship, reloj y alertas |
-| **Amber Flame** | `#f38d41` | CPU/RAM en Waybar, selección activa en menús y advertencias |
-| **Hazard Gold** | `#e5c07b` | Métricas de memoria en btop, fecha y estado de paquetes |
-| **Laser Green** | `#8ebd6b` | Estado de batería, cadenas de texto e indicadores de éxito |
-| **Laser Cyan** | `#56b6c2` | Métricas de red Wi-Fi, clima en calendario y funciones |
-| **Chalk White** | `#e4e5e8` | Texto principal de lectura con alto contraste y suavidad |
+| **Obsidian Base** | `#0e1015` | Fondo principal de terminal Foot, ventanas y barra Waybar |
+| **Charcoal Surface** | `#151821` | Superficies de popups, menús Fuzzel, tarjetas y notificaciones |
+| **Steel Border** | `#282c37` | Bordes inactivos (2px), separadores y líneas de corte |
+| **Defqon Red** | `#dc2626` | Borde de ventana activa, prompt Starship, tótem de reloj y alertas |
+| **Pyro Orange** | `#f97316` | CPU/RAM en Waybar, selección activa en menús y advertencias |
+| **Solar Gold** | `#f59e0b` | Acentos dorados de máscaras, fecha y métricas de memoria |
+| **Laser Green** | `#84cc16` | Estado de batería, cadenas de texto e indicadores de éxito |
+| **Stage Laser Cyan** | `#06b6d4` | Métricas de red Wi-Fi, clima en calendario y funciones |
+| **Incandescent Yellow** | `#facc15` | Núcleo de las llamaradas en CAVA |
+| **Chalk White** | `#f1f5f9` | Texto principal de lectura con alto contraste y claridad |
 
 ---
 

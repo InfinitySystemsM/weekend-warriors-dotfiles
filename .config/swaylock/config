@@ -25,26 +25,26 @@ indicator
 indicator-radius=115
 indicator-thickness=9
 
-# Colors: Defqon.1 Industrial Palette
+# Colors: Defqon.1 RED Mainstage (Sun Halo & Flame Accents)
 # Inner Circle Background
-inside-color=181a20ff
-inside-clear-color=181a20ff
-inside-caps-lock-color=181a20ff
-inside-ver-color=181a20ff
-inside-wrong-color=181a20ff
+inside-color=151821ff
+inside-clear-color=151821ff
+inside-caps-lock-color=151821ff
+inside-ver-color=151821ff
+inside-wrong-color=151821ff
 
-# Ring Border (Warrior Red #e05561)
-ring-color=e05561ff
-ring-clear-color=f38d41ff
-ring-caps-lock-color=e5c07bff
-ring-ver-color=8ebd6bff
-ring-wrong-color=ff4757ff
+# Ring Border (Defqon Red #dc2626)
+ring-color=dc2626ff
+ring-clear-color=f97316ff
+ring-caps-lock-color=f59e0bff
+ring-ver-color=84cc16ff
+ring-wrong-color=ef4444ff
 
-# Keypress Highlights (Flame Amber #f38d41)
-key-hl-color=f38d41ff
-bs-hl-color=ff4757ff
-caps-lock-key-hl-color=e5c07bff
-caps-lock-bs-hl-color=ff4757ff
+# Keypress Highlights (Solar Gold #f59e0b & Pyro Orange #f97316)
+key-hl-color=f59e0bff
+bs-hl-color=ef4444ff
+caps-lock-key-hl-color=f59e0bff
+caps-lock-bs-hl-color=ef4444ff
 
 # Separators & Dividing Lines
 line-color=00000000
@@ -55,8 +55,8 @@ line-wrong-color=00000000
 separator-color=00000000
 
 # Text Labels
-text-color=e4e5e8ff
-text-clear-color=f38d41ff
-text-caps-lock-color=e5c07bff
-text-ver-color=8ebd6bff
-text-wrong-color=ff4757ff
+text-color=f1f5f9ff
+text-clear-color=f97316ff
+text-caps-lock-color=f59e0bff
+text-ver-color=84cc16ff
+text-wrong-color=ef4444ff

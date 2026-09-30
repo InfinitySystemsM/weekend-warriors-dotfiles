@@ -8,10 +8,10 @@
 
 # Defqon.1 Industrial FZF Theme
 export FZF_DEFAULT_OPTS=" \
---color=bg+:#242731,bg:#121317,spinner:#f38d41,hl:#e05561 \
---color=fg:#e4e5e8,header:#e05561,info:#f38d41,pointer:#f38d41 \
---color=marker:#8ebd6b,fg+:#e4e5e8,prompt:#e05561,hl+:#ff4757 \
---color=border:#e05561,preview-border:#56b6c2 \
+--color=bg+:#242733,bg:#0e1015,spinner:#f97316,hl:#dc2626 \
+--color=fg:#f1f5f9,header:#dc2626,info:#f97316,pointer:#f59e0b \
+--color=marker:#84cc16,fg+:#f1f5f9,prompt:#dc2626,hl+:#ef4444 \
+--color=border:#dc2626,preview-border:#06b6d4 \
 --pointer='❯' \
 --marker='✓' \
 --bind 'ctrl-a:select-all,ctrl-d:deselect-all'"

@@ -19,69 +19,69 @@ $character"""
 palette = "defqon1"
 
 [character]
-success_symbol = "[❯](bold #e05561)"
-error_symbol = "[❯](bold #ff4757)"
-vicmd_symbol = "[❮](bold #8ebd6b)"
+success_symbol = "[❯](bold #dc2626)"
+error_symbol = "[❯](bold #ef4444)"
+vicmd_symbol = "[❮](bold #84cc16)"
 
 [directory]
-style = "bold #56b6c2"
+style = "bold #06b6d4"
 format = "[$path]($style) "
 truncation_length = 3
 truncation_symbol = "…/"
 
 [git_branch]
 symbol = "󰘬 "
-style = "bold #f38d41"
+style = "bold #f97316"
 format = "[$symbol$branch]($style) "
 
 [git_status]
-style = "bold #e05561"
+style = "bold #dc2626"
 format = "([$all_status$ahead_behind]($style) )"
 
 [cmd_duration]
 min_time = 2_000
-style = "bold #e5c07b"
+style = "bold #f59e0b"
 format = "[ $duration]($style) "
 
 [package]
 symbol = "󰏗 "
-style = "bold #f38d41"
+style = "bold #f97316"
 format = "[$symbol$version]($style) "
 
 [rust]
 symbol = " "
-style = "bold #e05561"
+style = "bold #dc2626"
 format = "[$symbol($version )]($style)"
 
 [golang]
 symbol = " "
-style = "bold #56b6c2"
+style = "bold #06b6d4"
 format = "[$symbol($version )]($style)"
 
 [nodejs]
 symbol = " "
-style = "bold #8ebd6b"
+style = "bold #84cc16"
 format = "[$symbol($version )]($style)"
 
 [python]
 symbol = " "
-style = "bold #e5c07b"
+style = "bold #f59e0b"
 format = "[$symbol($version )]($style)"
 
 [docker_context]
 symbol = " "
-style = "bold #61afef"
+style = "bold #38bdf8"
 format = "[$symbol$context]($style) "
 
 [palettes.defqon1]
-base = "#121317"
-surface = "#181a20"
-border = "#2d313d"
-text = "#e4e5e8"
+base = "#0e1015"
+surface = "#151821"
+border = "#282c37"
+text = "#f1f5f9"
 subtext = "#7d8597"
-red = "#e05561"
-orange = "#f38d41"
-yellow = "#e5c07b"
-green = "#8ebd6b"
-cyan = "#56b6c2"
-blue = "#61afef"
+red = "#dc2626"
+orange = "#f97316"
+yellow = "#f59e0b"
+green = "#84cc16"
+cyan = "#06b6d4"
+blue = "#38bdf8"
