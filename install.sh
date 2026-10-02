@@ -2,6 +2,7 @@
 # ==============================================================================
 # Dotfiles Installation & Symlink Script
 # Sway Defqon.1 Weekend Warrior - Industrial Dark TUI
+# Creado y mantenido con la asistencia del agente de IA: Antigravity
 # ==============================================================================
 
 set -e

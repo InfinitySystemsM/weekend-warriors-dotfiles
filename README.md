@@ -19,6 +19,10 @@
 
 > Entorno de escritorio modular, ligero y de alto rendimiento para **Sway (Wayland)** con estética industrial y pirotécnica inspirada en el festival de hardstyle **Defqon.1 ("Weekend Warriors - RED Mainstage")**, bordes de armadura de 2px, paleta de alto impacto (**Defqon Red**, **Pyro Orange** & **Solar Gold**), barra de estado continua **Powerline** con tótem central y ecosistema orientado a herramientas de terminal (TUI).
 
+> [!NOTE]
+> **Aclaración de Creación y Asistencia de IA:**
+> Este ecosistema de dotfiles, herramientas y configuraciones modulares fue creado, estructurado y optimizado con la asistencia del agente de IA **Antigravity** (Google DeepMind).
+
 ---
 
 ## 🎨 Filosofía y Paleta de Colores (RED Mainstage Edition)
@@ -272,6 +276,12 @@ git remote add origin git@github.com:InfinitySystemsM/weekend-warriors-dotfiles.
 git branch -M main
 git push -u origin main
 ```
+
+---
+
+## 🤖 Reconocimientos y Autoría (IA)
+
+Este proyecto y sus configuraciones fueron desarrollados, estructurados y optimizados en colaboración con el agente de Inteligencia Artificial **Antigravity** (Google DeepMind). Todas las configuraciones modulares de Sway, barras Waybar adaptativas para Desktop/Laptop, scripts de utilidades en `.local/bin/`, paletas de color temáticas y herramientas en C fueron concebidas y refinadas mediante pair programming asistido por IA.
 
 ---
 
