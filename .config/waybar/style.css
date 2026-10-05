@@ -83,7 +83,10 @@ window#waybar {
 #mpris {
     background-color: #202430;
     color: #f1f5f9;
-    padding: 0 6px;
+    padding: 0 5px;
+}
+#mpris:hover {
+    color: #dc2626;
 }
 #mpris.playing {
     color: #f1f5f9;

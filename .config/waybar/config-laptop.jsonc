@@ -73,27 +73,51 @@
     },
 
     "sway/window": {
-        "format": "{title}",
+        "format": "{app_id}",
         "max-length": 5,
         "rewrite": {
-            // Terminales (foot / fish)
-            "^.*:\\s*(.+?)\\s*-\\s*\\S+$": "",
-            "^.*/([^/]+)\\s*-\\s*fish$": "",
-            "^~\\s*-\\s*fish$": "",
-            "(.*) - foot": "",
+            // Terminales y emuladores
+            "^foot$": "",
+            "^Alacritty$": "",
+            "^kitty$": "",
+            "^tui-.*$": "",
             "^Terminal$": "",
+
             // Navegadores
-            ".*Mozilla Firefox.*": "󰈹",
-            ".*Google Chrome.*": "",
-            ".*Chromium.*": "",
-            // Editores y desarrollo
-            ".*Visual Studio Code.*": "󰨞",
-            ".*Code.*": "󰨞",
-            // Comunicación
-            ".*Discord.*": "",
-            ".*Telegram.*": "",
+            "^(firefox|Firefox)$": "󰈹",
+            "^(google-chrome.*|chromium.*|Chromium.*|brave-browser.*)$": "",
+
+            // Streaming y Grabación (OBS Studio / TuiCast)
+            "^(com\\.obsproject\\.Studio|obs|OBS)$": "󰑋",
+            "^tuicast.*$": "󰑋",
+
+            // Editores y desarrollo (específicos de VS Code / editores para evitar falsos positivos)
+            "^(code(-oss)?|Code(-OSS)?|vscodium|VSCodium|visual-studio-code.*)$": "󰨞",
+            "^(neovim|nvim)$": "",
+            "^(helix|hx|micro)$": "󰨞",
+
             // Spotify y música
-            ".*Spotify.*": "",
+            "^(spotify|Spotify)$": "",
+            "^(mpv|Mpv)$": "󰐹",
+
+            // Comunicación
+            "^(discord|Discord)$": "",
+            "^(org\\.telegram\\.desktop|telegram|TelegramDesktop)$": "",
+
+            // Gestores de archivos
+            "^(thunar|Thunar|pcmanfm-qt|PCManFM-qt|org\\.gnome\\.Nautilus)$": "󰉋",
+
+            // Audio y utilidades
+            "^(pavucontrol|org\\.pulseaudio\\.pavucontrol)$": "󰕾",
+            "^(qpwgraph|easyeffects|com\\.github\\.wwmm\\.easyeffects)$": "󰓃",
+
+            // Diseño y multimedia
+            "^(gimp.*|Gimp.*)$": "",
+            "^(inkscape|org\\.inkscape\\.Inkscape)$": "",
+            "^(blender|Blender)$": "󰂫",
+            "^(kdenlive|org\\.kde\\.kdenlive)$": "",
+            "^swappy$": "󰹑",
+
             // Escritorio vacío
             "^$": ""
         }
@@ -121,25 +145,14 @@
     },
 
     "mpris": {
-        "format": "{player_icon} {status_icon} {dynamic}",
-        "format-paused": "{player_icon} {status_icon} <i>{dynamic}</i>",
-        "format-stopped": "{player_icon} 󰓛 Inactivo",
-        "player-icons": {
-            "spotify": " ",
-            "spotify_player": " ",
-            "firefox": "󰈹 ",
-            "chromium": " ",
-            "mpv": "󰐹 ",
-            "default": "󰎆 "
-        },
+        "format": "{status_icon}",
+        "format-paused": "{status_icon}",
+        "format-stopped": "{status_icon}",
         "status-icons": {
-            "playing": "󰐊",
-            "paused": "󰏤",
+            "playing": "󰏤",
+            "paused": "󰐊",
             "stopped": "󰓛"
         },
-        "dynamic-order": ["title"],
-        "dynamic-importance-order": ["title"],
-        "dynamic-len": 22,
         "on-click": "playerctl -p 'spotify,spotify_player,spotify-player,%any' play-pause",
         "on-click-right": "playerctl -p 'spotify,spotify_player,spotify-player,%any' next",
         "on-click-middle": "playerctl -p 'spotify,spotify_player,spotify-player,%any' previous",
