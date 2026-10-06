@@ -29,6 +29,13 @@ set -gx QT_QPA_PLATFORMTHEME "qt5ct"
 set -gx QT_QPA_PLATFORM "wayland;xcb"
 set -gx QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
 
+# Ruta base del Android SDK
+set -gx ANDROID_HOME $HOME/Android/Sdk
+
+# Agregar herramientas del SDK al PATH
+fish_add_path $ANDROID_HOME/cmdline-tools/latest/bin
+fish_add_path $ANDROID_HOME/platform-tools
+
 # Modern Colored Line-by-Line LS / Eza Aliases
 if command -v eza >/dev/null 2>&1
     alias ls='eza -lh --icons --group-directories-first'
