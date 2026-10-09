@@ -130,7 +130,7 @@ fi
 if [ "$CHECK_DEPS" = true ]; then
     echo -e "${C_BLUE}==> [1/4] Verificando dependencias del sistema...${C_RESET}"
     CORE_PKGS=(
-        sway waybar fuzzel mako swaylock foot grim slurp wl-clipboard
+        sway swaybg waybar fuzzel mako swaylock foot grim slurp wl-clipboard
         cliphist playerctl brightnessctl libnotify polkit-gnome starship
         btop helix micro zellij cava fastfetch fish adw-gtk-theme
         papirus-icon-theme qt5ct qt6ct xsettingsd networkmanager

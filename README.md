@@ -223,7 +223,7 @@ Para instalar todas las dependencias en **Arch Linux** o **CachyOS**:
 
 ```bash
 sudo pacman -S --needed \
-    sway waybar fuzzel mako swaylock foot grim slurp wl-clipboard \
+    sway swaybg waybar fuzzel mako swaylock foot grim slurp wl-clipboard \
     cliphist playerctl brightnessctl libnotify polkit-gnome starship \
     btop helix micro zellij cava fastfetch fish yazi thunar \
     adw-gtk-theme papirus-icon-theme qt5ct qt6ct xsettingsd \

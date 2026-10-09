@@ -169,14 +169,11 @@ window#waybar {
 #bluetooth.disabled, #bluetooth.off { color: #6c7280; }
 #bluetooth.connected { color: #38bdf8; font-weight: bold; }
 
-/* Separador hacia Tray:
-   - Por defecto (Desktop sin Bluetooth): conecta desde network (#202430) hacia tray (#14161c)
-   - En Laptop (con Bluetooth): el selector adyacente cambia el fondo a #151821 automáticamente */
-#custom-arrow-tray { background-color: #202430; color: #14161c; }
-#bluetooth + #custom-arrow-tray { background-color: #151821; color: #14161c; }
-#tray { background-color: #14161c; padding: 0 6px; }
-#custom-arrow-idle-inhibitor { background-color: #14161c; color: #202430; }
+/* Separador hacia Idle Inhibitor & Tray:
+   - Conecta limpiamente desde bluetooth (#151821) hacia idle_inhibitor y tray (#202430) */
+#custom-arrow-idle-inhibitor { background-color: #151821; color: #202430; }
 #idle_inhibitor { background-color: #202430; color: #6c7280; padding: 0 8px; font-size: 12px; }
+#tray { background-color: #202430; padding: 0 4px; }
 #idle_inhibitor.activated { color: #dc2626; }
 #idle_inhibitor.deactivated { color: #6c7280; }
 #idle_inhibitor:hover { color: #f97316; }

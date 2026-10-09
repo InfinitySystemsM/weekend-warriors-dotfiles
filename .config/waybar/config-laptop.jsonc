@@ -42,10 +42,9 @@
         "network",
         "custom/arrow-bluetooth",
         "bluetooth",
-        "custom/arrow-tray",
-        "tray",
         "custom/arrow-idle-inhibitor",
         "idle_inhibitor",
+        "tray",
         "custom/arrow-power",
         "custom/power"
     ],
@@ -342,7 +341,7 @@
     },
 
     "bluetooth": {
-        "format": "󰂯 {status}",
+        "format": "󰂯",
         "format-disabled": "󰂲 Off",
         "format-off": "󰂲 Off",
         "format-connected": "󰂱 {device_alias}",
