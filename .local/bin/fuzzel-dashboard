@@ -216,9 +216,10 @@ menu_config() {
 󰃞   [9] Pantalla: Bajar Brillo (-5%)\n\
 󰅶   [10] Sistema: Alternar Anti-Inactividad (Anti-Sleep)\n\
 󰏓   [11] Software: Gestor de Paquetes Pacman/AUR (TUI)\n\
-󰑓   [12] Software: Actualizar Sistema Completo (system-update)"
+󰑓   [12] Software: Actualizar Sistema Completo (system-update)\n\
+󰟀   [13] Hardware: Alternar Touchpad (Modo TrackPoint)"
 
-    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="󰒓 Configuración ❯ " --width=$MENU_WIDTH --lines=14)
+    local chosen=$(echo -e "$options" | fuzzel --dmenu --prompt="󰒓 Configuración ❯ " --width=$MENU_WIDTH --lines=15)
     [ -z "$chosen" ] && return 0
 
     case "$chosen" in
@@ -260,6 +261,9 @@ menu_config() {
             ;;
         *"[12] Software: Actualizar"*)
             foot -T "System Update" -e system-update &
+            ;;
+        *"[13] Hardware: Alternar Touchpad"*)
+            touchpad-toggle
             ;;
     esac
 }

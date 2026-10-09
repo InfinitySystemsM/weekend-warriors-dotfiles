@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Touchpad Toggle & ThinkPad TrackPoint Mode (Defqon.1 Weekend Warrior)
+# ==============================================================================
+
+ACTION="${1:-toggle}"
+
+get_status() {
+    swaymsg -t get_inputs | jq -r '.[] | select(.type=="touchpad") | .libinput.send_events' 2>/dev/null | head -n 1
+}
+
+set_touchpad() {
+    local target="$1"
+    swaymsg input "type:touchpad" events "$target" >/dev/null 2>&1
+}
+
+case "$ACTION" in
+    disable|off)
+        set_touchpad disabled
+        ;;
+    enable|on)
+        set_touchpad enabled
+        ;;
+    toggle|*)
+        swaymsg input "type:touchpad" events toggle enabled disabled >/dev/null 2>&1
+        ;;
+esac
+
+STATUS=$(get_status)
+
+if [ "$STATUS" = "disabled" ]; then
+    notify-send -u low -t 2500 \
+        -h string:x-canonical-private-synchronous:touchpad \
+        "Touchpad Desactivado 󰟀" "🔴 Modo TrackPoint activo (Navegación con punto rojo y botón central)"
+    echo "✓ Touchpad desactivado (Modo TrackPoint activo)"
+else
+    notify-send -u low -t 2500 \
+        -h string:x-canonical-private-synchronous:touchpad \
+        "Touchpad Activado 󰟁" "🟢 Gestos multitáctiles y desplazamiento habilitados"
+    echo "✓ Touchpad activado"
+fi

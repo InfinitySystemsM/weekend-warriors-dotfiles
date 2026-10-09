@@ -111,6 +111,7 @@ dotfiles/
 │       ├── laptop-lid-handler# Gestor de tapa de laptop (modo clamshell y bloqueo)
 │       ├── screenshot-tool   # Utilidad de capturas con selección en rojo carmesí
 │       ├── thinkpad-battery  # Gestor de salud y umbrales de batería ThinkPad (80% / 100%)
+│       ├── touchpad-toggle   # Alternador de Touchpad / Modo TrackPoint con notificación OSD
 │       ├── tui-calendar      # Reloj digital gigante, calendario y clima TUI
 │       ├── tui-keybindings   # Guía visual interactiva y buscador de atajos (TUI & Fuzzel)
 │       ├── tui-packages      # Gestor interactivo de paquetes con FZF (Pacman + Yay)
@@ -213,6 +214,7 @@ dotfiles/
 | `Pinch 3 dedos (Hacia adentro)` | Enviar ventana activa al scratchpad |
 | `Pinch 3 dedos (Hacia afuera)` | Mostrar / alternar scratchpad |
 | `ThinkPad TrackPoint (Botón Central)` | Mantener presionado botón central físico para scroll fluido |
+| `$mod + F9` o `$mod + Ctrl + t` | Alternar Touchpad encendido / apagado (**Modo TrackPoint exclusivo**) |
 | `Cerrar Tapa (Lid Close)` | Activa modo Clamshell (si hay monitor externo) o bloquea sesión |
 
 ---
