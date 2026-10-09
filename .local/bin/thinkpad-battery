@@ -8,6 +8,7 @@
 # ==============================================================================
 
 ACTION="${1:-}"
+IS_MENU=0
 
 # Check if battery BAT0 exists
 BAT_PATH="/sys/class/power_supply/BAT0"
@@ -24,12 +25,29 @@ if [ ! -d "$BAT_PATH" ]; then
 fi
 
 run_root() {
-    if [ ! -t 0 ]; then
+    if [ "$EUID" -eq 0 ]; then
+        "$@"
+        return $?
+    fi
+
+    # Check if a usable interactive controlling terminal is available
+    local has_tty=0
+    if [ -t 0 ] && (exec < /dev/tty) 2>/dev/null; then
+        has_tty=1
+    fi
+
+    # Prefer pkexec when running from GUI menu or when no controlling terminal is available
+    if [ "$has_tty" -eq 0 ] || [ "${IS_MENU:-0}" -eq 1 ]; then
         if command -v pkexec >/dev/null 2>&1; then
             pkexec "$@"
-        else
-            sudo "$@"
+            return $?
         fi
+    fi
+
+    if [ "$has_tty" -eq 1 ]; then
+        sudo "$@"
+    elif command -v pkexec >/dev/null 2>&1; then
+        pkexec "$@"
     else
         sudo "$@"
     fi
@@ -40,24 +58,51 @@ apply_thresholds() {
     local stop="$2"
     local mode_name="$3"
 
-    if command -v tlp >/dev/null 2>&1; then
-        if [ "$stop" -eq 100 ]; then
-            run_root tlp fullcharge "$(basename "$BAT_PATH")" >/dev/null 2>&1
-        else
-            run_root tlp setcharge "$start" "$stop" "$(basename "$BAT_PATH")" >/dev/null 2>&1
+    # Direct write if permissions allow without root (e.g. udev rule)
+    if [ -w "$BAT_PATH/charge_control_end_threshold" ]; then
+        echo "$stop" > "$BAT_PATH/charge_control_end_threshold" 2>/dev/null || true
+        if [ -w "$BAT_PATH/charge_control_start_threshold" ]; then
+            echo "$start" > "$BAT_PATH/charge_control_start_threshold" 2>/dev/null || true
         fi
-    elif [ -f "$BAT_PATH/charge_control_end_threshold" ]; then
-        local cmd="echo $stop > \"$BAT_PATH/charge_control_end_threshold\""
-        if [ -f "$BAT_PATH/charge_control_start_threshold" ]; then
-            cmd="$cmd && echo $start > \"$BAT_PATH/charge_control_start_threshold\""
-        fi
-        run_root sh -c "$cmd" >/dev/null 2>&1 || true
     fi
 
-    notify-send -u low -t 3000 \
-                -h string:x-canonical-private-synchronous:thinkpad-battery \
-                "Batería ThinkPad" "$mode_name configurado ($stop% máx)"
-    echo "✓ $mode_name aplicado: Umbral de parada al $stop%."
+    local current_stop=""
+    [ -f "$BAT_PATH/charge_control_end_threshold" ] && current_stop="$(< "$BAT_PATH/charge_control_end_threshold")"
+
+    if [ "$current_stop" != "$stop" ]; then
+        if command -v tlp >/dev/null 2>&1; then
+            if [ "$stop" -eq 100 ]; then
+                run_root tlp fullcharge "$(basename "$BAT_PATH")" >/dev/null 2>&1 || true
+            else
+                run_root tlp setcharge "$start" "$stop" "$(basename "$BAT_PATH")" >/dev/null 2>&1 || true
+            fi
+        fi
+
+        [ -f "$BAT_PATH/charge_control_end_threshold" ] && current_stop="$(< "$BAT_PATH/charge_control_end_threshold")"
+        if [ "$current_stop" != "$stop" ] && [ -f "$BAT_PATH/charge_control_end_threshold" ]; then
+            local cmd="echo $stop > \"$BAT_PATH/charge_control_end_threshold\""
+            if [ -f "$BAT_PATH/charge_control_start_threshold" ]; then
+                cmd="$cmd && echo $start > \"$BAT_PATH/charge_control_start_threshold\""
+            fi
+            run_root sh -c "$cmd" >/dev/null 2>&1 || true
+        fi
+    fi
+
+    # Verify if the threshold was actually updated
+    [ -f "$BAT_PATH/charge_control_end_threshold" ] && current_stop="$(< "$BAT_PATH/charge_control_end_threshold")"
+
+    if [ "$current_stop" = "$stop" ]; then
+        notify-send -u low -t 3000 \
+                    -h string:x-canonical-private-synchronous:thinkpad-battery \
+                    "Batería ThinkPad" "$mode_name configurado ($stop% máx)"
+        echo "✓ $mode_name aplicado: Umbral de parada al $stop%."
+    else
+        notify-send -u critical -t 5000 \
+                    -h string:x-canonical-private-synchronous:thinkpad-battery \
+                    "Batería ThinkPad" "Error: No se pudo aplicar $mode_name (umbral en ${current_stop:-?}%)."
+        echo "✗ Error: No se pudo aplicar $mode_name (el umbral sigue en ${current_stop:-?}%)." >&2
+        return 1
+    fi
 }
 
 show_status() {
@@ -92,6 +137,7 @@ show_status() {
 
 # If no argument or 'menu', show interactive Fuzzel menu
 if [ -z "$ACTION" ] || [ "$ACTION" = "menu" ]; then
+    IS_MENU=1
     CURRENT_STOP="100"
     [ -f "$BAT_PATH/charge_control_end_threshold" ] && CURRENT_STOP="$(< "$BAT_PATH/charge_control_end_threshold")"
 
